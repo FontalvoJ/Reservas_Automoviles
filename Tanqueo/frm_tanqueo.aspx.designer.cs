@@ -15,15 +15,6 @@ namespace Tanqueo
     {
 
         /// <summary>
-        /// Control form1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
         /// Control txt_fecha.
         /// </summary>
         /// <remarks>
@@ -42,13 +33,49 @@ namespace Tanqueo
         protected global::System.Web.UI.WebControls.DropDownList ddl_ingreso;
 
         /// <summary>
-        /// Control sqlDataSourceEstrato.
+        /// Control sqlDataSourceIngreso.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlDataSourceEstrato;
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDataSourceIngreso;
+
+        /// <summary>
+        /// Control txt_comprobante.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_comprobante;
+
+        /// <summary>
+        /// Control txt_cantidad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_cantidad;
+
+        /// <summary>
+        /// Control txt_matricula.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_matricula;
+
+        /// <summary>
+        /// Control txt_pasan.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_pasan;
 
         /// <summary>
         /// Control btn_guardar.
