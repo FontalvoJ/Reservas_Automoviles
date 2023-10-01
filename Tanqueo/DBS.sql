@@ -16,6 +16,7 @@ CREATE TABLE tbl_vales (
     PKId INT PRIMARY KEY IDENTITY(1,1),
     Fecha DATE,
     FKCodigo_tbl_Ingreso INT,
+	Valor_Ingreso float,
     Comprobante_entrega VARCHAR(255),
     Cantidad_GLN DECIMAL(10, 2),
     Mtl_Aeronave VARCHAR(50),

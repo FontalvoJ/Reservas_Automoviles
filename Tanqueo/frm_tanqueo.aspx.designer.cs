@@ -42,6 +42,15 @@ namespace Tanqueo
         protected global::System.Web.UI.WebControls.SqlDataSource sqlDataSourceIngreso;
 
         /// <summary>
+        /// Control txt_ingreso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txt_ingreso;
+
+        /// <summary>
         /// Control txt_comprobante.
         /// </summary>
         /// <remarks>
@@ -69,13 +78,13 @@ namespace Tanqueo
         protected global::System.Web.UI.WebControls.TextBox txt_matricula;
 
         /// <summary>
-        /// Control txt_pasan.
+        /// Control lbl_pasan.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_pasan;
+        protected global::System.Web.UI.WebControls.Label lbl_pasan;
 
         /// <summary>
         /// Control btn_guardar.
@@ -85,6 +94,15 @@ namespace Tanqueo
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn_guardar;
+
+        /// <summary>
+        /// Control btn_nuevo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_nuevo;
 
         /// <summary>
         /// Control lbl_mensaje.

@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cls_conexion.cs" />
+    <Compile Include="cls_tanqueo.cs" />
     <Compile Include="frm_tanqueo.aspx.cs">
       <DependentUpon>frm_tanqueo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
