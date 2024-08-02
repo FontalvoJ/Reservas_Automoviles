@@ -18,14 +18,12 @@ export const signUpTanker = async (req, res) => {
       roles,
     } = req.body;
 
-   
     if (!tankername || !email || !password) {
       return res
         .status(400)
         .json({ error: "Tanker name, email, and password are required." });
     }
 
-   
     const encryptedPassword = await Tanker.encryptPassword(password);
 
     const newTanker = new Tanker({
@@ -38,19 +36,15 @@ export const signUpTanker = async (req, res) => {
       password: encryptedPassword,
     });
 
-   
     if (roles && roles.length > 0) {
-      
       const foundRoles = await Role.find({ name: { $in: roles } });
 
-     
       if (foundRoles.length === 0) {
         return res.status(404).json({ error: "No roles found" });
       }
 
       newTanker.roles = foundRoles.map((role) => role._id);
     } else {
-  
       const role = await Role.findOne({ name: "Tanker" });
 
       if (!role) {
@@ -60,13 +54,10 @@ export const signUpTanker = async (req, res) => {
       newTanker.roles = [role._id];
     }
 
-  
     const savedTanker = await newTanker.save();
 
-
     res.status(201).json({
-      message: "Create Tanker Success"
-
+      message: "Create Tanker Success",
     });
   } catch (error) {
     console.error("Error in tanker registration:", error.message);
@@ -80,28 +71,23 @@ export const signUpAdmin = async (req, res) => {
   try {
     const { name, email, password, roles } = req.body;
 
-    
     if (!name || !email || !password) {
       return res
         .status(400)
         .json({ error: "Name, email, and password are required." });
     }
 
-    
     const encryptedPassword = await Admin.encryptPassword(password);
 
- 
     const newAdmin = new Admin({
       name,
       email,
       password: encryptedPassword,
     });
 
-    
     if (roles && roles.length > 0) {
       const foundRoles = await Role.find({ name: { $in: roles } });
 
-    
       if (foundRoles.length === 0) {
         return res.status(404).json({ error: "No roles found" });
       }
@@ -117,12 +103,10 @@ export const signUpAdmin = async (req, res) => {
       newAdmin.roles = [role._id];
     }
 
-   
     const savedAdmin = await newAdmin.save();
 
-    // Responder con éxito
     res.status(201).json({
-      message: "Create Admin Success"
+      message: "Create Admin Success",
     });
   } catch (error) {
     console.error("Error in admin registration:", error.message);
