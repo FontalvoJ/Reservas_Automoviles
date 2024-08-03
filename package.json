@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "FontalvoJ",
   "license": "ISC",
-  "description": "🚀 Impulsa la eficiencia y el éxito con nuestro Sistema de Gestión de Proyectos Institucionales, diseñado para optimizar la coordinación, seguimiento y cumplimiento de tus proyectos más importantes. 📈💼",
+  "description": "La API AeroFuel 🛩️💧 proporciona un sistema robusto y seguro para registrar y gestionar los tanqueos de aeronaves militares. Facilita la captura precisa de datos en tiempo real 🕒 sobre el consumo de combustible ⛽, historial de reabastecimientos 📈 y estadísticas de eficiencia operativa 📊. Diseñada para integrarse con otros sistemas de logística y mantenimiento 🔧, AeroFuel optimiza la planificación de misiones 🎯 y garantiza que cada aeronave esté siempre lista para cumplir con su misión 🚀.",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
