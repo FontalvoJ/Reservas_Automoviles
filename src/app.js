@@ -17,7 +17,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Configuramos el middleware de CORS
-const allowedOrigins = ["http://localhost:4200"];
+const allowedOrigins = [
+  "http://localhost:4200",
+  "https://api-node-aerofuel.onrender.com",
+];
 app.use(
   cors({
     origin: function (origin, callback) {

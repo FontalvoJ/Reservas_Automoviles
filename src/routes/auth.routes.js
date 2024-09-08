@@ -9,6 +9,7 @@ router.post("/signUpTanker", authCtrl.signUpTanker);
 // Route to sign up a new Admin
 router.post("/signUpAdmin", authCtrl.signUpAdmin);
 
-
+// Route to sign up Users
+router.post("/signInUsers", authCtrl.signInUsers);
 
 export default router;

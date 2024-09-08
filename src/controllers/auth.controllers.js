@@ -5,9 +5,11 @@ import Role from "../models/Role";
 import Tanker from "../models/Tanker";
 import Admin from "../models/adminOnly";
 
-export const signUpTanker = async (req, res) => {
+/// Función genérica para registrar usuarios
+const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   try {
     const {
+      name,
       tankername,
       identification,
       address,
@@ -18,16 +20,21 @@ export const signUpTanker = async (req, res) => {
       roles,
     } = req.body;
 
-    if (!tankername || !email || !password) {
+    // Determina el nombre del usuario basado en el tipo de usuario
+    const username = name || tankername;
+
+    if (!username || !email || !password) {
       return res
         .status(400)
-        .json({ error: "Tanker name, email, and password are required." });
+        .json({ error: `${defaultRoleName} name, email, and password are required.` });
     }
 
-    const encryptedPassword = await Tanker.encryptPassword(password);
+    // Encripta la contraseña
+    const encryptedPassword = await UserModel.encryptPassword(password);
 
-    const newTanker = new Tanker({
-      tankername,
+    // Crea una nueva instancia del modelo de usuario
+    const newUser = new UserModel({
+      name: username,
       identification,
       address,
       planta,
@@ -36,82 +43,112 @@ export const signUpTanker = async (req, res) => {
       password: encryptedPassword,
     });
 
+    // Asigna roles
     if (roles && roles.length > 0) {
-      const foundRoles = await Role.find({ name: { $in: roles } });
+      const foundRoles = await roleModel.find({ name: { $in: roles } });
 
       if (foundRoles.length === 0) {
         return res.status(404).json({ error: "No roles found" });
       }
 
-      newTanker.roles = foundRoles.map((role) => role._id);
+      newUser.roles = foundRoles.map((role) => role._id);
     } else {
-      const role = await Role.findOne({ name: "Tanker" });
+      const role = await roleModel.findOne({ name: defaultRoleName });
 
       if (!role) {
-        return res.status(404).json({ error: "Role 'Tanker' not found" });
+        return res.status(404).json({ error: `Role '${defaultRoleName}' not found` });
       }
 
-      newTanker.roles = [role._id];
+      newUser.roles = [role._id];
     }
 
-    const savedTanker = await newTanker.save();
+    // Guarda el nuevo usuario
+    const savedUser = await newUser.save();
 
     res.status(201).json({
-      message: "Create Tanker Success",
+      message: `Create ${defaultRoleName} Success`,
     });
   } catch (error) {
-    console.error("Error in tanker registration:", error.message);
+    console.error(`Error in ${defaultRoleName} registration:`, error.message);
     res.status(500).json({
-      error: "Error in tanker registration",
+      error: `Error in ${defaultRoleName} registration`,
     });
   }
 };
 
-export const signUpAdmin = async (req, res) => {
+// Uso de la función genérica para diferentes tipos de usuario
+export const signUpTanker = (req, res) => signUpUser(req, res, Tanker, "Tanker", Role);
+
+export const signUpAdmin = (req, res) => signUpUser(req, res, Admin, "Admin", Role);
+
+
+export const signInUsers = async (req, res) => {
   try {
-    const { name, email, password, roles } = req.body;
+    const { email, password } = req.body;
 
-    if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ error: "Name, email, and password are required." });
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
     }
 
-    const encryptedPassword = await Admin.encryptPassword(password);
+    let user =
+      (await Tanker.findOne({ email }).populate("roles")) ||
+      (await Admin.findOne({ email }).populate("roles"));
 
-    const newAdmin = new Admin({
-      name,
-      email,
-      password: encryptedPassword,
-    });
-
-    if (roles && roles.length > 0) {
-      const foundRoles = await Role.find({ name: { $in: roles } });
-
-      if (foundRoles.length === 0) {
-        return res.status(404).json({ error: "No roles found" });
-      }
-
-      newAdmin.roles = foundRoles.map((role) => role._id);
-    } else {
-      const role = await Role.findOne({ name: "Admin" });
-
-      if (!role) {
-        return res.status(404).json({ error: "Role 'Admin' not found" });
-      }
-
-      newAdmin.roles = [role._id];
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+      });
     }
 
-    const savedAdmin = await newAdmin.save();
+    const matchPassword = await bcrypt.compare(password, user.password);
 
-    res.status(201).json({
-      message: "Create Admin Success",
+    if (!matchPassword) {
+      return res.status(401).json({
+        token: null,
+        message: "Invalid password",
+      });
+    }
+
+    if (!user.roles || user.roles.length === 0) {
+      return res.status(400).json({
+        message: "User roles not found",
+      });
+    }
+
+    let role = null;
+    let name = "";
+
+    if (user instanceof Admin) {
+      role = "Admin";
+      name = user.institutionName;
+    } else if (user instanceof Tanker) {
+      role = "Tanker";
+      name = user.name;
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id.toString(),
+        role: role,
+      },
+      config.SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    res.json({
+      token,
+      role,
+      id: user._id.toString(),
+      name: name,
     });
   } catch (error) {
-    console.error("Error in admin registration:", error.message);
+    console.error(error);
     res.status(500).json({
-      error: "Error in admin registration",
+      message: "Internal server error",
     });
   }
 };
@@ -119,4 +156,5 @@ export const signUpAdmin = async (req, res) => {
 export default {
   signUpTanker,
   signUpAdmin,
+  signInUsers,
 };
