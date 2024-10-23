@@ -26,7 +26,7 @@ const adminSchema = new Schema(
   {
     timestamps: true,
     versionKey: false,
-    collection: "adminOnly",
+    collection: "Admins",
   }
 );
 
@@ -39,4 +39,4 @@ adminSchema.statics.comparePassword = async (password, receivedPassword) => {
   return await bcrypt.compare(password, receivedPassword);
 };
 
-export default model("Admin", adminSchema);
+export default model("Admins", adminSchema);

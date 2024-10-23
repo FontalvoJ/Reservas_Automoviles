@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "FontalvoJ",
   "license": "ISC",
-  "description": "La API AeroFuel 🛩️💧 proporciona un sistema robusto y seguro para registrar y gestionar los tanqueos de aeronaves militares. Facilita la captura precisa de datos en tiempo real 🕒 sobre el consumo de combustible ⛽, historial de reabastecimientos 📈 y estadísticas de eficiencia operativa 📊. Diseñada para integrarse con otros sistemas de logística y mantenimiento 🔧, AeroFuel optimiza la planificación de misiones 🎯 y garantiza que cada aeronave esté siempre lista para cumplir con su misión 🚀.",
+  "description": "RentifyAPI 🚗🔑 es una plataforma segura y eficiente para gestionar el alquiler de vehículos en tiempo real 📅. Diseñada tanto para administradores como para clientes, permite a los administradores autenticar usuarios, actualizar datos de clientes y vehículos, listar clientes, añadir autos para reservación y gestionar las reservaciones mediante su activación o eliminación 📊. Por otro lado, los clientes pueden registrarse y acceder de forma segura, realizar reservaciones, listar sus reservas activas, actualizar su información personal y eliminar su cuenta cuando lo deseen 🔄. Con una integración fluida y funcionalidades intuitivas, RentifyAPI garantiza una experiencia de alquiler cómoda y confiable para usuarios en cualquier parte del mundo 🌍.",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",

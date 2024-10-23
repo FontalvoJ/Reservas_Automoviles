@@ -1,32 +1,20 @@
 import jwt from "jsonwebtoken";
 import config from "../config";
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
 import Role from "../models/Role";
-import Tanker from "../models/Tanker";
+import Client from "../models/Client";
 import Admin from "../models/adminOnly";
 
-/// Función genérica para registrar usuarios
+// Función para manejar el registro de usuarios
 const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   try {
-    const {
-      name,
-      tankername,
-      identification,
-      address,
-      planta,
-      contact,
-      email,
-      password,
-      roles,
-    } = req.body;
+    const { name, identification, address, contact, email, password } =
+      req.body; // Eliminamos roles del destructuring
 
-    // Determina el nombre del usuario basado en el tipo de usuario
-    const username = name || tankername;
-
-    if (!username || !email || !password) {
-      return res
-        .status(400)
-        .json({ error: `${defaultRoleName} name, email, and password are required.` });
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        error: `${defaultRoleName} name, email, and password are required.`,
+      });
     }
 
     // Encripta la contraseña
@@ -34,36 +22,27 @@ const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
 
     // Crea una nueva instancia del modelo de usuario
     const newUser = new UserModel({
-      name: username,
+      name,
       identification,
       address,
-      planta,
       contact,
       email,
       password: encryptedPassword,
     });
 
-    // Asigna roles
-    if (roles && roles.length > 0) {
-      const foundRoles = await roleModel.find({ name: { $in: roles } });
+    // Asigna el rol por defecto según el tipo de usuario
+    const role = await roleModel.findOne({ name: defaultRoleName });
 
-      if (foundRoles.length === 0) {
-        return res.status(404).json({ error: "No roles found" });
-      }
-
-      newUser.roles = foundRoles.map((role) => role._id);
-    } else {
-      const role = await roleModel.findOne({ name: defaultRoleName });
-
-      if (!role) {
-        return res.status(404).json({ error: `Role '${defaultRoleName}' not found` });
-      }
-
-      newUser.roles = [role._id];
+    if (!role) {
+      return res
+        .status(404)
+        .json({ error: `Role '${defaultRoleName}' not found` });
     }
 
+    newUser.roles = [role._id]; // Asignamos solo el rol por defecto
+
     // Guarda el nuevo usuario
-    const savedUser = await newUser.save();
+    await newUser.save();
 
     res.status(201).json({
       message: `Create ${defaultRoleName} Success`,
@@ -76,12 +55,14 @@ const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   }
 };
 
-// Uso de la función genérica para diferentes tipos de usuario
-export const signUpTanker = (req, res) => signUpUser(req, res, Tanker, "Tanker", Role);
+// Funciones de registro específicas
+export const signUpClient = (req, res) =>
+  signUpUser(req, res, Client, "client", Role); // Asignamos rol "client" por defecto
 
-export const signUpAdmin = (req, res) => signUpUser(req, res, Admin, "Admin", Role);
+export const signUpAdmin = (req, res) =>
+  signUpUser(req, res, Admin, "admin", Role); // Asignamos rol "admin" por defecto
 
-
+// Función para manejar el inicio de sesión de usuarios
 export const signInUsers = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -92,8 +73,9 @@ export const signInUsers = async (req, res) => {
       });
     }
 
+    // Busca al usuario en ambos modelos
     let user =
-      (await Tanker.findOne({ email }).populate("roles")) ||
+      (await Client.findOne({ email }).populate("roles")) ||
       (await Admin.findOne({ email }).populate("roles"));
 
     if (!user) {
@@ -102,6 +84,7 @@ export const signInUsers = async (req, res) => {
       });
     }
 
+    // Verifica la contraseña
     const matchPassword = await bcrypt.compare(password, user.password);
 
     if (!matchPassword) {
@@ -117,17 +100,11 @@ export const signInUsers = async (req, res) => {
       });
     }
 
-    let role = null;
-    let name = "";
+    // Determina el rol y el nombre del usuario
+    const role = user instanceof Admin ? "Admin" : "Client";
+    const name = user.name;
 
-    if (user instanceof Admin) {
-      role = "Admin";
-      name = user.institutionName;
-    } else if (user instanceof Tanker) {
-      role = "Tanker";
-      name = user.name;
-    }
-
+    // Genera un token
     const token = jwt.sign(
       {
         id: user._id.toString(),
@@ -139,11 +116,12 @@ export const signInUsers = async (req, res) => {
       }
     );
 
+    // Responde con el token y la información del usuario
     res.json({
       token,
       role,
       id: user._id.toString(),
-      name: name,
+      name,
     });
   } catch (error) {
     console.error(error);
@@ -153,8 +131,9 @@ export const signInUsers = async (req, res) => {
   }
 };
 
+
 export default {
-  signUpTanker,
+  signUpClient,
   signUpAdmin,
   signInUsers,
 };

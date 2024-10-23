@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-const tankerSchema = new Schema(
+const clientSchema = new Schema(
   {
-    tankername: {
+    name: {
       type: String,
       required: true,
     },
@@ -12,10 +12,6 @@ const tankerSchema = new Schema(
       required: true,
     },
     address: {
-      type: String,
-      required: true,
-    },
-    planta: {
       type: String,
       required: true,
     },
@@ -42,20 +38,20 @@ const tankerSchema = new Schema(
   {
     timestamps: true,
     versionKey: false,
-    collection: "Tankers",
+    collection: "Clients",
   }
 );
 
-tankerSchema.statics.encryptPassword = async function (password) {
+clientSchema.statics.encryptPassword = async function (password) {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-tankerSchema.statics.comparePassword = async function (
+clientSchema.statics.comparePassword = async function (
   password,
   receivedPassword
 ) {
   return await bcrypt.compare(password, receivedPassword);
 };
 
-export default model("Tankers", tankerSchema);
+export default model("Clients", clientSchema);
