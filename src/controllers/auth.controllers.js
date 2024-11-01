@@ -5,7 +5,6 @@ import Role from "../models/Role";
 import Client from "../models/Client";
 import Admin from "../models/adminOnly";
 
-// Función para manejar el registro de usuarios
 const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   try {
     const { name, identification, address, contact, email, password } =
@@ -55,14 +54,12 @@ const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   }
 };
 
-// Funciones de registro específicas
 export const signUpClient = (req, res) =>
-  signUpUser(req, res, Client, "client", Role); // Asignamos rol "client" por defecto
+  signUpUser(req, res, Client, "client", Role);
 
 export const signUpAdmin = (req, res) =>
-  signUpUser(req, res, Admin, "admin", Role); // Asignamos rol "admin" por defecto
+  signUpUser(req, res, Admin, "admin", Role);
 
-// Función para manejar el inicio de sesión de usuarios
 export const signInUsers = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -73,7 +70,6 @@ export const signInUsers = async (req, res) => {
       });
     }
 
-    // Busca al usuario en ambos modelos
     let user =
       (await Client.findOne({ email }).populate("roles")) ||
       (await Admin.findOne({ email }).populate("roles"));
@@ -84,7 +80,6 @@ export const signInUsers = async (req, res) => {
       });
     }
 
-    // Verifica la contraseña
     const matchPassword = await bcrypt.compare(password, user.password);
 
     if (!matchPassword) {
@@ -100,11 +95,8 @@ export const signInUsers = async (req, res) => {
       });
     }
 
-    // Determina el rol y el nombre del usuario
-    const role = user instanceof Admin ? "Admin" : "Client";
-    const name = user.name;
+    const role = user instanceof Admin ? "admin" : "client"; 
 
-    // Genera un token
     const token = jwt.sign(
       {
         id: user._id.toString(),
@@ -116,12 +108,9 @@ export const signInUsers = async (req, res) => {
       }
     );
 
-    // Responde con el token y la información del usuario
     res.json({
       token,
       role,
-      id: user._id.toString(),
-      name,
     });
   } catch (error) {
     console.error(error);
@@ -130,7 +119,6 @@ export const signInUsers = async (req, res) => {
     });
   }
 };
-
 
 export default {
   signUpClient,
