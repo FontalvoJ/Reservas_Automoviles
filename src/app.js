@@ -3,7 +3,8 @@ import morgan from "morgan";
 import cors from "cors";
 import pkg from "../package.json";
 import authRoutes from "./routes/auth.routes";
-import carRoutes from "./routes/cars.routes"; 
+import carRoutes from "./routes/cars.routes";
+import reservationRoutes from "./routes/reservations.routes";
 
 import { createRoles } from "./libs/initialSetup";
 
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/cars", carRoutes); 
+app.use("/api/cars", carRoutes);
+app.use("/api/reservations", reservationRoutes);
 
 export default app;
