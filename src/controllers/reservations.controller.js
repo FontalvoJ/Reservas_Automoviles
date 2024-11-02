@@ -108,9 +108,36 @@ export const deleteReservation = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getUserActiveReservations = async (req, res) => {
+  try {
+    if (req.role !== "client") {
+      return res.status(403).json({ message: "Access denied. Clients only." });
+    }
+
+    const userId = req.userId;
+
+    const activeReservations = await Reservation.find({
+      client: userId,
+      status: { $in: ["pending", "active", "completed", "cancelled"] },
+    })
+      .populate("car", "brand model year")
+      .select("-client");
+
+    return res.status(200).json({
+      message: "Active reservations retrieved successfully",
+      reservations: activeReservations,
+    });
+  } catch (error) {
+    console.error("Error retrieving active reservations:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export default {
   createReservation,
   updateReservationStatus,
   getAllReservations,
   deleteReservation,
+  getUserActiveReservations,
 };

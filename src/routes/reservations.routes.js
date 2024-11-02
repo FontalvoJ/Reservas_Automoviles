@@ -28,4 +28,10 @@ router.delete(
   reservationCtrl.deleteReservation
 );
 
+router.get(
+  "/userReservations",
+  [authJwt.verifyToken, validateRoles("client")],
+  reservationCtrl.getUserActiveReservations
+);
+
 export default router;
