@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +11,10 @@ import { NavbarClientComponent } from './pages/Navbars/navbar-client/navbar-clie
 import { FooterGeneralComponent } from './pages/Footer/footer-general/footer-general.component';
 import { SignInComponent } from './pages/auth/sign-in/sign-in.component';
 import { HomeComponent } from './pages/home/home/home.component';
+import { DashboardAdminComponent } from './pages/admin/dashboard-admin/dashboard-admin.component';
+import { DashboardClientComponent } from './pages/client/dashboard-client/dashboard-client.component';
+
+import { TokenInterceptorService } from './services/token-interceptor/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -18,13 +24,24 @@ import { HomeComponent } from './pages/home/home/home.component';
     NavbarClientComponent,
     FooterGeneralComponent,
     SignInComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardAdminComponent,
+    DashboardClientComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
