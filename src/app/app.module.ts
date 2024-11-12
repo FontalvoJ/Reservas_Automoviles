@@ -7,6 +7,8 @@ import { NavbarHomeComponent } from './pages/Navbars/navbar-home/navbar-home.com
 import { NavbarAdminComponent } from './pages/Navbars/navbar-admin/navbar-admin.component';
 import { NavbarClientComponent } from './pages/Navbars/navbar-client/navbar-client.component';
 import { FooterGeneralComponent } from './pages/Footer/footer-general/footer-general.component';
+import { SignInComponent } from './pages/auth/sign-in/sign-in.component';
+import { HomeComponent } from './pages/home/home/home.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { FooterGeneralComponent } from './pages/Footer/footer-general/footer-gen
     NavbarHomeComponent,
     NavbarAdminComponent,
     NavbarClientComponent,
-    FooterGeneralComponent
+    FooterGeneralComponent,
+    SignInComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
