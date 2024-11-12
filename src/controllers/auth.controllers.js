@@ -111,6 +111,7 @@ export const signInUsers = async (req, res) => {
     res.json({
       token,
       role,
+      name: user.name,
     });
   } catch (error) {
     console.error(error);
