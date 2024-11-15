@@ -22,7 +22,12 @@ export class SignInComponent {
     this.authService.signIn(this.credentials)
       .subscribe({
         next: (response) => {
-          this.handleSuccessfulLogin(response);
+          if (response) {
+            this.handleSuccessfulLogin(response);
+          } else {
+            console.error('Response is null.');
+            this.router.navigate(['/home']);
+          }
         },
         error: (error) => {
           this.handleLoginError(error);
@@ -62,6 +67,9 @@ export class SignInComponent {
     switch (role) {
       case 'admin':
         this.router.navigate(['/dashboard-admin']);
+        break;
+      case 'client':
+        this.router.navigate(['/dashboard-client']);
         break;
       default:
         this.router.navigate(['/home']);

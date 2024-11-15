@@ -1,23 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private URL_CREDENCIAIS = 'https://api-node-rentify.onrender.com/api/auth';
+  private AUTH_API_URL = 'https://api-node-rentify.onrender.com/api/auth';
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) { }
 
-  
+  // Inicia sesión
   signIn(user: { email: string; password: string; }) {
     return this.http.post<{ token: string, role: string, id: string, name: string }>(
-      `${this.URL_CREDENCIAIS}/signInUsers`,
+      `${this.AUTH_API_URL}/signInUsers`,
       user
+    ).pipe(
+      tap((response) => {
+
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.name);
+        localStorage.setItem('role', response.role);
+      }),
+      catchError(error => {
+        console.error("Error en inicio de sesión:", error);
+        return of(null);
+      })
     );
   }
 
@@ -26,12 +39,20 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  // Obtiene el token de autenticación
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  // Cierra la sesión del usuario
+  getUserName(): string | null {
+    return localStorage.getItem('userName');
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem('role');
+  }
+
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
