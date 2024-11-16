@@ -15,6 +15,7 @@ import { DashboardAdminComponent } from './pages/admin/dashboard-admin/dashboard
 import { DashboardClientComponent } from './pages/client/dashboard-client/dashboard-client.component';
 
 import { TokenInterceptorService } from './services/token-interceptor/token-interceptor.service';
+import { SignUpUserComponent } from './pages/auth/sign-up-user/sign-up-user.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { TokenInterceptorService } from './services/token-interceptor/token-inte
     SignInComponent,
     HomeComponent,
     DashboardAdminComponent,
-    DashboardClientComponent
+    DashboardClientComponent,
+    SignUpUserComponent
   ],
   imports: [
     BrowserModule,
