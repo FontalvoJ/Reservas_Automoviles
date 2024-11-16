@@ -3,12 +3,12 @@
 <section class="max-w-2xl p-6 mx-auto mt-8">
     <h2 class="mb-6 text-3xl font-bold text-center">Welcome to the Premium Experience: Registration for Clients and
         Administrators</h2>
-    <p class="mb-4 text-lg text-center">
+    <p class="mb-4 text-lg text-center text">
         Register now and discover an exclusive platform designed for both clients and administrators. Gain access to an
         unparalleled luxury experience: clients can reserve premium vehicles with top-tier service, while administrators
         have advanced tools to efficiently manage fleets, inventory, and reservations.
     </p>
-    <p class="text-lg text-center">
+    <p class="text-lg text-center text">
         Don’t wait any longer! Sign up today and elevate your experience to the next level, whether you’re enjoying the
         finest vehicles or ensuring high-quality service for every client.
     </p>
@@ -16,8 +16,7 @@
     <div class="flex flex-col justify-center mt-12 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
         <!-- Button for Client Registration  (click)="onRegisterAsClient()"-->
         <button aria-label="Register as Client"
-            class="flex flex-col items-center w-full h-20 py-2 font-bold text-black bg-white border border-black rounded sm:w-60"
-            >
+            class="flex flex-col items-center w-full h-20 py-2 font-bold text-black bg-white border border-black rounded sm:w-60">
             <span>Register as Client</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mt-1">
                 <path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -28,7 +27,7 @@
         <!-- Button for Administrator Registration -->
         <button aria-label="Register as Administrator"
             class="flex flex-col items-center w-full h-20 py-2 font-bold text-black bg-white border border-black rounded sm:w-60"
-            (click)="openAdminModal()" >
+            (click)="openAdminModal()">
             <span>Register as Administrator</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mt-1">
                 <path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -49,11 +48,11 @@
 
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-        <div
+        <div [formGroup]="formRegisterAdmin"
             class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-[#F4F1F1] rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 duration-300 ease-out">
             <div class="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
                 <button type="button" (click)="closeAdminModal()"
-                    class="text-gray-400 bg-[#F4F1F1] rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    class="text-gray-400 bg-[#F4F1F1] rounded-md hover:text-gray-500 focus:outline-none ">
                     <span class="sr-only">Close</span>
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -78,23 +77,23 @@
             </div>
 
             <div class="mt-4">
-            
+
                 <div class="relative mb-4">
-                    <input type="text" name="name" placeholder="Name"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-black font-bold">
-            
+                    <input type="text" formControlName="name" name="name" placeholder="Name"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
                         <path fill="black"
                             d="M152 80a8 8 0 0 1 8-8h88a8 8 0 0 1 0 16h-88a8 8 0 0 1-8-8m96 40h-88a8 8 0 0 0 0 16h88a8 8 0 0 0 0-16m0 48h-64a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16m-96.25 22a8 8 0 0 1-5.76 9.74a7.6 7.6 0 0 1-2 .26a8 8 0 0 1-7.75-6c-6.16-23.94-30.34-42-56.25-42s-50.09 18.05-56.25 42a8 8 0 0 1-15.5-4c5.59-21.71 21.84-39.29 42.46-48a48 48 0 1 1 58.58 0c20.63 8.71 36.88 26.29 42.47 48M80 136a32 32 0 1 0-32-32a32 32 0 0 0 32 32" />
                     </svg>
                 </div>
-            
+
                 <!-- Email field -->
                 <div class="relative mb-4">
-                    <input type="email" name="email" placeholder="Enter your email"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-black font-bold">
-            
+                    <input type="email" formControlName="email" name="email" placeholder="Enter your email"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none  placeholder-black font-bold">
+
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 36 36"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
                         <path fill="black"
@@ -103,12 +102,12 @@
                         <path fill="none" d="M0 0h36v36H0z" />
                     </svg>
                 </div>
-            
+
                 <!-- Password field -->
                 <div class="relative mb-4">
-                    <input type="password" name="password" placeholder="Enter your password"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-black font-bold">
-            
+                    <input type="password" formControlName="password" name="password" placeholder="Enter your password"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
                         <g fill="none" stroke="black" stroke-width="1.5">
@@ -123,17 +122,32 @@
 
 
             <div class="flex justify-center mt-5 sm:mt-4">
-                <button type="button" data-behavior="register"
-                    class="inline-flex items-center justify-between py-4 text-base font-medium font-bold text-white bg-black border border-transparent rounded-md shadow-sm px-9 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto sm:text-sm">
-            
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" class="ml-[-8px] mr-10">
+                <button type="button" (click)="registerAdmin()" data-behavior="register"
+                    class="inline-flex items-center justify-between py-4 text-base font-medium font-bold text-white bg-black border border-transparent rounded-md shadow-sm px-9 focus:outline-none sm:w-auto sm:text-sm">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"
+                        class="ml-[-8px] mr-10">
                         <path fill="white"
                             d="M228 40v36a12 12 0 0 1-24 0V52h-24a12 12 0 0 1 0-24h36a12 12 0 0 1 12 12m-12 128a12 12 0 0 0-12 12v24h-24a12 12 0 0 0 0 24h36a12 12 0 0 0 12-12v-36a12 12 0 0 0-12-12M76 204H52v-24a12 12 0 0 0-24 0v36a12 12 0 0 0 12 12h36a12 12 0 0 0 0-24M40 88a12 12 0 0 0 12-12V52h24a12 12 0 0 0 0-24H40a12 12 0 0 0-12 12v36a12 12 0 0 0 12 12m136 92a12 12 0 0 1-9.6-4.79a48 48 0 0 0-76.82 0a12 12 0 0 1-19.18-14.42a72.1 72.1 0 0 1 23.92-20.5a44 44 0 1 1 67.34 0a72.1 72.1 0 0 1 23.92 20.5A12 12 0 0 1 176 180m-48-48a20 20 0 1 0-20-20a20 20 0 0 0 20 20" />
                     </svg>
-            
+
                     Register
                 </button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Alerta de éxito -->
+<div *ngIf="showSuccessAdminAlert" 
+     class="fixed flex items-center gap-3 p-4 bg-white border border-black rounded-lg shadow-lg bottom-4 right-4 animate-fade-in-out" 
+     style="width: 400px;">
+    <!-- Ícono SVG a la izquierda -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="flex-shrink-0">
+        <path fill="black"
+              d="m21.1 12.5l1.4 1.41l-6.53 6.59L12.5 17l1.4-1.41l2.07 2.08zM11 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 2a2 2 0 0 0-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2m0 7c.68 0 1.5.09 2.41.26l-1.67 1.67l-.74-.03c-2.97 0-6.1 1.46-6.1 2.1v1.1h6.2L13 20H3v-3c0-2.66 5.33-4 8-4"/>
+    </svg>
+    
+    <!-- Texto alineado a la derecha -->
+    <span class="ml-auto font-bold text-right text-black">Admin Created Successfully</span>
 </div>

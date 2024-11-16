@@ -34,6 +34,12 @@ export class AuthService {
     );
   }
 
+  // Crear un nuevo admin
+  signUpAdmin(user: { email: string; password: string; }) {
+    return this.http.post<any>(this.AUTH_API_URL + '/signUpAdmin', user);
+  }
+
+
   // Verifica si el usuario está autenticado
   loggedIn(): boolean {
     return !!localStorage.getItem('token');
