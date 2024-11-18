@@ -39,6 +39,11 @@ export class AuthService {
     return this.http.post<any>(this.AUTH_API_URL + '/signUpAdmin', user);
   }
 
+  // Crear un nuevo client
+  signUpClient(user: { email: string; password: string; }) {
+    return this.http.post<any>(this.AUTH_API_URL + '/signUpClient', user);
+  }
+
 
   // Verifica si el usuario está autenticado
   loggedIn(): boolean {

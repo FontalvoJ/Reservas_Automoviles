@@ -11,20 +11,37 @@ import { Router } from "@angular/router";
 export class SignUpUserComponent {
 
   public formRegisterAdmin: FormGroup;
+  public formRegisterClient: FormGroup;
+
   isAdminModalOpen: boolean = false;
+  isClientModalOpen: boolean = false;
   showSuccessAdminAlert: boolean = false;
+  showSuccessClientAlert: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
+  
     this.formRegisterAdmin = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+
+    
+    this.formRegisterClient = this.formBuilder.group({
+      name: ['', Validators.required],
+      identification: ['', Validators.required],
+      contact: ['', Validators.required],
+      address: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+     
+    });
   }
+
 
   openAdminModal() {
     this.isAdminModalOpen = true;
@@ -34,16 +51,26 @@ export class SignUpUserComponent {
     this.isAdminModalOpen = false;
   }
 
+
+  openClientModal() {
+    this.isClientModalOpen = true;
+  }
+
+  closeClientModal() {
+    this.isClientModalOpen = false;
+  }
+
+  // Método para registrar administrador
   registerAdmin() {
     if (this.formRegisterAdmin.valid) {
       const adminData = this.formRegisterAdmin.value;
       this.authService.signUpAdmin(adminData).subscribe({
         next: () => {
-          this.showSuccessAdminAlert = true; 
+          this.showSuccessAdminAlert = true;
           this.closeAdminModal();
           this.router.navigate(['/sign-up-user']);
 
-        
+          // Ocultar el mensaje de éxito después de 3 segundos
           setTimeout(() => {
             this.showSuccessAdminAlert = false;
           }, 3000);
@@ -53,8 +80,30 @@ export class SignUpUserComponent {
         }
       });
     } else {
-      console.warn('Form is invalid');
+      console.warn('Admin form is invalid');
     }
   }
-  
+
+  // Método para registrar cliente
+  registerClient() {
+    if (this.formRegisterClient.valid) {
+      const clientData = this.formRegisterClient.value;
+      this.authService.signUpClient(clientData).subscribe({
+        next: () => {
+          this.showSuccessClientAlert = true;
+          this.closeClientModal();
+          this.router.navigate(['/sign-up-user']);
+
+          setTimeout(() => {
+            this.showSuccessClientAlert = false;
+          }, 3000);
+        },
+        error: (err) => {
+          console.error('Error during client registration:', err);
+        }
+      });
+    } else {
+      console.warn('Client form is invalid');
+    }
+  }
 }
