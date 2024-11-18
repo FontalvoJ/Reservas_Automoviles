@@ -1,5 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar-admin',
   templateUrl: './navbar-admin.component.html',
@@ -9,7 +10,7 @@ export class NavbarAdminComponent {
    userName: string | null = null;
   isMenuOpen = false;
 
-  constructor(private renderer: Renderer2, private authService: AuthService) { }
+  constructor(private renderer: Renderer2, private authService: AuthService,private router: Router) { }
 
   ngOnInit(): void {
     this.userName = this.authService.getUserName();
@@ -17,6 +18,7 @@ export class NavbarAdminComponent {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigate(['/home']); 
   }
 
   toggleMenu() {
