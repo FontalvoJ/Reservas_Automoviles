@@ -21,19 +21,19 @@ export const createCar = async (req, res) => {
   try {
     const { brand, model, year, color, pricePerDay, location } = req.body;
 
-    // Verificamos si los campos obligatorios están presentes
+   
     if (!brand || !model || !year || !color || !pricePerDay || !location) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Verificamos que 'year' y 'pricePerDay' sean números
+   
     if (typeof year !== "number" || typeof pricePerDay !== "number") {
       return res
         .status(400)
         .json({ message: "Year and pricePerDay must be numbers" });
     }
 
-    // Verificamos si el coche ya existe
+   
     const existingCar = await Car.findOne({
       brand,
       model,
@@ -45,15 +45,10 @@ export const createCar = async (req, res) => {
       return res.status(409).json({ message: "A similar car already exists" });
     }
 
-    // Obtener el ID del administrador predeterminado de la base de datos
-    const admin = await Admin.findOne(); // Asumimos que 'Admin' es el modelo de administradores
-    if (!admin) {
-      return res.status(500).json({ message: "No admin found in the system" });
-    }
+    
+    const createdBy = req.userId; 
 
-    const createdBy = admin._id; // Asignamos el ID del primer administrador encontrado
-
-    // Creación del nuevo coche con el 'createdBy' del administrador
+   
     const newCar = new Car({
       brand,
       model,
@@ -61,10 +56,10 @@ export const createCar = async (req, res) => {
       color,
       pricePerDay,
       location,
-      createdBy, // Asociamos el admin como el creador del coche
+      createdBy, 
     });
 
-    // Guardamos el coche en la base de datos
+    
     const savedCar = await newCar.save();
 
     return res.status(201).json({
@@ -141,26 +136,21 @@ export const deleteCar = async (req, res) => {
 
 export const getCarsByAdmin = async (req, res) => {
   try {
-    // Usamos req.userId que proviene del middleware verifyToken
     const adminId = req.userId;
 
-    // Verificamos que el usuario tiene el rol 'admin'
     if (req.role !== "admin") {
       return res.status(403).json({ message: "You don't have permission" });
     }
 
-    // Buscamos los coches asociados al administrador usando adminId
     const cars = await Car.find({ createdBy: adminId });
 
-    // Si no se encuentran coches, devolvemos un mensaje adecuado
     if (cars.length === 0) {
       return res.status(404).json({ message: "No cars found for this admin" });
     }
 
-    // Devolvemos los coches encontrados
     return res.status(200).json({
       message: "Cars retrieved successfully",
-      cars, // Devolvemos los coches encontrados
+      cars,
     });
   } catch (error) {
     console.error("Error fetching cars by admin:", error);
