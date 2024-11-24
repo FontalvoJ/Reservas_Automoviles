@@ -6,6 +6,12 @@ const router = Router();
 
 router.get("/allCars", authJwt.verifyToken, carsCtrl.getAllCars);
 
+router.get(
+  "/carsByAdmin",
+  [authJwt.verifyToken, validateRoles("admin")],
+  carsCtrl.getCarsByAdmin
+);
+
 router.post(
   "/createCar",
   [authJwt.verifyToken, validateRoles("admin")],
@@ -20,7 +26,8 @@ router.put(
 
 router.delete(
   "/deleteCar/:id",
-  [authJwt.verifyToken, validateRoles("admin")],
+  [(authJwt.verifyToken, validateRoles("admin"))],
   carsCtrl.deleteCar
 );
+
 export default router;
