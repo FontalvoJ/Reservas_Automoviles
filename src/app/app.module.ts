@@ -17,6 +17,7 @@ import { DashboardClientComponent } from './pages/client/dashboard-client/dashbo
 import { TokenInterceptorService } from './services/token-interceptor/token-interceptor.service';
 import { SignUpUserComponent } from './pages/auth/sign-up-user/sign-up-user.component';
 import { ListCarsReservationsComponent } from './pages/admin/list-cars-reservations/list-cars-reservations.component';
+import { DetailsCardsComponent } from './pages/admin/details-cards/details-cards.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ListCarsReservationsComponent } from './pages/admin/list-cars-reservati
     DashboardAdminComponent,
     DashboardClientComponent,
     SignUpUserComponent,
-    ListCarsReservationsComponent
+    ListCarsReservationsComponent,
+    DetailsCardsComponent
   ],
   imports: [
     BrowserModule,
