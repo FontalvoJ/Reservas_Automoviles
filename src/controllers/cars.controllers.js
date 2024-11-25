@@ -2,9 +2,29 @@ import Car from "../models/Cars";
 
 export const createCar = async (req, res) => {
   try {
-    const { brand, model, year, color, pricePerDay, location } = req.body;
+    const {
+      brand,
+      model,
+      year,
+      color,
+      pricePerDay,
+      location,
+      power,
+      system,
+      accompanists,
+    } = req.body;
 
-    if (!brand || !model || !year || !color || !pricePerDay || !location) {
+    if (
+      !brand ||
+      !model ||
+      !year ||
+      !color ||
+      !pricePerDay ||
+      !location ||
+      !power ||
+      !system ||
+      !accompanists
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -20,6 +40,9 @@ export const createCar = async (req, res) => {
       year,
       color,
       location,
+      power,
+      system,
+      accompanists,
     });
     if (existingCar) {
       return res.status(409).json({ message: "A similar car already exists" });
@@ -35,6 +58,9 @@ export const createCar = async (req, res) => {
       pricePerDay,
       location,
       createdBy,
+      power,
+      system,
+      accompanists,
     });
 
     const savedCar = await newCar.save();

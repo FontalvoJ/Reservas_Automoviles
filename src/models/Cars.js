@@ -13,6 +13,8 @@ const carSchema = new mongoose.Schema(
     year: {
       type: Number,
       required: true,
+      min: 1886,
+      max: new Date().getFullYear(),
     },
     color: {
       type: String,
@@ -25,6 +27,7 @@ const carSchema = new mongoose.Schema(
     pricePerDay: {
       type: Number,
       required: true,
+      min: [0, "Price per day must be positive"],
     },
     location: {
       type: String,
@@ -34,6 +37,23 @@ const carSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admins",
       required: true,
+    },
+    power: {
+      type: Number,
+      required: true,
+      min: [0, "Power must be a positive number"],
+    },
+    system: {
+      type: String,
+      required: true,
+      enum: ["Gasolina", "Diesel", "Electrónico", "Híbrido"],
+      message: "System must be one of: Gasolina, Diesel, Electrónico, Híbrido",
+    },
+    accompanists: {
+      type: Number,
+      required: true,
+      enum: [2, 4, 5, 7],
+      message: "Accompanists must be one of: 2, 4, 5, 7",
     },
   },
   {
