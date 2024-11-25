@@ -1,0 +1,111 @@
+<section class="p-4 mt-5">
+    <div class="flex items-center justify-between 
+        sm:ml-[240px] sm:mr-[200px] 
+        ml-4 mr-4">
+
+        <div class="flex items-center gap-x-2">
+            <!-- Icono SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="text-black">
+                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                    <path
+                        d="M12.002 9.007c-1.105 0-2 .672-2 1.5c0 .829.895 1.5 2 1.5s2 .672 2 1.5c0 .829-.896 1.5-2 1.5m0-6c.87 0 1.612.417 1.886 1m-1.886-1v-1m0 7c-.87 0-1.612-.417-1.886-1m1.886 1v1" />
+                    <path
+                        d="M13 2.507h-1c-4.478 0-6.718 0-8.109 1.391S2.5 7.528 2.5 12.008c0 4.477 0 6.717 1.391 8.108s3.63 1.391 8.109 1.391c4.478 0 6.718 0 8.109-1.391s1.391-3.63 1.391-8.109v-1" />
+                    <path d="M21.488 2.493L17.313 6.67m-.825-3.656l.119 3.091c0 .729.435 1.183 1.227 1.24l3.124.147" />
+                </g>
+            </svg>
+
+            <h2 class="text-xl titles">Customer Bookings</h2>
+        </div>
+
+        <button (click)="openModal()" type="button" class="px-4 py-2 text-white bg-black rounded text">
+            Add New Car
+        </button>
+    </div>
+</section>
+
+
+<div *ngIf="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-75">
+    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+
+        <!-- Título -->
+        <h2 class="mb-6 text-2xl font-semibold text-center">Register Vehicle</h2>
+
+        <!-- Formulario -->
+        <form [formGroup]="formRegisterVehicle" (ngSubmit)="onSubmit()">
+            <!-- Brand field -->
+            <div class="mb-4">
+                <label for="brand" class="block text-sm font-medium text-gray-700">Brand</label>
+                <input type="text" id="brand" formControlName="brand"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+
+            <!-- Model field -->
+            <div class="mb-4">
+                <label for="model" class="block text-sm font-medium text-gray-700">Model</label>
+                <input type="text" id="model" formControlName="model"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+
+            <!-- Year field -->
+            <div class="mb-4">
+                <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
+                <input type="number" id="year" formControlName="year"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+
+            <!-- Color field -->
+            <div class="mb-4">
+                <label for="color" class="block text-sm font-medium text-gray-700">Color</label>
+                <input type="text" id="color" formControlName="color"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+
+            <!-- Availability field -->
+            <div class="flex items-center mb-4">
+                <input type="checkbox" id="availability" formControlName="availability"
+                    class="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-0" />
+                <label for="availability" class="ml-2 text-sm text-gray-700">Available</label>
+            </div>
+
+            <!-- Price Per Day field -->
+            <div class="mb-4">
+                <label for="pricePerDay" class="block text-sm font-medium text-gray-700">Price Per Day</label>
+                <input type="number" id="pricePerDay" formControlName="pricePerDay"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+
+            <!-- Location field -->
+            <div class="mb-6">
+                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                <input type="text" id="location" formControlName="location"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+
+            <!-- Submit button -->
+            <div class="flex justify-center">
+                <button type="submit"
+                    class="px-6 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none">
+                    Submit
+                </button>
+
+            </div>
+        </form>
+
+        <!-- Close Button -->
+        <div class="mt-4 text-center">
+            <button (click)="closeModal()" class="text-red-500 hover:text-red-700 focus:outline-none">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<app-details-cards></app-details-cards>
