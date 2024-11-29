@@ -14,9 +14,10 @@
                     <div class="h-0.5 w-7 bg-black translate-y-2"></div>
                 </button>
 
-                <div [ngClass]="{'menu-background': isMenuOpen, 'hidden': !isMenuOpen}"
-                    class="absolute top-0 left-0 flex-col items-center justify-center hidden w-screen h-screen text-xl bg-white gap-7 lg:flex lg:flex-row lg:justify-between lg:text-base lg:gap-2 lg:relative lg:h-auto lg:w-auto grow"
-                    id="navbar" role="menu">
+            <div [ngClass]="{'menu-background': isMenuOpen, 'hidden': !isMenuOpen}"
+                class="absolute top-0 left-0 flex-col items-center justify-center w-screen h-screen text-xl bg-white gap-7 lg:flex lg:flex-row lg:justify-between lg:text-base lg:gap-2 lg:relative lg:h-auto lg:w-auto grow"
+                id="navbar" role="menu">
+
 
                     <button *ngIf="isMenuOpen" class="absolute top-4 right-4 lg:hidden" (click)="toggleMenu()"
                         aria-label="Cerrar menú">
@@ -63,7 +64,6 @@
                             </button>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </div>

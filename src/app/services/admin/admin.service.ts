@@ -12,6 +12,16 @@ export class CarService {
   constructor(private http: HttpClient) { }
 
   /**
+ * Obtiene todos los coches disponibles para todos los usuarios (sin autenticación).
+ */
+  getAllCarsForEveryone(): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}allCars`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  
+  /**
    * Obtiene los encabezados con el token de autenticación.
    */
   private getAuthHeaders(): HttpHeaders {
