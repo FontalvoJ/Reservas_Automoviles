@@ -1,4 +1,4 @@
-.font-bold  {
+.titles  {
         font-family: "Zilla Slab", serif;
         font-weight: 700;
         font-style: normal;
@@ -10,9 +10,3 @@
         font-style: normal;
     }
 
-input::placeholder {
-    font-family: "Zilla Slab", serif;
-    font-weight: 700;
-    font-style: normal;
-    color: #000000;
-}

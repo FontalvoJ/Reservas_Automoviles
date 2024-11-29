@@ -26,7 +26,7 @@
                 </div>
                 <!-- Campo de Email -->
                 <input type="email" id="email" name="email"
-                    class="mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base placeholder:text-gray-600 placeholder:font-bold placeholder:text-sl"
+                    class="titles mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9]  focus:outline-none focus:ring-indigo-500  text-sm sm:text-base  placeholder-black placeholder:text-sl"
                     placeholder="Enter your email" [(ngModel)]="credentials.email">
             </div>
     
@@ -41,14 +41,14 @@
                 </div>
                 <!-- Campo de Contraseña -->
                 <input type="password" id="password" name="password" required
-                    class="mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base placeholder:text-gray-600 placeholder:font-bold placeholder:text-sl"
+                    class="titles mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9]  focus:outline-none focus:ring-indigo-500  text-sm sm:text-base  placeholder-black placeholder:text-sl"
                     placeholder="Enter your password" [(ngModel)]="credentials.password">
             </div>
     
             <!-- Submit Button -->
-            <div class="relative w-full sm:w-[150px] mx-auto mt-4">
+            <div class="relative  sm:w-[150px] mx-auto mt-4">
                 <button type="submit" [disabled]="signinForm.invalid"
-                    class="flex items-center justify-between w-full px-4 py-2 text-white bg-black rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    class="flex items-center justify-between w-full px-4 py-2 text-white bg-black rounded-md focus:outline-none focus:ring-0">
                     <!-- Icono SVG alineado a la izquierda -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         class="w-6 h-6 sm:w-7 sm:h-7">
