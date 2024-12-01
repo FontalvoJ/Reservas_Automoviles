@@ -11,10 +11,18 @@ router.delete(
   clientsCtrl.deleteClientAccount
 );
 
+// Ruta para actualizar la cuenta de un cliente
 router.put(
   "/clientUpdate",
   [authJwt.verifyToken, validateRoles("client")],
   clientsCtrl.updateClientAccount
+);
+
+// Ruta para obtener la información del cliente autenticado
+router.get(
+  "/clientGetData",
+  [authJwt.verifyToken, validateRoles("client")],
+  clientsCtrl.getClientInfo
 );
 
 export default router;

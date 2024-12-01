@@ -68,7 +68,26 @@ export const updateClientAccount = async (req, res) => {
   }
 };
 
+export const getClientInfo = async (req, res) => {
+  try {
+    const clientId = req.userId;
+
+    const client = await Client.findById(clientId);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    return res.status(200).json({
+      message: "Client information retrieved successfully",
+      client,
+    });
+  } catch (error) {
+    console.error("Error retrieving client information:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 export default {
   deleteClientAccount,
   updateClientAccount,
+  getClientInfo,
 };
