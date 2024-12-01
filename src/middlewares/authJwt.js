@@ -7,12 +7,20 @@ export const verifyToken = async (req, res, next) => {
   try {
     const token = req.headers["x-access-token"];
 
-    if (!token) return res.status(403).json({ message: "No token provided" });
+    if (!token) {
+      return res.status(403).json({ message: "No token provided" });
+    }
 
-    const decoded = jwt.verify(token, config.SECRET);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, config.SECRET);
+    } catch (error) {
+      console.error("Invalid token:", error.message);
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
     console.log("Decoded token:", decoded);
 
-    // Verifica si el token contiene la propiedad `role`
     if (!decoded.role) {
       return res
         .status(400)
@@ -20,21 +28,21 @@ export const verifyToken = async (req, res, next) => {
     }
 
     req.userId = decoded.id;
-    req.role = decoded.role; // Asigna el rol a `req.role` para usarlo en el `switch`
+    req.role = decoded.role;
 
     let user;
-
-    // Verifica el rol del usuario y busca el usuario adecuado
     switch (req.role) {
       case "admin":
         user = await AdminOnly.findById(req.userId, { password: 0 });
-        if (!user)
-          return res.status(404).json({ message: "No admin available" });
+        if (!user) {
+          return res.status(404).json({ message: "Admin not found" });
+        }
         break;
       case "client":
         user = await Client.findById(req.userId, { password: 0 });
-        if (!user)
-          return res.status(404).json({ message: "No client available" });
+        if (!user) {
+          return res.status(404).json({ message: "Client not found" });
+        }
         break;
       default:
         return res.status(400).json({ message: "Invalid role" });
@@ -44,14 +52,17 @@ export const verifyToken = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Error verifying token:", error);
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-// Middleware para validar roles permitidos
 export const validateRoles = (...allowedRoles) => {
   return (req, res, next) => {
     try {
+      if (!req.role) {
+        return res.status(403).json({ message: "Role information missing" });
+      }
+
       if (allowedRoles.includes(req.role)) {
         return next();
       } else {
@@ -64,7 +75,6 @@ export const validateRoles = (...allowedRoles) => {
   };
 };
 
-// Exportación del middleware de autenticación
 export const authJwt = {
   verifyToken,
 };
