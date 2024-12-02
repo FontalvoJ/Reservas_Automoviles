@@ -28,4 +28,10 @@ export class ClientService {
     const headers = this.getAuthHeaders();
     return this.http.put<any>(`${this.CLIENT_API_URL}/clientUpdate`, clientData, { headers });
   }
+
+  deleteClientAccount(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<any>(`${this.CLIENT_API_URL}/clientDelete`, { headers });
+  }
+
 }
