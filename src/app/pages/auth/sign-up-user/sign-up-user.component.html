@@ -1,14 +1,14 @@
 <app-navbar-home></app-navbar-home>
 
 <section class="max-w-2xl p-6 mx-auto mt-8">
-    <h2 class="mb-6 text-3xl font-bold text-center">Welcome to the Premium Experience: Registration for Clients and
+    <h2 class="mb-6 text-3xl text-center titles">Welcome to the Premium Experience: Registration for Clients and
         Administrators</h2>
-    <p class="mb-4 text-lg text-center text">
+    <p class="mb-4 text-lg text-center details">
         Register now and discover an exclusive platform designed for both clients and administrators. Gain access to an
         unparalleled luxury experience: clients can reserve premium vehicles with top-tier service, while administrators
         have advanced tools to efficiently manage fleets, inventory, and reservations.
     </p>
-    <p class="text-lg text-center text">
+    <p class="text-lg text-center details">
         Don’t wait any longer! Sign up today and elevate your experience to the next level, whether you’re enjoying the
         finest vehicles or ensuring high-quality service for every client.
     </p>
@@ -16,7 +16,7 @@
     <div class="flex flex-col justify-center mt-12 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
         <!-- Button for Client Registration  (click)="onRegisterAsClient()"-->
         <button aria-label="Register as Client"
-            class="flex flex-col items-center w-full h-20 py-2 font-bold text-black bg-white border border-black rounded sm:w-60"
+            class="flex flex-col items-center w-full h-20 py-2 text-black bg-white border border-black rounded titles sm:w-60"
             (click)="openClientModal()">
             <span>Register as Client</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mt-1">
@@ -27,7 +27,7 @@
 
         <!-- Button for Administrator Registration -->
         <button aria-label="Register as Administrator"
-            class="flex flex-col items-center w-full h-20 py-2 font-bold text-black bg-white border border-black rounded sm:w-60"
+            class="flex flex-col items-center w-full h-20 py-2 text-black bg-white border border-black rounded titles sm:w-60"
             (click)="openAdminModal()">
             <span>Register as Administrator</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mt-1">
@@ -70,7 +70,7 @@
                     </svg>
                 </div>
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-headline">Register as
+                    <h3 class="text-lg font-medium leading-6 text-gray-900 titles" id="modal-headline">Register as
                         Administrator</h3>
                 </div>
             </div>
@@ -79,7 +79,7 @@
 
                 <div class="relative mb-4">
                     <input type="text" formControlName="name" name="name" placeholder="Name"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
@@ -91,7 +91,7 @@
                 <!-- Email field -->
                 <div class="relative mb-4">
                     <input type="email" formControlName="email" name="email" placeholder="Enter your email"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none  placeholder-black font-bold">
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none  placeholder-black details">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 36 36"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
@@ -105,7 +105,7 @@
                 <!-- Password field -->
                 <div class="relative mb-4">
                     <input type="password" formControlName="password" name="password" placeholder="Enter your password"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
@@ -122,7 +122,7 @@
 
             <div class="flex justify-center mt-5 sm:mt-4">
                 <button type="button" (click)="registerAdmin()" data-behavior="register"
-                    class="inline-flex items-center justify-between py-4 text-base font-medium font-bold text-white bg-black border border-transparent rounded-md shadow-sm px-9 focus:outline-none sm:w-auto sm:text-sm">
+                    class="inline-flex items-center justify-between py-4 text-base font-medium font-bold text-white bg-black border border-transparent rounded-md shadow-sm titles px-9 focus:outline-none sm:w-auto sm:text-sm">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"
                         class="ml-[-8px] mr-10">
@@ -139,7 +139,7 @@
 
 <!-- Alerta de éxito -->
 <div *ngIf="showSuccessAdminAlert"
-    class="fixed flex items-center gap-3 p-4 bg-white border border-black rounded-lg shadow-lg bottom-4 right-4 animate-fade-in-out"
+    class="fixed flex items-center gap-3 p-4 bg-white border border-black rounded-lg shadow-lg titles bottom-4 right-4 animate-fade-in-out"
     style="width: 400px;">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="flex-shrink-0">
         <path fill="black"
@@ -181,8 +181,8 @@
                             d="M6 21v-2a4 4 0 0 1 4-4h2m10 1c0 4-2.5 6-3.5 6S15 20 15 16c1 0 2.5-.5 3.5-1.5c1 1 2.5 1.5 3.5 1.5M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0" />
                     </svg>
                 </div>
-                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-headline">Register as
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left ">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900 titles" id="modal-headline">Register as
                         Client</h3>
                 </div>
             </div>
@@ -192,7 +192,7 @@
                     <!-- Name field -->
                     <div class="relative flex-1 mb-4">
                         <input type="text" formControlName="name" name="name" placeholder="Name"
-                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"
                             class="absolute transform -translate-y-1/2 right-3 top-1/2">
                             <path fill="black"
@@ -204,7 +204,7 @@
                     <div class="relative flex-1 mb-4">
                         <input type="text" formControlName="identification" name="identification"
                             placeholder="Identification"
-                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             class="absolute transform -translate-y-1/2 right-3 top-1/2">
                             <path fill="black" fill-rule="evenodd"
@@ -219,7 +219,7 @@
                     <!-- Address field -->
                     <div class="relative flex-1 mb-4">
                         <input type="text" formControlName="address" name="address" placeholder="Address"
-                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024"
                             class="absolute transform -translate-y-1/2 right-3 top-1/2">
                             <path fill="black"
@@ -234,7 +234,7 @@
                     <!-- Contact field -->
                     <div class="relative flex-1 mb-4">
                         <input type="text" formControlName="contact" name="contact" placeholder="Contact"
-                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                            class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
 
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             class="absolute transform -translate-y-1/2 right-3 top-1/2">
@@ -247,7 +247,7 @@
                 <!-- Email field -->
                 <div class="relative mb-4">
                     <input type="email" formControlName="email" name="email" placeholder="Enter your email"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 36 36"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
                         <path fill="black"
@@ -260,7 +260,7 @@
                 <!-- Password field -->
                 <div class="relative mb-4">
                     <input type="password" formControlName="password" name="password" placeholder="Enter your password"
-                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black font-bold">
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         class="absolute transform -translate-y-1/2 right-3 top-1/2">
                         <g fill="none" stroke="black" stroke-width="1.5">
@@ -275,7 +275,7 @@
 
             <div class="flex justify-center mt-5 sm:mt-4">
                 <button type="button" data-behavior="register" (click)="registerClient()"
-                    class="inline-flex items-center justify-between py-4 text-base font-medium font-bold text-white bg-black border border-transparent rounded-md shadow-sm px-9 focus:outline-none sm:w-auto sm:text-sm">
+                    class="inline-flex items-center justify-between py-4 text-base font-medium text-white bg-black border border-transparent rounded-md shadow-sm titles px-9 focus:outline-none sm:w-auto sm:text-sm">
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"
                         class="ml-[-8px] mr-10">
@@ -292,7 +292,7 @@
 
 <!-- Alerta de éxito -->
 <div *ngIf="showSuccessClientAlert"
-    class="fixed flex items-center gap-3 p-4 bg-white border border-black rounded-lg shadow-lg bottom-4 right-4 animate-fade-in-out"
+    class="fixed flex items-center gap-3 p-4 bg-white border border-black rounded-lg shadow-lg titles bottom-4 right-4 animate-fade-in-out"
     style="width: 400px;">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="flex-shrink-0">
         <path fill="black"

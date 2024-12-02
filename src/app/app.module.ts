@@ -19,6 +19,8 @@ import { SignUpUserComponent } from './pages/auth/sign-up-user/sign-up-user.comp
 import { ListCarsReservationsComponent } from './pages/admin/list-cars-reservations/list-cars-reservations.component';
 import { DetailsCardsComponent } from './pages/admin/details-cards/details-cards.component';
 import { CarsComponent } from './pages/home/cars/cars.component';
+import { EdiDeleCarsComponent } from './pages/admin/edi-dele-cars/edi-dele-cars.component';
+import { UpdateInfoComponent } from './pages/client/update-info/update-info.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { CarsComponent } from './pages/home/cars/cars.component';
     DashboardClientComponent,
     SignUpUserComponent,
     DetailsCardsComponent,
-    CarsComponent
+    CarsComponent,
+    EdiDeleCarsComponent,
+    UpdateInfoComponent
   ],
   imports: [
     BrowserModule,
