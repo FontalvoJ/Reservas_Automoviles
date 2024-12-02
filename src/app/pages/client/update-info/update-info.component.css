@@ -1,12 +1,11 @@
-.titles  {
+.titles {
         font-family: "Zilla Slab", serif;
         font-weight: 700;
         font-style: normal;
     }
 
-    .text {
+    .details {
         font-family: "Zilla Slab", serif;
         font-weight: 300;
         font-style: normal;
     }
-
