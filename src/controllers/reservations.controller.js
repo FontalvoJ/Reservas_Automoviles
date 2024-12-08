@@ -1,38 +1,43 @@
 import Reservation from "../models/Reservations";
-import Car from "../models/Cars";
-import Client from "../models/Client";
+import Cars from "../models/Cars";
+import Clients from "../models/Client";
 
 export const createReservation = async (req, res) => {
   try {
-    // Destructuring los datos del cuerpo de la solicitud
-    const { carId, clientId, startDate, endDate } = req.body;
+    const { carId, startDate, endDate } = req.body;
 
-    // Verificar que el auto y el cliente existan
-    const car = await Car.findById(carId);
-    const client = await Client.findById(clientId);
-
+    // Verificar que el auto exista en la base de datos
+    const car = await Cars.findById(carId);
     if (!car) {
       return res.status(404).json({ message: "Car not found" });
     }
 
+    // Verificar que las fechas sean válidas y que endDate sea posterior a startDate
+    if (!startDate || !endDate || new Date(endDate) <= new Date(startDate)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid start date or end date" });
+    }
+
+    // Obtener el clientId del token
+    const clientId = req.userId; // Assumed to be decoded from the token
+
+    // Verificar que el cliente exista en la base de datos
+    const client = await Clients.findById(clientId);
     if (!client) {
       return res.status(404).json({ message: "Client not found" });
     }
 
-    // Calcular el total cost de la reserva
-    const days =
-      (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24);
-    const totalCost = days * car.pricePerDay;
-
-    // Crear la nueva reserva directamente usando los IDs generados por MongoDB
+    // Crear la nueva reserva utilizando el clientId del token
     const reservation = new Reservation({
-      car: carId, // Se usa el ID del auto directamente
-      client: clientId, // Se usa el ID del cliente directamente
+      carId: carId, // ID correcto del auto
+      clientId: clientId, // ID del cliente extraído del token
       startDate,
       endDate,
-      totalCost,
+      totalCost: calculateTotalCost(car.pricePerDay, startDate, endDate),
     });
 
+    // Guardar la reserva en la base de datos
     await reservation.save();
 
     return res.status(201).json(reservation);
@@ -40,6 +45,13 @@ export const createReservation = async (req, res) => {
     console.error("Error al crear la reserva:", error);
     return res.status(500).json({ message: "Error interno del servidor" });
   }
+};
+
+// Función para calcular el costo total basado en las fechas
+const calculateTotalCost = (pricePerDay, startDate, endDate) => {
+  const days =
+    (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24);
+  return days * pricePerDay;
 };
 
 export const updateReservationStatus = async (req, res) => {
