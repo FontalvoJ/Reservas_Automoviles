@@ -8,7 +8,7 @@ import Admin from "../models/adminOnly";
 const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   try {
     const { name, identification, address, contact, email, password } =
-      req.body; // Eliminamos roles del destructuring
+      req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -54,6 +54,7 @@ const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
   }
 };
 
+// Exporta los controladores
 export const signUpClient = (req, res) =>
   signUpUser(req, res, Client, "client", Role);
 
@@ -95,7 +96,7 @@ export const signInUsers = async (req, res) => {
       });
     }
 
-    const role = user instanceof Admin ? "admin" : "client"; 
+    const role = user instanceof Admin ? "admin" : "client";
 
     const token = jwt.sign(
       {

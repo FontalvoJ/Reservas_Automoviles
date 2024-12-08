@@ -1,40 +1,44 @@
 import Reservation from "../models/Reservations";
 import Car from "../models/Cars";
+import Client from "../models/Client";
 
 export const createReservation = async (req, res) => {
   try {
-    const { carId, startDate, endDate } = req.body;
+    // Destructuring los datos del cuerpo de la solicitud
+    const { carId, clientId, startDate, endDate } = req.body;
 
-    if (req.role !== "client") {
-      return res.status(403).json({ message: "Access denied. Clients only." });
-    }
-
+    // Verificar que el auto y el cliente existan
     const car = await Car.findById(carId);
+    const client = await Client.findById(clientId);
+
     if (!car) {
       return res.status(404).json({ message: "Car not found" });
     }
 
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    // Calcular el total cost de la reserva
     const days =
       (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24);
     const totalCost = days * car.pricePerDay;
 
-    const newReservation = new Reservation({
-      car: carId,
-      client: req.userId,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
+    // Crear la nueva reserva directamente usando los IDs generados por MongoDB
+    const reservation = new Reservation({
+      car: carId, // Se usa el ID del auto directamente
+      client: clientId, // Se usa el ID del cliente directamente
+      startDate,
+      endDate,
       totalCost,
     });
 
-    const savedReservation = await newReservation.save();
+    await reservation.save();
 
-    return res.status(201).json({
-      message: "Reservation created successfully",
-      reservation: savedReservation,
-    });
+    return res.status(201).json(reservation);
   } catch (error) {
-    console.error("Error creating reservation:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    console.error("Error al crear la reserva:", error);
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 

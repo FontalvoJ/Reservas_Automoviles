@@ -15,11 +15,9 @@ export const verifyToken = async (req, res, next) => {
     try {
       decoded = jwt.verify(token, config.SECRET);
     } catch (error) {
-      console.error("Invalid token:", error.message);
+      console.error("Token verification error:", error.message);
       return res.status(401).json({ message: "Invalid or expired token" });
     }
-
-    console.log("Decoded token:", decoded);
 
     if (!decoded.role) {
       return res
@@ -51,7 +49,7 @@ export const verifyToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error("Error verifying token:", error);
+    console.error("Token verification error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

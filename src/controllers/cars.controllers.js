@@ -14,6 +14,7 @@ export const createCar = async (req, res) => {
       accompanists,
     } = req.body;
 
+    // Validación de campos requeridos
     if (
       !brand ||
       !model ||
@@ -28,12 +29,30 @@ export const createCar = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    // Validaciones adicionales
     if (typeof year !== "number" || typeof pricePerDay !== "number") {
       return res
         .status(400)
         .json({ message: "Year and pricePerDay must be numbers" });
     }
 
+    if (year < 1886 || year > new Date().getFullYear()) {
+      return res.status(400).json({ message: "Invalid year" });
+    }
+
+    if (pricePerDay <= 0) {
+      return res
+        .status(400)
+        .json({ message: "Price per day must be positive" });
+    }
+
+    if (![2, 4, 5, 7].includes(accompanists)) {
+      return res
+        .status(400)
+        .json({ message: "Accompanists must be one of: 2, 4, 5, 7" });
+    }
+
+    // Verificar si ya existe un coche similar
     const existingCar = await Car.findOne({
       brand,
       model,
@@ -48,8 +67,10 @@ export const createCar = async (req, res) => {
       return res.status(409).json({ message: "A similar car already exists" });
     }
 
+    // Set createdBy field from req.userId
     const createdBy = req.userId;
 
+    // Crear el nuevo coche
     const newCar = new Car({
       brand,
       model,
@@ -63,6 +84,7 @@ export const createCar = async (req, res) => {
       accompanists,
     });
 
+    // Guardar el coche en la base de datos
     const savedCar = await newCar.save();
 
     return res.status(201).json({
@@ -72,6 +94,10 @@ export const createCar = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating the car:", error);
+    if (error.name === "ValidationError") {
+      // Si es un error de validación de Mongoose
+      return res.status(400).json({ message: error.message });
+    }
     return res.status(500).json({ message: "Error creating the car" });
   }
 };
@@ -115,6 +141,10 @@ export const updateCar = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating the car:", error);
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      // Si el error es de tipo 'CastError' debido a un ID malformado
+      return res.status(400).json({ message: "Invalid car ID format" });
+    }
     return res.status(500).json({ message: "Error updating the car" });
   }
 };

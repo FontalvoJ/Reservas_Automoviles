@@ -1,8 +1,13 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import bcrypt from "bcryptjs";
 
 const clientSchema = new Schema(
   {
+    clientId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      default: () => new Types.ObjectId(), 
+    },
     name: {
       type: String,
       required: true,

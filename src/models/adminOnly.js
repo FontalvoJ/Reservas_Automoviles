@@ -1,8 +1,13 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import bcrypt from "bcryptjs";
 
 const adminSchema = new Schema(
   {
+    adminId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      default: () => new Types.ObjectId(),
+    },
     name: {
       type: String,
       required: true,
@@ -30,12 +35,15 @@ const adminSchema = new Schema(
   }
 );
 
-adminSchema.statics.encryptPassword = async (password) => {
+adminSchema.statics.encryptPassword = async function (password) {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-adminSchema.statics.comparePassword = async (password, receivedPassword) => {
+adminSchema.statics.comparePassword = async function (
+  password,
+  receivedPassword
+) {
   return await bcrypt.compare(password, receivedPassword);
 };
 
