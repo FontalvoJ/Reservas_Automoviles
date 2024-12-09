@@ -9,6 +9,7 @@ import { CarsComponent} from './pages/home/cars/cars.component';
 import { EdiDeleCarsComponent } from './pages/admin/edi-dele-cars/edi-dele-cars.component';
 import { authGuard } from './auth.guard';
 import { UpdateInfoComponent } from './pages/client/update-info/update-info.component';
+import { CarsReservationComponent } from './pages/client/cars-reservation/cars-reservation.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,11 +17,11 @@ const routes: Routes = [
   { path: 'cars-home', component: CarsComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up-user', component: SignUpUserComponent},
-  { path: 'dashboard-admin', component: DashboardAdminComponent}, //Cambiarlo a canActive
-  //{ path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard] },
+   { path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard] },
   { path: 'edi-eli-car', component: EdiDeleCarsComponent },
   { path: 'update-user', component: UpdateInfoComponent, canActivate: [authGuard] },
-  { path: 'dashboard-client', component: DashboardClientComponent, canActivate: [authGuard] }
+  { path: 'dashboard-client', component: DashboardClientComponent, canActivate: [authGuard] },
+  { path: 'cars-to-reservation', component: CarsReservationComponent, canActivate: [authGuard] }
 
 ];
 

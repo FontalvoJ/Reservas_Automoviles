@@ -8,49 +8,76 @@ import { CarService } from 'src/app/services/admin/admin.service';
   styleUrls: ['./list-cars-reservations.component.css']
 })
 export class ListCarsReservationsComponent implements OnInit {
-  isModalOpen: boolean = false;
+  isModalCar: boolean = false;
   isSubmitting: boolean = false;
   errorMessage: string = '';
+  showSuccessCarAlert: boolean = false;
 
   formRegisterVehicle: FormGroup;
 
   constructor(private fb: FormBuilder, private carService: CarService) {
-    
     this.formRegisterVehicle = this.fb.group({
       brand: ['', Validators.required],
       model: ['', Validators.required],
-      year: ['', [Validators.required, Validators.min(1900), Validators.max(new Date().getFullYear())]],
+      year: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       color: ['', Validators.required],
       availability: [true],
-      pricePerDay: ['', [Validators.required, Validators.min(1)]],
-      location: ['', Validators.required]
+      pricePerDay: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      location: ['', Validators.required],
+      power: ['', Validators.required],
+      system: ['', [Validators.required, Validators.pattern(/^(Gasolina|Diesel|Electrónico|Híbrido)$/)]],
+      accompanists: ['', [Validators.required, Validators.pattern(/^(2|4|5|7)$/)]],
     });
   }
 
-  ngOnInit(): void {
-
-  }
-
+  ngOnInit(): void { }
 
   openModal() {
-    this.isModalOpen = true;
+    this.isModalCar = true;
   }
-
 
   closeModal() {
-    this.isModalOpen = false;
+    this.isModalCar = false;
   }
-
 
   onSubmit() {
     if (this.formRegisterVehicle.valid) {
       this.isSubmitting = true;
 
 
-      this.carService.createCar(this.formRegisterVehicle.value).subscribe(
+      const formValue = {
+        ...this.formRegisterVehicle.value,
+        year: parseInt(this.formRegisterVehicle.value.year, 10),
+        pricePerDay: parseInt(this.formRegisterVehicle.value.pricePerDay, 10),
+        accompanists: parseInt(this.formRegisterVehicle.value.accompanists, 10),
+      };
+
+
+      const missingFields = Object.entries(formValue).filter(
+        ([key, value]) => value === undefined || value === null || value === ''
+      );
+
+      if (missingFields.length > 0) {
+        console.error('Missing required fields:', missingFields);
+        this.errorMessage = 'All fields are required. Please check your input.';
+        this.isSubmitting = false;
+        return;
+      }
+
+      //console.log('Form data ready to submit:', formValue);
+
+  
+      this.carService.createCar(formValue).subscribe(
         response => {
           console.log('Car created successfully!', response);
           this.isSubmitting = false;
+          this.showSuccessCarAlert = true;
+
+
+          setTimeout(() => {
+            this.showSuccessCarAlert = false;
+          }, 3000);
+
           this.closeModal();
         },
         error => {
@@ -61,6 +88,9 @@ export class ListCarsReservationsComponent implements OnInit {
       );
     } else {
       console.log('Form is invalid');
+      this.errorMessage = 'The form is invalid. Please correct the errors.';
     }
   }
+
+
 }

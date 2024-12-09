@@ -82,4 +82,15 @@ export class CarService {
         catchError(this.handleError)
       );
   }
+
+  /**
+   * Obtiene los coches disponibles para un usuario autenticado.
+   */
+  getCarsForAuthenticatedUser(): Observable<any> {
+    const headers = this.getAuthHeaders(); 
+    return this.http.get<any>(`${this.API_URL}allCars/authenticated`, { headers }) 
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }

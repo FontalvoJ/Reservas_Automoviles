@@ -1,0 +1,191 @@
+<!-- Indicador de carga -->
+<div *ngIf="isLoading" class="flex items-center justify-center text-center titles">
+    <p class="animate-pulse">Loading cars...</p>
+</div>
+
+<!-- Mensaje de error -->
+<div *ngIf="errorMessage && !isLoading" class="flex items-center justify-center text-center text-red-500 titles">
+    <p>{{ errorMessage }}</p>
+</div>
+
+
+<section class="container p-4 mx-auto">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <div *ngFor="let car of authenticatedCars" class="border border-[#D9D9D9] rounded-lg p-4">
+            <!-- Badge de Disponibilidad -->
+            <div class="px-4 pt-4">
+                <span
+                    class="titles inline-flex items-center justify-center w-full px-2.5 py-1.5 text-sm font-medium text-green-700 bg-green-50 rounded-md ring-1 ring-inset ring-green-600/20">
+                    {{ car.availability ? 'Available' : 'Not Available' }}
+                </span>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="p-4 space-y-4">
+                <!-- Información del vehículo -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-lg titles">{{ car.brand }}</h2>
+                        <h3 class="text-lg titles">{{ car.model }}</h3>
+                    </div>
+                    <p class="text-lg font-bold">${{ car.pricePerDay }} / día</p>
+                </div>
+
+                <!-- Detalles del vehículo -->
+                <div class="pt-2 space-y-3 border-t border-neutral-300">
+                    <div class="flex items-center justify-between">
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
+                                <path fill="black"
+                                    d="M7.5 5.5a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1m2.5 0a.5.5 0 1 1-1 0a.5.5 0 0 1 1 0M11.5 7a.5.5 0 1 1-1 0a.5.5 0 0 1 1 0M11 9.5a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1m-.5 1.5a.5.5 0 1 1-1 0a.5.5 0 0 1 1 0M8 2a6 6 0 0 0-6 6a2 2 0 0 0 2 2c.708 0 1.085-.378 1.34-.633l.014-.013C5.598 9.109 5.72 9 6 9a1 1 0 0 1 1 1v1a3 3 0 0 0 3 3c1.334 0 2.354-.746 3.017-1.854C13.672 11.05 14 9.579 14 8a6 6 0 0 0-6-6M3 8a5 5 0 0 1 10 0c0 1.458-.305 2.737-.841 3.632C11.63 12.515 10.9 13 10 13a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2c-.708 0-1.085.378-1.34.633l-.014.013C4.402 8.891 4.28 9 4 9a1 1 0 0 1-1-1" />
+                            </svg>
+                            <span class="details">{{ car.color }}</span>
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none">
+                                    <rect width="18" height="15" x="3" y="6" stroke="#000" stroke-width="1.5" rx="2" />
+                                    <path fill="#000"
+                                        d="M3 10c0-1.886 0-2.828.586-3.414S5.114 6 7 6h10c1.886 0 2.828 0 3.414.586S21 8.114 21 10z" />
+                                    <path stroke="#000" stroke-linecap="round" stroke-width="1.5" d="M7 3v3m10-3v3" />
+                                </g>
+                            </svg>
+                            <span class="details">{{ car.year }}</span>
+                        </span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.6"
+                                    d="M21 19.75c0-2.09-1.67-5.068-4-5.727m-2 5.727c0-2.651-2.686-6-6-6s-6 3.349-6 6m9-12.5a3 3 0 1 1-6 0a3 3 0 0 1 6 0m3 3a3 3 0 1 0 0-6" />
+                            </svg>
+                            <span class="details">{{ car.accompanists }}</span>
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256">
+                                <g fill="#000">
+                                    <path d="M216 128a88 88 0 1 1-88-88a88 88 0 0 1 88 88" opacity="0.2" />
+                                    <path
+                                        d="M120 128V48a8 8 0 0 1 16 0v80a8 8 0 0 1-16 0m60.37-78.7a8 8 0 0 0-8.74 13.4C194.74 77.77 208 101.57 208 128a80 80 0 0 1-160 0c0-26.43 13.26-50.23 36.37-65.3a8 8 0 0 0-8.74-13.4C47.9 67.38 32 96.06 32 128a96 96 0 0 0 192 0c0-31.94-15.9-60.62-43.63-78.7" />
+                                </g>
+                            </svg>
+                            <span class="details">{{ car.power }} HP</span>
+                        </span>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M7 4.5a3 3 0 0 0-2.567 4.554a3.001 3.001 0 0 0 0 5.893M7 4.5a2.5 2.5 0 0 1 5 0v15a2.5 2.5 0 0 1-5 0a3 3 0 0 1-2.567-4.553M7 4.5c0 .818.393 1.544 1 2m-3.567 8.447A3 3 0 0 1 6 13.67m11 5.83a3 3 0 0 0 2.567-4.553a3.001 3.001 0 0 0 0-5.893M17 19.5a2.5 2.5 0 0 1-5 0v-15a2.5 2.5 0 0 1 5 0a3 3 0 0 1 2.567 4.554M17 19.5c0-.818-.393-1.544-1-2m3.567-8.446A3 3 0 0 1 18 10.329"
+                                    color="black" />
+                            </svg>
+                            <span class="details">{{ car.system }}</span>
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="m5.252 9.975l11.66-5.552c1.7-.81 3.474.965 2.665 2.666l-5.552 11.659c-.759 1.593-3.059 1.495-3.679-.158L9.32 15.851a2 2 0 0 0-1.17-1.17l-2.74-1.027c-1.652-.62-1.75-2.92-.157-3.679" />
+                            </svg>
+                            <span class="details">{{ car.location }}</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button
+                        class="flex items-center justify-center w-full gap-2 px-4 py-2 text-white bg-black rounded-md titles"
+                        (click)="openModal(car._id)">Reserve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Reservation Car -->
+<div *ngIf="isModalReserve" class="fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div
+            class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-[#F4F1F1] rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 duration-300 ease-out">
+            <div class="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
+                <button type="button"
+                    class="text-gray-400 bg-[#F4F1F1] rounded-md hover:text-gray-500 focus:outline-none "
+                    (click)="closeModal()">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="sm:flex sm:items-start">
+                <div
+                    class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-white rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                    <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                        viewBox="0 0 2048 2048">
+                        <path fill="#000"
+                            d="M896 512v128H512V512zM512 896V768h384v128zm0 256v-128h256v128zM384 512v128H256V512zm0 256v128H256V768zm-128 384v-128h128v128zM128 128v1792h640v128H0V0h1115l549 549v219h-128V640h-512V128zm1024 91v293h293zm640 805h256v1024H896V1024h256V896h128v128h384V896h128zm128 896v-512h-896v512zm0-640v-128h-896v128z" />
+                    </svg>
+                </div>
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900 titles" id="modal-headline"> Enter the dates
+                        of the car rental </h3>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="relative mb-4">
+                    <input type="date" name="start-date" placeholder="Start Date"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details"
+                        [(ngModel)]="startDate">
+                </div>
+
+                <div class="relative mb-4">
+                    <input type="date" name="end-date" placeholder="End Date"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details"
+                        [(ngModel)]="endDate">
+                </div>
+
+                <!-- Total Days and Cost fields (disabled) -->
+                <div class="relative mb-4">
+                    <label for="total-days" class="block text-sm font-medium text-gray-700">Total Days:</label>
+                    <input type="text" id="total-days" name="total-days" placeholder="Calculated days will appear here"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details"
+                        [(ngModel)]="totalDays" disabled>
+                </div>
+
+                <div class="relative mb-4">
+                    <label for="total-cost" class="block text-sm font-medium text-gray-700">Total Cost:</label>
+                    <input type="text" id="total-cost" name="total-cost" placeholder="Cost will appear here"
+                        class="w-full p-3 pr-12 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details"
+                        [(ngModel)]="totalCost" disabled>
+                </div>
+            </div>
+            <!-- Reserve button -->
+            <div class="flex justify-center mt-5 sm:mt-4">
+                <button type="submit"
+                    class="inline-flex items-center justify-between py-4 text-base font-medium font-bold text-white bg-black border border-transparent rounded-md shadow-sm titles px-9 focus:outline-none sm:w-auto sm:text-sm"
+                    (click)="reserveCar()">
+                    <svg class="ml-[-8px] mr-10" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                        viewBox="0 0 24 24">
+                        <path fill="#fff"
+                            d="M9 0C7.3 0 6 1.3 6 3s1.3 3 3 3c1.3 0 2.4-.8 2.8-2H14v2h2V4h2V2h-6.2C11.4.8 10.3 0 9 0m0 2c.6 0 1 .4 1 1s-.4 1-1 1s-1-.4-1-1s.4-1 1-1M6.5 8c-.7 0-1.2.4-1.4 1L3 15v8c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-1h12v1c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-8l-2.1-6c-.2-.6-.8-1-1.4-1zm0 1.5h11L19 14H5zm0 6.5c.8 0 1.5.7 1.5 1.5S7.3 19 6.5 19S5 18.3 5 17.5S5.7 16 6.5 16m11 0c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5s-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5" />
+                    </svg>
+
+                    Reserve Car
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
