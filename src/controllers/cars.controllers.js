@@ -213,9 +213,7 @@ export const getAllCarsForEveryone = async (req, res) => {
 // Controlador para listar coches solo para usuarios autenticados
 export const getCarsForAuthenticatedUsers = async (req, res) => {
   try {
-    const userId = req.userId;
-
-    const cars = await Car.find({ createdBy: userId });
+    const cars = await Car.find();
 
     if (cars.length === 0) {
       return res.status(404).json({ message: "No cars found" });
