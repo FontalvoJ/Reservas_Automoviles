@@ -215,7 +215,7 @@ export const getCarsForAuthenticatedUsers = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const cars = await Car.find();
+    const cars = await Car.find({ createdBy: userId });
 
     if (cars.length === 0) {
       return res.status(404).json({ message: "No cars found" });
