@@ -8,105 +8,81 @@ import { ReservationsService } from 'src/app/services/reservation/reservations.s
   styleUrls: ['./cars-reservation.component.css']
 })
 export class CarsReservationComponent implements OnInit {
-  authenticatedCars: any[] = [];
-  isLoading: boolean = false;
-  errorMessage: string | null = null;
-  isModalReserve: boolean = false;
-  startDate: Date | null = null;
-  endDate: Date | null = null;
+  cars: any[] = [];
+  errorMessage: string = '';
+  selectedCar: any = null;
+  showModal: boolean = false;
+  startDate: string = '';
+  endDate: string = '';
   totalDays: number = 0;
-  totalCost: number = 0;
-  selectedCarId: string | null = null;
+  priceTotal: number = 0;
+  showAlert: boolean = false;
 
   constructor(private carService: CarService, private reservationsService: ReservationsService) { }
 
   ngOnInit(): void {
-    this.fetchAuthenticatedCars();
+    this.loadCars();
   }
 
-  /**
-   * Obtiene los coches disponibles para el usuario autenticado.
-   */
-  fetchAuthenticatedCars(): void {
-    this.isLoading = true; // Muestra el indicador de carga
-    this.errorMessage = null; // Resetea mensajes de error previos
-
-    this.carService.getCarsForAuthenticatedUser().subscribe({
-      next: (response) => {
-        this.authenticatedCars = response.cars;
-        this.isLoading = false;
+  loadCars() {
+    this.carService.getCarsForAuthenticatedUser().subscribe(
+      data => {
+        if (data.cars && data.cars.length > 0) {
+          this.cars = data.cars;
+        } else {
+          this.errorMessage = 'No hay coches disponibles.';
+        }
       },
-      error: (err) => {
-        console.error('Error fetching authenticated cars:', err);
-        this.errorMessage = 'Failed to load cars. Please try again later.';
-        this.isLoading = false;
-      },
-    });
-  }
-
-  /**
-   * Abre el modal de reserva y guarda el ID del coche seleccionado.
-   * @param carId ID del coche seleccionado
-   */
-  openModal(carId: string): void {
-    this.selectedCarId = carId; // Almacena el ID del coche seleccionado
-    console.log('Selected Car ID:', this.selectedCarId); // Verificar en la consola
-    this.isModalReserve = true;
-  }
-
-  /**
-   * Cierra el modal de reserva.
-   */
-  closeModal(): void {
-    this.isModalReserve = false;
-  }
-
-  /**
-   * Calcula los días y el costo total basado en las fechas seleccionadas.
-   */
-  calculateTotal(): void {
-    if (this.startDate && this.endDate) {
-      const timeDiff = Math.abs(this.endDate.getTime() - this.startDate.getTime());
-      this.totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Días de diferencia
-      const car = this.authenticatedCars.find(car => car.id === this.selectedCarId);
-      if (car) {
-        this.totalCost = this.totalDays * car.pricePerDay;
+      error => {
+        this.errorMessage = 'Error al cargar los coches. Por favor, intenta de nuevo más tarde.';
+        console.error('Error al cargar los coches:', error);
       }
+    );
+  }
+
+  generateReservation(car: any): void {
+    this.selectedCar = car;
+    this.showModal = true;
+    this.startDate = '';
+    this.endDate = '';
+    this.totalDays = 0;
+    this.priceTotal = 0;
+  }
+
+  calculateReservation(): void {
+    if (this.startDate && this.endDate) {
+      const start = new Date(this.startDate);
+      const end = new Date(this.endDate);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      this.totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      this.priceTotal = this.totalDays * this.selectedCar.pricePerDay;
     }
   }
 
-  /**
-   * Crea una nueva reserva para el coche seleccionado.
-   */
-  reserveCar(): void {
-    if (!this.selectedCarId || !this.startDate || !this.endDate) {
-      console.error('Incomplete reservation data');
-      this.errorMessage = 'Please provide complete reservation details.';
+  confirmReservation(): void {
+    if (!this.startDate || !this.endDate) {
+      console.error('You must select both start and end dates.');
       return;
     }
 
-    // Convertir a objetos Date si aún no lo son
-    const startDate = typeof this.startDate === 'string' ? new Date(this.startDate) : this.startDate;
-    const endDate = typeof this.endDate === 'string' ? new Date(this.endDate) : this.endDate;
-
-    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-      console.error('Invalid date format');
-      this.errorMessage = 'Please enter valid start and end dates.';
-      return;
-    }
-
-    this.reservationsService.createReservation(this.selectedCarId, startDate, endDate)
+    this.reservationsService.createReservation(this.selectedCar._id, new Date(this.startDate), new Date(this.endDate))
       .subscribe(
         response => {
-          console.log('Reservation successful:', response);
-          this.isModalReserve = false; // Cierra el modal
-          this.fetchAuthenticatedCars(); // Recarga los coches para reflejar la nueva reserva
+    
+          this.showAlert = true; 
+          setTimeout(() => {
+            this.showAlert = false;
+          }, 3000);
+          this.showModal = false; 
         },
         error => {
-          console.error('Error creating reservation:', error);
-          this.errorMessage = 'Failed to create reservation. Please try again later.';
+          console.error('Error creating the reservation:', error);
+          alert('An error occurred while creating the reservation. Please try again.');
         }
       );
   }
 
+  closeModal(): void {
+    this.showModal = false;
+  }
 }
