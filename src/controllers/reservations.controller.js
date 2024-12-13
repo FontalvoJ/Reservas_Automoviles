@@ -34,6 +34,9 @@ export const createReservation = async (req, res) => {
       clientId: clientId, // ID del cliente extraído del token
       startDate,
       endDate,
+      carBrand: car.brand, 
+      carModel: car.model, 
+      clientName: client.name,
       totalCost: calculateTotalCost(car.pricePerDay, startDate, endDate),
     });
 
