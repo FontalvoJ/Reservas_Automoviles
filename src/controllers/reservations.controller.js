@@ -6,41 +6,47 @@ export const createReservation = async (req, res) => {
   try {
     const { carId, startDate, endDate } = req.body;
 
-    // Verificar que el auto exista en la base de datos
     const car = await Cars.findById(carId);
     if (!car) {
       return res.status(404).json({ message: "Car not found" });
     }
 
-    // Verificar que las fechas sean válidas y que endDate sea posterior a startDate
     if (!startDate || !endDate || new Date(endDate) <= new Date(startDate)) {
       return res
         .status(400)
         .json({ message: "Invalid start date or end date" });
     }
 
-    // Obtener el clientId del token
-    const clientId = req.userId; // Assumed to be decoded from the token
+    const clientId = req.userId;
 
-    // Verificar que el cliente exista en la base de datos
     const client = await Clients.findById(clientId);
     if (!client) {
       return res.status(404).json({ message: "Client not found" });
     }
 
-    // Crear la nueva reserva utilizando el clientId del token
+    const existingReservation = await Reservation.findOne({
+      carId: carId,
+      clientId: clientId,
+      status: { $ne: "completed" },
+    });
+
+    if (existingReservation) {
+      return res.status(400).json({
+        message: "You already have an active reservation for this car.",
+      });
+    }
+
     const reservation = new Reservation({
-      carId: carId, // ID correcto del auto
-      clientId: clientId, // ID del cliente extraído del token
+      carId: carId,
+      clientId: clientId,
       startDate,
       endDate,
-      carBrand: car.brand, 
-      carModel: car.model, 
+      carBrand: car.brand,
+      carModel: car.model,
       clientName: client.name,
       totalCost: calculateTotalCost(car.pricePerDay, startDate, endDate),
     });
 
-    // Guardar la reserva en la base de datos
     await reservation.save();
 
     return res.status(201).json(reservation);
@@ -127,7 +133,6 @@ export const deleteReservation = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 export const getUserActiveReservations = async (req, res) => {
   try {
