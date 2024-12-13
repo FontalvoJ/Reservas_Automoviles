@@ -193,6 +193,7 @@ export const listAllReservations = async (req, res) => {
         (new Date(reservation.endDate) - new Date(reservation.startDate)) /
         (1000 * 60 * 60 * 24);
       return {
+        idReservation: reservation._id,
         idCar: reservation.carId._id,
         brand: reservation.carId.brand,
         model: reservation.carId.model,
