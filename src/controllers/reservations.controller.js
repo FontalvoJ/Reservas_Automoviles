@@ -68,15 +68,24 @@ export const updateReservationStatus = async (req, res) => {
     const { reservationId } = req.params;
     const { status } = req.body;
 
+    // Check if the user has the role of admin
     if (req.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
+    // Check if the reservation ID exists
     const reservation = await Reservation.findById(reservationId);
     if (!reservation) {
       return res.status(404).json({ message: "Reservation not found" });
     }
 
+    // Validate the provided status
+    const validStatuses = ["pending", "active", "completed", "cancelled"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid reservation status" });
+    }
+
+    // Update the reservation status
     reservation.status = status;
     const updatedReservation = await reservation.save();
 
