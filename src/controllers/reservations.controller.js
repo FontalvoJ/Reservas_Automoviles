@@ -129,7 +129,7 @@ export const deleteReservation = async (req, res) => {
 
 export const getUserActiveReservations = async (req, res) => {
   try {
-    // Verifica que el rol del usuario sea "client"
+    // Verificar el rol del usuario
     if (req.role !== "client") {
       return res.status(403).json({ message: "Access denied. Clients only." });
     }
@@ -137,34 +137,44 @@ export const getUserActiveReservations = async (req, res) => {
     // ID del usuario autenticado
     const userId = req.userId;
 
-    // Filtrar reservaciones activas
+    // Validar que el ID del usuario es válido
+    if (!userId) {
+      return res.status(400).json({ message: "Invalid user ID." });
+    }
+
+    // Obtener reservaciones activas
     const activeReservations = await Reservation.find({
       client: userId,
-      status: { $in: ["pending", "active", "completed", "cancelled"] }, 
+      status: { $in: ["pending", "active"] },
     })
-      .populate("car", "brand model") 
-      .select("-client"); 
+      .populate("car", "brand model")
+      .select("-client");
 
-    // Procesar cada reservación para añadir las columnas necesarias
+    // Procesar cada reservación
     const processedReservations = activeReservations.map((reservation) => {
       const startDate = new Date(reservation.startDate);
       const endDate = new Date(reservation.endDate);
-      const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1; 
-      const totalPrice = reservation.pricePerDay * totalDays; 
+
+      // Validar fechas
+      if (isNaN(startDate) || isNaN(endDate)) {
+        throw new Error("Invalid date in reservation.");
+      }
+
+      const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1; // Calcular los días totales
+      const totalPrice = reservation.pricePerDay * totalDays; // Calcular el precio total
 
       return {
-        ...reservation._doc,
-        carBrand: reservation.car.brand, 
-        carModel: reservation.car.model, 
+        carBrand: reservation.car.brand,
+        carModel: reservation.car.model,
         startDate: startDate.toISOString().split("T")[0],
-        endDate: endDate.toISOString().split("T")[0], 
-        totalDays, 
+        endDate: endDate.toISOString().split("T")[0],
+        totalDays,
         totalPrice,
-        status: reservation.status, 
+        status: reservation.status,
       };
     });
 
-   
+    // Responder con éxito
     return res.status(200).json({
       message: "Active reservations retrieved successfully",
       reservations: processedReservations,
@@ -172,9 +182,18 @@ export const getUserActiveReservations = async (req, res) => {
   } catch (error) {
   
     console.error("Error retrieving active reservations:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    let errorMessage = "Internal server error";
+    let statusCode = 500;
+
+    if (error.message === "Invalid date in reservation.") {
+      errorMessage = "Invalid date format in reservation.";
+      statusCode = 400;
+    }
+
+    return res.status(statusCode).json({ message: errorMessage });
   }
 };
+
 
 export default {
   createReservation,
