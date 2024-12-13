@@ -29,9 +29,9 @@ router.delete(
 );
 
 router.get(
-  "/userReservations",
-  [authJwt.verifyToken, validateRoles("client")],
-  reservationCtrl.getUserActiveReservations
+  "/adminReservations",
+  [authJwt.verifyToken, validateRoles("admin")],
+  reservationCtrl.getAllReservations
 );
 
 export default router;

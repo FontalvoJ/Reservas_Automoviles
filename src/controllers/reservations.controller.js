@@ -90,26 +90,6 @@ export const updateReservationStatus = async (req, res) => {
   }
 };
 
-export const getAllReservations = async (req, res) => {
-  try {
-    if (req.role !== "admin") {
-      return res.status(403).json({ message: "Access denied. Admins only." });
-    }
-
-    const reservations = await Reservation.find()
-      .populate("carId", "brand model year")
-      .populate("clientId", "name email");
-
-    return res.status(200).json({
-      message: "Reservations retrieved successfully",
-      reservations,
-    });
-  } catch (error) {
-    console.error("Error retrieving reservations:", error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
-
 export const deleteReservation = async (req, res) => {
   try {
     const { reservationId } = req.params;
@@ -180,10 +160,50 @@ export const getUserActiveReservations = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+export const getAllReservations = async (req, res) => {
+  try {
+    // Verificar que el usuario tenga el rol de 'admin'
+    if (req.role !== "admin") {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    // Obtener todas las reservaciones del sistema
+    const reservations = await Reservation.find()
+      .populate("carId", "brand model") // Popula solo las referencias que necesitamos
+      .exec();
+
+    if (!reservations || reservations.length === 0) {
+      return res.status(404).json({ message: "No reservations found." });
+    }
+
+    // Formatear las reservaciones para incluir solo los datos necesarios
+    const formattedReservations = reservations.map((reservation) => ({
+      idCar: reservation.carId._id,
+      brand: reservation.carId.brand,
+      model: reservation.carId.model,
+      startDate: reservation.startDate,
+      endDate: reservation.endDate,
+      clientName: reservation.clientId.name,
+      totalCost: reservation.totalCost,
+      status: reservation.status,
+    }));
+
+    return res.status(200).json({
+      message: "Reservations retrieved successfully",
+      reservations: formattedReservations,
+    });
+  } catch (error) {
+    console.error("Error retrieving all reservations:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export default {
   createReservation,
   updateReservationStatus,
-  getAllReservations,
   deleteReservation,
   getUserActiveReservations,
+  getAllReservations,
 };
