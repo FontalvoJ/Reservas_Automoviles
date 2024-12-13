@@ -161,6 +161,53 @@ export const getUserActiveReservations = async (req, res) => {
   }
 };
 
+export const listAllReservations = async (req, res) => {
+  try {
+    // Verificar que el usuario tenga el rol de 'admin'
+    if (req.role !== "admin") {
+      return res.status(403).json({ message: "Access denied. Admins only." });
+    }
+
+    // Obtener todas las reservas
+    const reservations = await Reservation.find()
+      .populate("carId", "brand model")
+      .populate("clientId", "name")
+      .exec();
+
+    if (!reservations || reservations.length === 0) {
+      return res.status(404).json({ message: "No reservations found." });
+    }
+
+    // Formatear las reservas para incluir los detalles requeridos
+    const formattedReservations = reservations.map((reservation) => {
+      const days =
+        (new Date(reservation.endDate) - new Date(reservation.startDate)) /
+        (1000 * 60 * 60 * 24);
+      return {
+        idCar: reservation.carId._id,
+        brand: reservation.carId.brand,
+        model: reservation.carId.model,
+        startDate: reservation.startDate,
+        endDate: reservation.endDate,
+        totalDays: days,
+        totalCost: reservation.totalCost,
+        status: reservation.status,
+        idClient: reservation.clientId._id,
+        clientName: reservation.clientId.name,
+        createdAt: reservation.createdAt,
+      };
+    });
+
+    return res.status(200).json({
+      message: "Reservations retrieved successfully",
+      reservations: formattedReservations,
+    });
+  } catch (error) {
+    console.error("Error retrieving all reservations:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 export default {
   createReservation,
   updateReservationStatus,

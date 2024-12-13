@@ -28,11 +28,10 @@ router.get(
   reservationCtrl.getUserActiveReservations
 );
 
-// Ruta para listar todas las reservas como administrador
-//router.get(
-  //"/listAllReservations",
- // [authJwt.verifyToken, validateRoles("admin")],
-//reservationCtrl.listAllReservationsForAdmin
-//);
+router.get(
+  "/listAllReservations",
+  [authJwt.verifyToken, validateRoles("admin")],
+  reservationCtrl.listAllReservations
+);
 
 export default router;
