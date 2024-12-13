@@ -16,12 +16,6 @@ router.put(
   reservationCtrl.updateReservationStatus
 );
 
-router.get(
-  "/allReservations",
-  [authJwt.verifyToken, validateRoles("admin")],
-  reservationCtrl.getAllReservations
-);
-
 router.delete(
   "/deleteReservation/:reservationId",
   [authJwt.verifyToken, validateRoles("admin")],
@@ -29,9 +23,16 @@ router.delete(
 );
 
 router.get(
-  "/adminReservations",
-  [authJwt.verifyToken, validateRoles("admin")],
-  reservationCtrl.getAllReservations
+  "/userReservations",
+  [authJwt.verifyToken, validateRoles("client")],
+  reservationCtrl.getUserActiveReservations
 );
+
+// Ruta para listar todas las reservas como administrador
+//router.get(
+  //"/listAllReservations",
+ // [authJwt.verifyToken, validateRoles("admin")],
+//reservationCtrl.listAllReservationsForAdmin
+//);
 
 export default router;

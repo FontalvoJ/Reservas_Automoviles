@@ -6,7 +6,7 @@ const clientSchema = new Schema(
     clientId: {
       type: Schema.Types.ObjectId,
       required: true,
-      default: () => new Types.ObjectId(), 
+      default: () => new Types.ObjectId(),
     },
     name: {
       type: String,
@@ -43,7 +43,7 @@ const clientSchema = new Schema(
   {
     timestamps: true,
     versionKey: false,
-    collection: "Clients",
+    collection: "Client",
   }
 );
 
@@ -59,4 +59,4 @@ clientSchema.statics.comparePassword = async function (
   return await bcrypt.compare(password, receivedPassword);
 };
 
-export default model("Clients", clientSchema);
+export default model("Client", clientSchema);
