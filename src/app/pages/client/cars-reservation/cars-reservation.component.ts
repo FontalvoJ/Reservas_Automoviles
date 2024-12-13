@@ -17,6 +17,8 @@ export class CarsReservationComponent implements OnInit {
   totalDays: number = 0;
   priceTotal: number = 0;
   showAlert: boolean = false;
+  showAlertReservationActive: boolean = false;
+  alertMessage: string = '';
 
   constructor(private carService: CarService, private reservationsService: ReservationsService) { }
 
@@ -30,15 +32,16 @@ export class CarsReservationComponent implements OnInit {
         if (data.cars && data.cars.length > 0) {
           this.cars = data.cars;
         } else {
-          this.errorMessage = 'No hay coches disponibles.';
+          this.errorMessage = 'No cars available.';
         }
       },
       error => {
-        this.errorMessage = 'Error al cargar los coches. Por favor, intenta de nuevo más tarde.';
-        console.error('Error al cargar los coches:', error);
+        this.errorMessage = 'Error loading cars. Please try again later.';
+        console.error('Error loading cars:', error);
       }
     );
   }
+
 
   generateReservation(car: any): void {
     this.selectedCar = car;
@@ -68,8 +71,8 @@ export class CarsReservationComponent implements OnInit {
     this.reservationsService.createReservation(this.selectedCar._id, new Date(this.startDate), new Date(this.endDate))
       .subscribe(
         response => {
-    
-          this.showAlert = true; 
+          this.showAlert = true;
+          this.alertMessage = 'Reservation created successfully!';
           setTimeout(() => {
             this.showAlert = false;
           }, 3000);
@@ -77,7 +80,17 @@ export class CarsReservationComponent implements OnInit {
         },
         error => {
           console.error('Error creating the reservation:', error);
-          alert('An error occurred while creating the reservation. Please try again.');
+          if (error.status === 400 && error.error.message) {
+            this.alertMessage = error.error.message;
+            this.showAlertReservationActive = true; 
+            this.alertMessage = 'An error occurred while creating the reservation. Please try again.';
+          }
+          this.showAlert = true; 
+          setTimeout(() => {
+            this.showAlert = false;
+            this.showAlertReservationActive = false;
+          }, 3000); 
+          this.showModal = false; 
         }
       );
   }
