@@ -1,3 +1,99 @@
 <app-navbar-client></app-navbar-client>
-
 <app-update-info></app-update-info>
+
+<div class="w-full max-w-6xl p-4 mx-auto">
+    <div class="overflow-hidden bg-white rounded-lg shadow-md">
+        <!-- Table -->
+        <table class="w-full table-auto">
+            <!-- Table Header -->
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-3 tracking-wider text-left text-ls titles">Car</th>
+                    <th class="px-4 py-3 tracking-wider text-left text titles">Start Date</th>
+                    <th class="px-4 py-3 tracking-wider text-left text titles">End Date</th>
+                    <th class="px-4 py-3 tracking-wider text-left text titles">Total Days</th>
+                    <th class="px-4 py-3 tracking-wider text-left text titles">Total Price</th>
+                    <th class="px-4 py-3 tracking-wider text-left text titles">Reservation Status</th>
+                </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody class="divide-y divide-gray-200">
+                <tr *ngFor="let reservation of activeReservations" class="hover:bg-gray-50">
+                    <td class="px-4 py-4 text-sm details whitespace-nowrap">
+                        {{ reservation.brand }} - {{ reservation.model }}
+                    </td>
+                    <td class="px-4 py-4 text-sm details whitespace-nowrap">
+                        {{ reservation.startDate | date:'yyyy-MM-dd' }}
+                    </td>
+                    <td class="px-4 py-4 text-sm details whitespace-nowrap">
+                        {{ reservation.endDate | date:'yyyy-MM-dd' }}
+                    </td>
+                    <td class="px-4 py-4 text-sm details whitespace-nowrap">
+                        {{ reservation.totalDays }}
+                    </td>
+                    <td class="px-4 py-4 text-sm details whitespace-nowrap">
+                        {{ reservation.totalCost | currency }}
+                    </td>
+                    <td class="px-4 py-4 text-sm font-medium text-center whitespace-nowrap">
+                        <span class="inline-block mx-auto px-2.5 py-0.5 rounded-full text-xs font-medium 
+                        {{ reservation.status === 'completed' ? 'bg-green-100 text-green-800' : 
+                           reservation.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                           reservation.status === 'cancelled' ? 'bg-red-100 text-red-800' : 
+                           reservation.status === 'active' ? 'bg-purple-100 text-purple-800' :''}}">
+                            {{ reservation.status }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200">
+        <div class="flex justify-between flex-1 sm:hidden">
+            <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+                class="relative inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md titles text-ls hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                Previous
+            </button>
+            <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages()"
+                class="relative inline-flex items-center px-4 py-2 ml-3 bg-white border border-gray-300 rounded-md titles text-ls hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                Next
+            </button>
+        </div>
+
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm details">
+                    Showing
+                    <span class="titles">{{ (currentPage - 1) * itemsPerPage + 1 }}</span>
+                    to
+                    <span class="titles">{{ Math.min(currentPage * itemsPerPage, activeReservations.length) }}</span>
+                    of
+                    <span class="titles">{{ activeReservations.length }}</span>
+                    reservations
+                </p>
+            </div>
+
+            <div>
+                <nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+                        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="sr-only">Previous</span>
+                        &lt;
+                    </button>
+                    <button *ngFor="let page of getPages()" (click)="changePage(page)"
+                        [class.bg-gray-200]="page === currentPage"
+                        class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50">
+                        {{ page }}
+                    </button>
+                    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages()"
+                        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="sr-only">Next</span>
+                        &gt;
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
