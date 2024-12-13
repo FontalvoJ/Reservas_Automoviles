@@ -125,26 +125,52 @@ export const deleteReservation = async (req, res) => {
   }
 };
 
+
+
 export const getUserActiveReservations = async (req, res) => {
   try {
+    // Verifica que el rol del usuario sea "client"
     if (req.role !== "client") {
       return res.status(403).json({ message: "Access denied. Clients only." });
     }
 
+    // ID del usuario autenticado
     const userId = req.userId;
 
+    // Filtrar reservaciones activas
     const activeReservations = await Reservation.find({
       client: userId,
-      status: { $in: ["pending", "active", "completed", "cancelled"] },
+      status: { $in: ["pending", "active", "completed", "cancelled"] }, 
     })
-      .populate("car", "brand model year")
-      .select("-client");
+      .populate("car", "brand model") 
+      .select("-client"); 
 
+    // Procesar cada reservación para añadir las columnas necesarias
+    const processedReservations = activeReservations.map((reservation) => {
+      const startDate = new Date(reservation.startDate);
+      const endDate = new Date(reservation.endDate);
+      const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1; 
+      const totalPrice = reservation.pricePerDay * totalDays; 
+
+      return {
+        ...reservation._doc,
+        carBrand: reservation.car.brand, 
+        carModel: reservation.car.model, 
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0], 
+        totalDays, 
+        totalPrice,
+        status: reservation.status, 
+      };
+    });
+
+   
     return res.status(200).json({
       message: "Active reservations retrieved successfully",
-      reservations: activeReservations,
+      reservations: processedReservations,
     });
   } catch (error) {
+  
     console.error("Error retrieving active reservations:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
