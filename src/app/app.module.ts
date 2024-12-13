@@ -23,6 +23,7 @@ import { EdiDeleCarsComponent } from './pages/admin/edi-dele-cars/edi-dele-cars.
 import { UpdateInfoComponent } from './pages/client/update-info/update-info.component';
 import { CarsReservationComponent } from './pages/client/cars-reservation/cars-reservation.component';
 import { ClientReservationsComponent } from './pages/client/client-reservations/client-reservations.component';
+import { AllReservationsComponent } from './pages/admin/all-reservations/all-reservations.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ClientReservationsComponent } from './pages/client/client-reservations/
     EdiDeleCarsComponent,
     UpdateInfoComponent,
     CarsReservationComponent,
-    ClientReservationsComponent
+    ClientReservationsComponent,
+    AllReservationsComponent
   ],
   imports: [
     BrowserModule,

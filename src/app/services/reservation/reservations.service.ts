@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class ReservationsService {
   private RESERVATION_API_URL = 'https://api-node-rentify.onrender.com/api/reservations';
-  
+
 
   constructor(private http: HttpClient) { }
 
@@ -50,10 +50,60 @@ export class ReservationsService {
       }),
       catchError(error => {
         console.error('Error fetching active reservations:', error);
-        return throwError(() => error); 
+        return throwError(() => error);
       })
     );
   }
 
-  
+  getAllReservations(): Observable<any[]> {
+    return this.http.get(`${this.RESERVATION_API_URL}/listAllReservations`, {
+      headers: this.getAuthHeaders(),
+    }).pipe(
+      map((response: any) => {
+        if (response?.reservations && Array.isArray(response.reservations)) {
+          return response.reservations;
+        } else {
+          console.warn('Unexpected API response format:', response);
+          return [];
+        }
+      }),
+      catchError(error => {
+        console.error('Error fetching all reservations:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+
+  updateReservationStatus(reservationId: string, status: string): Observable<any> {
+    const updateData = { status: status };
+
+    console.log('Updating reservation status:', updateData);
+
+    return this.http.put(`${this.RESERVATION_API_URL}/updateReservationStatus/${reservationId}`, updateData, {
+      headers: this.getAuthHeaders(),
+    }).pipe(
+      map((response: any) => {
+        if (response && response.updatedReservation) {
+        
+          return response.updatedReservation;
+        } else {
+          console.warn('Unexpected API response format:', response);
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error('Error updating reservation status:', error);
+        let errorMessage = 'Unexpected error occurred';
+        if (error.status === 0) {
+          errorMessage = 'Network error';
+        } else if (error.status === 400) {
+          errorMessage = 'Invalid data provided';
+        } else if (error.status === 500) {
+          errorMessage = 'Server error';
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

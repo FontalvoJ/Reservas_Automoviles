@@ -11,6 +11,8 @@ import { authGuard } from './auth.guard';
 import { UpdateInfoComponent } from './pages/client/update-info/update-info.component';
 import { CarsReservationComponent } from './pages/client/cars-reservation/cars-reservation.component';
 import { ClientReservationsComponent } from './pages/client/client-reservations/client-reservations.component';
+import { AllReservationsComponent } from './pages/admin/all-reservations/all-reservations.component';
+import { ListCarsReservationsComponent } from './pages/admin/list-cars-reservations/list-cars-reservations.component';
 
 const routes: Routes = [
   // Public routes
@@ -22,7 +24,10 @@ const routes: Routes = [
 
   // Admin routes 
   { path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard] },
+  { path: 'list-cars-reservations', component: ListCarsReservationsComponent, canActivate: [authGuard] },
   { path: 'edit-delete-car', component: EdiDeleCarsComponent, canActivate: [authGuard] },
+  { path: 'all-reservations', component: AllReservationsComponent, canActivate: [authGuard] },
+
 
   // Client routes 
   { path: 'dashboard-client', component: DashboardClientComponent, canActivate: [authGuard] },
