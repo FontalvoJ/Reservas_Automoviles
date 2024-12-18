@@ -18,7 +18,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:4200",
-  "https://api-node-rentify.onrender.com/",
+  "https://reservasautomoviles-production.up.railway.app/",
   "https://demo-gpe-rentify.netlify.app",
 ];
 app.use(

@@ -218,9 +218,11 @@ export const listAllReservations = async (req, res) => {
   }
 };
 
+
 export default {
   createReservation,
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
+  updateCarAvailability,
 };
