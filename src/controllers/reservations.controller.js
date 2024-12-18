@@ -224,5 +224,5 @@ export default {
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
-  updateCarAvailability,
+
 };
