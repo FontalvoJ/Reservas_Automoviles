@@ -151,14 +151,18 @@ export const updateCar = async (req, res) => {
 
 export const deleteCar = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // 'id' es el parámetro de la URL
 
-    const car = await Car.findById(id);
+    // Buscar el automóvil por carId
+    const car = await Car.findOne({ carId: id });
+
+    // Si no se encuentra el automóvil, devolver un error 404
     if (!car) {
       return res.status(404).json({ message: "Car not found" });
     }
 
-    await Car.findByIdAndDelete(id);
+    // Si el automóvil es encontrado, eliminarlo de la base de datos
+    await Car.deleteOne({ carId: id });
 
     return res.status(200).json({ message: "Car deleted successfully" });
   } catch (error) {

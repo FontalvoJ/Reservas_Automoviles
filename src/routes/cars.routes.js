@@ -38,7 +38,8 @@ router.put(
 // Ruta privada para eliminar eliminar coches solo por administrador
 router.delete(
   "/deleteCar/:id",
-  [(authJwt.verifyToken, validateRoles("admin"))],
+  authJwt.verifyToken,
+  validateRoles("admin"),
   carsCtrl.deleteCar
 );
 
