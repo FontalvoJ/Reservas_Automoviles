@@ -4,14 +4,11 @@
     <p>Loading reservations...</p>
 </div>
 
-<div *ngIf="errorMessage" class="flex items-center justify-center text-center text-red-500 titles">
-    <p>{{ errorMessage }}</p>
-</div>
 
-
+<!--  Table Reservations Information -->
 <div class="w-full max-w-6xl p-4 mx-auto">
     <div class="overflow-hidden bg-white rounded-lg shadow-md">
-      
+
         <!-- Table -->
         <table *ngIf="reservations.length" class="w-full table-auto">
             <!-- Table Header -->
@@ -39,7 +36,8 @@
                         {{ reservation.brand }} - {{ reservation.model }}
                     </td>
                     <td class="px-4 py-4 text-sm details whitespace-nowrap">
-                        {{ reservation.idClient }}
+                        {{ reservation.idClient.substring(0, 3) }}...{{
+                        reservation.idClient.substring(reservation.idClient.length - 3) }}
                     </td>
                     <td class="px-4 py-4 text-sm details whitespace-nowrap">
                         {{ reservation.clientName }}
@@ -89,7 +87,7 @@
                 Next
             </button>
         </div>
-    
+
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm details">
@@ -102,7 +100,7 @@
                     reservations
                 </p>
             </div>
-    
+
             <div>
                 <nav class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                     <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
@@ -125,10 +123,15 @@
         </div>
     </div>
 
+    <!-- Alert No active reservations -->
+    <div *ngIf="reservations.length === 0" class="w-full max-w-6xl p-4 mx-auto text-center">
+        <p class="mb-2 text-lg text-gray-800 titles">No active reservations</p>
+        <p class="text-sm text-gray-600 details">Currently, you do not have any vehicle reservations.</p>
+    </div>
 </div>
 
 
-
+<!--  Modal Update Status Reservation -->
 <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center">
     <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <h3 class="text-lg font-medium text-gray-900">Update Reservation Status</h3>

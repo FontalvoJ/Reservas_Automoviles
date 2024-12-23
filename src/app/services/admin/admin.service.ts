@@ -12,7 +12,7 @@ export class CarService {
   constructor(private http: HttpClient) { }
 
   /**
- * Obtiene todos los coches disponibles para todos los usuarios (sin autenticación).
+ * Gets all cars available for all users (without authentication).
  */
   getAllCarsForEveryone(): Observable<any> {
     return this.http.get<any>(`${this.API_URL}allCars`)
@@ -20,26 +20,26 @@ export class CarService {
         catchError(this.handleError)
       );
   }
-  
+
   /**
-   * Obtiene los encabezados con el token de autenticación.
-   */
+* Gets the headers with the authentication token.
+*/
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
     return new HttpHeaders().set('x-access-token', token);
   }
 
   /**
-   * Verifica si el usuario actual es administrador.
-   */
+* Checks if the current user is an administrator.
+*/
   private isAdmin(): boolean {
     const role = localStorage.getItem('role');
     return role === 'admin';
   }
 
   /**
-   * Manejo genérico de errores en las solicitudes HTTP.
-   */
+* Generic error handling for HTTP requests.
+*/
   private handleError(error: any): Observable<never> {
     console.error('HTTP Error:', error);
     alert('An error occurred. Please try again.');
@@ -47,8 +47,8 @@ export class CarService {
   }
 
   /**
-   * Crea un nuevo automóvil (solo para administradores).
-   */
+  * Creates a new car (for admins only).
+  */
   createCar(carData: {
     brand: string;
     model: string;
@@ -73,8 +73,8 @@ export class CarService {
   }
 
   /**
-   * Obtiene todos los automóviles registrados por un administrador.
-   */
+  * Gets all cars registered by an administrator.
+  */
   getAllCarsByAdmin(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${this.API_URL}carsByAdmin`, { headers })
@@ -84,13 +84,32 @@ export class CarService {
   }
 
   /**
-   * Obtiene los coches disponibles para un usuario autenticado.
-   */
+* Gets the cars available for an authenticated user.
+*/
   getCarsForAuthenticatedUser(): Observable<any> {
-    const headers = this.getAuthHeaders(); 
-    return this.http.get<any>(`${this.API_URL}allCars/authenticated`, { headers }) 
+    const headers = this.getAuthHeaders();
+    return this.http.get<any>(`${this.API_URL}allCars/authenticated`, { headers })
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  /**
+* Delete a car by its ID (for admins only).
+*/
+  deleteCar(carId: string): Observable<any> {
+    if (!this.isAdmin()) {
+      alert('Only admins can delete cars.');
+      return throwError(() => new Error('Unauthorized access'));
+    }
+
+    const headers = this.getAuthHeaders();
+    const url = `${this.API_URL}deleteCar/${carId}`;
+
+    console.log('DELETE request URL:', url);
+
+    return this.http.delete<any>(url, { headers }).pipe(
+      catchError(this.handleError)
+    );
   }
 }

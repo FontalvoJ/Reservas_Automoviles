@@ -27,7 +27,7 @@ export class AllReservationsComponent implements OnInit {
 
   private initializeForm() {
     this.updateForm = this.fb.group({
-      status: [''] // Initialize form with empty status
+      status: [''] 
     });
   }
 
@@ -81,7 +81,7 @@ export class AllReservationsComponent implements OnInit {
       this.reservationsService.updateReservationStatus(this.reservationIdToUpdate, this.newStatus).subscribe(
         updatedReservation => {
           console.log('Updated reservation:', updatedReservation);
-          this.loadAllReservations(); // Refresh the list of reservations
+          this.loadAllReservations();
           this.closeModal();
         },
         error => {

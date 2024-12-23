@@ -6,7 +6,6 @@ import { DashboardAdminComponent } from './pages/admin/dashboard-admin/dashboard
 import { DashboardClientComponent } from './pages/client/dashboard-client/dashboard-client.component';
 import { SignUpUserComponent } from './pages/auth/sign-up-user/sign-up-user.component';
 import { CarsComponent } from './pages/home/cars/cars.component';
-import { EdiDeleCarsComponent } from './pages/admin/edi-dele-cars/edi-dele-cars.component';
 import { authGuard } from './auth.guard';
 import { UpdateInfoComponent } from './pages/client/update-info/update-info.component';
 import { CarsReservationComponent } from './pages/client/cars-reservation/cars-reservation.component';
@@ -25,7 +24,6 @@ const routes: Routes = [
   // Admin routes 
   { path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard] },
   { path: 'list-cars-reservations', component: ListCarsReservationsComponent, canActivate: [authGuard] },
-  { path: 'edit-delete-car', component: EdiDeleCarsComponent, canActivate: [authGuard] },
   { path: 'all-reservations', component: AllReservationsComponent, canActivate: [authGuard] },
 
 

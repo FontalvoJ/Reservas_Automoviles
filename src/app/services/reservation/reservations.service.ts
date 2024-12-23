@@ -17,6 +17,10 @@ export class ReservationsService {
     return new HttpHeaders().set('x-access-token', token);
   }
 
+
+  /**
+  * Creates a new reservation for a car.
+  */
   createReservation(carId: string, startDate: Date, endDate: Date): Observable<any> {
     const reservationData = {
       carId: carId,
@@ -36,6 +40,10 @@ export class ReservationsService {
     );
   }
 
+
+  /**
+ * Fetches active reservations for the logged-in user.
+ */
   getUserActiveReservations(): Observable<any[]> {
     return this.http.get(`${this.RESERVATION_API_URL}/userReservations`, {
       headers: this.getAuthHeaders(),
@@ -55,6 +63,10 @@ export class ReservationsService {
     );
   }
 
+
+  /**
+ * Fetches all reservations (admin access).
+ */
   getAllReservations(): Observable<any[]> {
     return this.http.get(`${this.RESERVATION_API_URL}/listAllReservations`, {
       headers: this.getAuthHeaders(),
@@ -75,6 +87,9 @@ export class ReservationsService {
   }
 
 
+  /**
+ * Updates the status of an existing reservation.
+ */
   updateReservationStatus(reservationId: string, status: string): Observable<any> {
     const updateData = { status: status };
 
@@ -85,7 +100,7 @@ export class ReservationsService {
     }).pipe(
       map((response: any) => {
         if (response && response.updatedReservation) {
-        
+
           return response.updatedReservation;
         } else {
           console.warn('Unexpected API response format:', response);
