@@ -17,6 +17,7 @@ export class AllReservationsComponent implements OnInit {
   reservationIdToUpdate: string | null = null;
   newStatus = '';
   updateForm!: FormGroup;
+  showError: boolean = false; // Nueva propiedad para controlar el mensaje de error
 
   constructor(private reservationsService: ReservationsService, private fb: FormBuilder) { }
 
@@ -27,7 +28,7 @@ export class AllReservationsComponent implements OnInit {
 
   private initializeForm() {
     this.updateForm = this.fb.group({
-      status: [''] 
+      status: ['']
     });
   }
 
@@ -74,6 +75,7 @@ export class AllReservationsComponent implements OnInit {
     this.showModal = false;
     this.reservationIdToUpdate = null;
     this.newStatus = '';
+    this.showError = false; // Restablecer el error al cerrar el modal
   }
 
   updateStatus() {
@@ -88,6 +90,8 @@ export class AllReservationsComponent implements OnInit {
           console.error('Error updating reservation status:', error);
         }
       );
+    } else {
+      this.showError = true; 
     }
   }
 }

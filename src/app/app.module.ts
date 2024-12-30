@@ -51,7 +51,8 @@ import { AllReservationsComponent } from './pages/admin/all-reservations/all-res
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
   ],
   providers: [
     {
