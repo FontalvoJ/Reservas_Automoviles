@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class UpdateInfoComponent implements OnInit {
   isModalOpenEditProfile = false;
-  dropdownOpen = false;  
+  dropdownOpen = false;
   clientData = {
     name: '',
     identification: '',
@@ -27,12 +27,12 @@ export class UpdateInfoComponent implements OnInit {
     this.getClientData();
   }
 
-  // Toggle para abrir y cerrar el menú desplegable
+
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
-  // Método para obtener los datos del cliente
+
   getClientData() {
     this.clientService.getClientInfo().subscribe(
       (response) => {
@@ -45,18 +45,18 @@ export class UpdateInfoComponent implements OnInit {
     );
   }
 
-  // Método para abrir el modal de edición de perfil
+
   openModalEdit() {
     this.isModalOpenEditProfile = true;
-    this.toggleDropdown();  
+    this.toggleDropdown();
   }
 
-  // Método para cerrar el modal
+
   closeModalEdit() {
     this.isModalOpenEditProfile = false;
   }
 
-  // Método para actualizar los datos del cliente
+
   updateClientInfo() {
     this.clientService.updateClientInfo(this.clientData).subscribe(
       (response) => {
@@ -74,7 +74,7 @@ export class UpdateInfoComponent implements OnInit {
     );
   }
 
-  
+
   openDeleteAccountModal() {
     this.isModalOpenDeleteAccount = true;
   }
@@ -88,11 +88,11 @@ export class UpdateInfoComponent implements OnInit {
   deleteAccount() {
     this.clientService.deleteClientAccount().subscribe(
       (response) => {
-       
+
         this.router.navigate(['/home']);
       },
       (error) => {
-        
+
         console.error('Error deleting account:', error);
       }
     );

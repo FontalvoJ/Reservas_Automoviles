@@ -10,8 +10,8 @@ export class ClientReservationsComponent implements OnInit {
   Math = Math;
   activeReservations: any[] = [];
   errorMessage: string | null = null;
-  currentPage: number = 1; // Página actual
-  itemsPerPage: number = 5; // Cantidad de items por página
+  currentPage: number = 1; 
+  itemsPerPage: number = 5; 
 
   constructor(private reservationsService: ReservationsService) { }
 

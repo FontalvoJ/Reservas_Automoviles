@@ -15,7 +15,10 @@ export class AuthService {
     private router: Router
   ) { }
 
-  // Inicia sesión
+
+  /**
+  * Logs in a user by sending their credentials to the server.
+  */
   signIn(user: { email: string; password: string; }) {
     return this.http.post<{ token: string, role: string, id: string, name: string }>(
       `${this.AUTH_API_URL}/signInUsers`,
@@ -34,18 +37,22 @@ export class AuthService {
     );
   }
 
-  // Crear un nuevo admin
+  /**
+ * Creates a new admin user by sending their credentials to the server.
+ */
   signUpAdmin(user: { email: string; password: string; }) {
     return this.http.post<any>(this.AUTH_API_URL + '/signUpAdmin', user);
   }
 
-  // Crear un nuevo client
+  /**
+  * Creates a new client user by sending their credentials to the server.
+  */
   signUpClient(user: { email: string; password: string; }) {
     return this.http.post<any>(this.AUTH_API_URL + '/signUpClient', user);
   }
 
 
-  // Verifica si el usuario está autenticado
+  
   loggedIn(): boolean {
     return !!localStorage.getItem('token');
   }

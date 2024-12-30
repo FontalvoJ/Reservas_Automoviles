@@ -1,6 +1,8 @@
 <app-navbar-client></app-navbar-client>
+
 <app-update-info></app-update-info>
 
+<!-- Table Client Reservations -->
 <div class="w-full max-w-6xl p-4 mx-auto">
     <div class="overflow-hidden bg-white rounded-lg shadow-md">
         <!-- Table -->
@@ -96,4 +98,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Alert No active reservations -->
+<div *ngIf="activeReservations.length === 0" class="w-full max-w-6xl p-4 mx-auto text-center">
+    <p class="mb-2 text-lg text-gray-800 titles">No active reservations</p>
+    <p class="text-sm text-gray-600 details">Currently, you do not have any vehicle reservations.</p>
 </div>
