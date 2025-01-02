@@ -44,13 +44,14 @@
             </div>
 
             <div class="relative px-4 overflow-hidden">
-                <div [ngClass]="{ 'animate-carousel': isAnimated }" [style.animationDuration]="animationDuration" class="flex p-4">
+                <div [ngClass]="{ 'animate-carousel': isAnimated }" [style.animationDuration]="animationDuration"
+                    class="flex p-4">
                     <ng-container *ngFor="let image of images">
                         <div class="image-container">
                             <img [src]="image.src" [alt]="image.alt" class="image" />
                         </div>
                     </ng-container>
-                    <!-- Duplicado para efecto infinito -->
+
                     <ng-container *ngFor="let image of images">
                         <div class="image-container">
                             <img [src]="image.src" [alt]="image.alt" class="image" />
