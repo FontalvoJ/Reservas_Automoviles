@@ -112,4 +112,35 @@ export class CarService {
       catchError(this.handleError)
     );
   }
+
+  /**
+* Updates the details of a car by its ID (for admins only).
+*/
+  updateCar(carId: string, carData: {
+    brand?: string;
+    model?: string;
+    year?: number;
+    color?: string;
+    pricePerDay?: number;
+    location?: string;
+    availability?: boolean;
+    createdBy?: string;
+    power?: number;
+    system?: string;
+    accompanists?: number;
+  }): Observable<any> {
+    if (!this.isAdmin()) {
+      alert('Only admins can update cars.');
+      return throwError(() => new Error('Unauthorized access'));
+    }
+
+    const headers = this.getAuthHeaders();
+    const url = `${this.API_URL}updateCar/${carId}`; 
+
+    return this.http.put<any>(url, carData, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 }
