@@ -105,16 +105,40 @@ export const createCar = async (req, res) => {
 export const updateCar = async (req, res) => {
   try {
     const { id } = req.params; // ID del auto a actualizar
-    const { brand, model, year, color, pricePerDay, location } = req.body;
+    const {
+      brand,
+      model,
+      year,
+      color,
+      pricePerDay,
+      location,
+      availability,
+      createdBy,
+      power,
+      system,
+      accompanists,
+    } = req.body;
 
     // Validación de campos requeridos
-    if (!brand && !model && !year && !color && !pricePerDay && !location) {
+    if (
+      !brand &&
+      !model &&
+      !year &&
+      !color &&
+      !pricePerDay &&
+      !location &&
+      availability === undefined &&
+      createdBy &&
+      power &&
+      system &&
+      accompanists
+    ) {
       return res
         .status(400)
         .json({ message: "At least one field is required to update" });
     }
 
-    // Validación de tipos de datos si se proporcionan
+    // Validación de tipos de datos
     if (year && typeof year !== "number") {
       return res.status(400).json({ message: "Year must be a number" });
     }
@@ -123,11 +147,34 @@ export const updateCar = async (req, res) => {
         .status(400)
         .json({ message: "Price per day must be a number" });
     }
+    if (availability !== undefined && typeof availability !== "boolean") {
+      return res
+        .status(400)
+        .json({ message: "Availability must be a boolean" });
+    }
+    if (power && typeof power !== "number") {
+      return res.status(400).json({ message: "Power must be a number" });
+    }
+    if (accompanists && typeof accompanists !== "number") {
+      return res.status(400).json({ message: "Accompanists must be a number" });
+    }
 
     // Busqueda y actualización del auto
     const updatedCar = await Car.findByIdAndUpdate(
       id,
-      { brand, model, year, color, pricePerDay, location },
+      {
+        brand,
+        model,
+        year,
+        color,
+        pricePerDay,
+        location,
+        availability,
+        createdBy,
+        power,
+        system,
+        accompanists,
+      },
       { new: true, omitUndefined: true } // `new: true` devuelve el documento actualizado
     );
 
@@ -142,7 +189,6 @@ export const updateCar = async (req, res) => {
   } catch (error) {
     console.error("Error updating the car:", error);
     if (error.name === "CastError" && error.kind === "ObjectId") {
-      // Si el error es de tipo 'CastError' debido a un ID malformado
       return res.status(400).json({ message: "Invalid car ID format" });
     }
     return res.status(500).json({ message: "Error updating the car" });
