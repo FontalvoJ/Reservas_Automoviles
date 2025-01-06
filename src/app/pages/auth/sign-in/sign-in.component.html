@@ -2,12 +2,12 @@
 
 <section class="max-w-2xl p-6 mx-auto">
     <h2 class="mb-6 text-3xl text-center titles ">Welcome to your premium rental experience</h2>
-    <p class="mb-4 text-lg text-center text">
+    <p class="mb-4 text-lg text-center details">
         Access the most exclusive catalog of luxury vehicles and enjoy a personalized service tailored to your needs.
         From elegant sedans to high-performance SUVs, each of our cars is designed to offer you maximum comfort,
         safety, and style.
     </p>
-    <p class="text-lg text-center text">
+    <p class="text-lg text-center details">
         Log in now and experience the difference with the best car rental service in the industry. Your next adventure
         starts with us!
     </p>
@@ -26,7 +26,7 @@
                 </div>
                 <!-- Campo de Email -->
                 <input type="email" id="email" name="email"
-                    class="titles mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9]  focus:outline-none focus:ring-indigo-500  text-sm sm:text-base  placeholder-black placeholder:text-sl"
+                    class="details mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9]  focus:outline-none focus:ring-indigo-500  text-sm sm:text-base  placeholder-black placeholder:text-sl"
                     placeholder="Enter your email" [(ngModel)]="credentials.email">
             </div>
     
@@ -41,10 +41,11 @@
                 </div>
                 <!-- Campo de Contraseña -->
                 <input type="password" id="password" name="password" required
-                    class="titles mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9]  focus:outline-none focus:ring-indigo-500  text-sm sm:text-base  placeholder-black placeholder:text-sl"
+                    class="details mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md bg-[#D9D9D9]  focus:outline-none focus:ring-indigo-500  text-sm sm:text-base  placeholder-black placeholder:text-sl"
                     placeholder="Enter your password" [(ngModel)]="credentials.password">
             </div>
     
+         
             <!-- Submit Button -->
             <div class="relative  sm:w-[150px] mx-auto mt-4">
                 <button type="submit" [disabled]="signinForm.invalid"

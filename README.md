@@ -1,27 +1,45 @@
-# RentifyProject
+# Rentify 🚗💼
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
+Rentify es una plataforma de alquiler de autos que permite tanto a clientes como a administradores gestionar reservas de vehículos de forma eficiente y sencilla. Los administradores pueden gestionar los autos disponibles para reservación y administrar las cuentas de los clientes, mientras que los clientes pueden realizar, modificar y eliminar sus reservas.
 
-## Development server
+## Descripción 📜
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Rentify es una solución diseñada tanto para administradores como para clientes que necesitan gestionar vehículos para alquilar. Permite realizar registros, iniciar sesión, gestionar la información personal y administrar las reservas de autos.
 
-## Code scaffolding
+### Funcionalidades principales:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Registro e inicio de sesión** tanto para administradores como para clientes. 🔑
+- **Gestión de autos**: Añadir, editar y eliminar vehículos disponibles para reservación. 🚙
+- **Gestión de reservas**: Los clientes pueden realizar reservas y los administradores pueden ver y gestionar las reservaciones. 📅
 
-## Build
+## Características 🛠️
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Funcionalidades para Administrador:
 
-## Running unit tests
+- Añadir un nuevo auto para reservación. ➕🚗
+- Editar la información de un auto para reservación. ✏️🚗
+- Eliminar un auto para reservación. ❌🚗
+- Listar las reservaciones realizadas por los clientes. 📑
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Funcionalidades para Clientes:
 
-## Running end-to-end tests
+- Editar la información personal del cliente. ✏️👤
+- Eliminar la cuenta del cliente. ❌👤
+- Ver los autos disponibles para reservación. 👀🚙
+- Realizar una reservación para un auto disponible. 📝🚗
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Tecnologías utilizadas 🖥️
 
-## Further help
+- **Frontend:** Angular, HTML, Tailwind CSS
+- **Backend:** Node.js, Express
+- **Base de datos:** MongoDB
+- **Autenticación:** JWT (JSON Web Tokens)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Despliegue 🌐
+
+- **Despliegue API:** [https://api-node-rentify.onrender.com/](https://api-node-rentify.onrender.com/)
+- **Despliegue Frontend:** [https://demo-gpe-rentify.netlify.app/home](https://demo-gpe-rentify.netlify.app/home)
+
+## **Licencia 📄**
+
+Este proyecto estara bajo licencia y derechos de autor propiedad de FontalvoJ;.

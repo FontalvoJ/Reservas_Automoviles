@@ -18,6 +18,7 @@ export class DetailsCardsComponent implements OnInit {
   isModalOpenUpdateCar = false; 
   updateOption: string | null = null; 
   showAlertUpdateAvailability: boolean = false; 
+  showAlertCarData = false;
 
   constructor(private carService: CarService) { }
 
@@ -157,24 +158,48 @@ export class DetailsCardsComponent implements OnInit {
   // Se ejecuta cuando el usuario elige actualizar otra información del coche
   updateCarInfo(): void {
     if (this.selectedCar && this.updateOption === 'info') {
-      // Aquí puedes preparar los datos que el usuario haya modificado, por ejemplo:
+      // Validar que pricePerDay sea un número
+      const pricePerDay = parseFloat(this.selectedCar.pricePerDay);
+
+      // Comprobar si pricePerDay no es un número válido
+      if (isNaN(pricePerDay)) {
+        this.errorMessage = 'Price per day must be a number';
+        return; // Salir de la función si no es un número válido
+      }
+
+      // Preparar los datos para la actualización
       const updatedCarData = {
-        model: this.selectedCar.model, // Aquí agregarías los campos modificados
+        model: this.selectedCar.model,
         brand: this.selectedCar.brand,
         color: this.selectedCar.color,
-        pricePerDay: this.selectedCar.pricePerDay
-        // Agrega aquí más campos si es necesario
+        pricePerDay: pricePerDay, 
+        location : this.selectedCar.location,
+        power: this.selectedCar.power,
+        system: this.selectedCar.system,
+        accompanies: this.selectedCar.accompanies,
       };
 
+      // Llamar al servicio para actualizar el coche
       this.carService.updateCar(this.selectedCar._id, updatedCarData).subscribe(
         (response) => {
+          // Mostrar la alerta de éxito
+          this.showAlertCarData = true;
+
+          // Cerrar el modal de actualización
           this.isModalOpenUpdateCar = false;
+
+          // Refrescar la página después de 3 segundos
+          setTimeout(() => {
+            location.reload(); // Refrescar la página
+          }, 3000); // Tiempo de espera para mostrar la alerta antes de refrescar
+
         },
         (error) => {
-          this.errorMessage = 'Failed to update car info. Please try again later.';
+          this.errorMessage = 'Failed to update car info. Please try again later.'; // Manejar el error
         }
       );
     }
   }
+
 
 }

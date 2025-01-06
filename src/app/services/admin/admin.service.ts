@@ -59,6 +59,7 @@ export class CarService {
     power: number;
     system: string;
     accompanists: number;
+    imageUrl: string;
   }): Observable<any> {
     if (!this.isAdmin()) {
       alert('Only admins can create cars.');

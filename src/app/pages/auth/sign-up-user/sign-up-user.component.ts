@@ -17,6 +17,8 @@ export class SignUpUserComponent {
   isClientModalOpen: boolean = false;
   showSuccessAdminAlert: boolean = false;
   showSuccessClientAlert: boolean = false;
+  showErrorAdmin: boolean = false;
+  showErrorClient: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,6 +51,7 @@ export class SignUpUserComponent {
 
   closeAdminModal() {
     this.isAdminModalOpen = false;
+    this.showErrorAdmin = false;
   }
 
 
@@ -58,6 +61,7 @@ export class SignUpUserComponent {
 
   closeClientModal() {
     this.isClientModalOpen = false;
+    this.showErrorClient = false;
   }
 
   // Método para registrar administrador
@@ -81,6 +85,7 @@ export class SignUpUserComponent {
       });
     } else {
       console.warn('Admin form is invalid');
+      this.showErrorAdmin = true; 
     }
   }
 
@@ -104,6 +109,7 @@ export class SignUpUserComponent {
       });
     } else {
       console.warn('Client form is invalid');
+      this.showErrorClient = true; 
     }
   }
 }
