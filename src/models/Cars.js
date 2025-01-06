@@ -38,6 +38,22 @@ const carSchema = new Schema(
       type: String,
       required: true,
     },
+    imageUrl: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          // Validación básica de URL
+          try {
+            new URL(v);
+            return true;
+          } catch (error) {
+            return false;
+          }
+        },
+        message: (props) => `${props.value} no es una URL válida`,
+      },
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admins",

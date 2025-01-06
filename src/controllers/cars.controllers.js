@@ -12,9 +12,9 @@ export const createCar = async (req, res) => {
       power,
       system,
       accompanists,
+      imageUrl,
     } = req.body;
 
-    // Validación de campos requeridos
     if (
       !brand ||
       !model ||
@@ -24,12 +24,19 @@ export const createCar = async (req, res) => {
       !location ||
       !power ||
       !system ||
-      !accompanists 
+      !accompanists ||
+      !imageUrl
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Validaciones adicionales
+    // Validar URL
+    try {
+      new URL(imageUrl);
+    } catch (error) {
+      return res.status(400).json({ message: "Invalid image URL format" });
+    }
+
     if (typeof year !== "number" || typeof pricePerDay !== "number") {
       return res
         .status(400)
@@ -52,7 +59,6 @@ export const createCar = async (req, res) => {
         .json({ message: "Accompanists must be one of: 2, 4, 5, 7" });
     }
 
-    // Verificar si ya existe un coche similar
     const existingCar = await Car.findOne({
       brand,
       model,
@@ -63,14 +69,13 @@ export const createCar = async (req, res) => {
       system,
       accompanists,
     });
+
     if (existingCar) {
       return res.status(409).json({ message: "A similar car already exists" });
     }
 
-    // Set createdBy field from req.userId
     const createdBy = req.userId;
 
-    // Crear el nuevo coche
     const newCar = new Car({
       brand,
       model,
@@ -78,13 +83,13 @@ export const createCar = async (req, res) => {
       color,
       pricePerDay,
       location,
+      imageUrl,
       createdBy,
       power,
       system,
       accompanists,
     });
 
-    // Guardar el coche en la base de datos
     const savedCar = await newCar.save();
 
     return res.status(201).json({
@@ -95,7 +100,6 @@ export const createCar = async (req, res) => {
   } catch (error) {
     console.error("Error creating the car:", error);
     if (error.name === "ValidationError") {
-      // Si es un error de validación de Mongoose
       return res.status(400).json({ message: error.message });
     }
     return res.status(500).json({ message: "Error creating the car" });
