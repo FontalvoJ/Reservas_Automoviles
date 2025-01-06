@@ -12,7 +12,6 @@ export const createCar = async (req, res) => {
       power,
       system,
       accompanists,
-      image,
     } = req.body;
 
     // Validación de campos requeridos
@@ -25,8 +24,7 @@ export const createCar = async (req, res) => {
       !location ||
       !power ||
       !system ||
-      !accompanists ||
-      !image
+      !accompanists 
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -64,7 +62,6 @@ export const createCar = async (req, res) => {
       power,
       system,
       accompanists,
-      image,
     });
     if (existingCar) {
       return res.status(409).json({ message: "A similar car already exists" });

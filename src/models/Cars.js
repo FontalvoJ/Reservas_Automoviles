@@ -60,11 +60,6 @@ const carSchema = new Schema(
       enum: [2, 4, 5, 7],
       message: "Accompanists must be one of: 2, 4, 5, 7",
     },
-    image: {
-      
-      type: String,
-      required: true, 
-    },
   },
   {
     timestamps: true,
