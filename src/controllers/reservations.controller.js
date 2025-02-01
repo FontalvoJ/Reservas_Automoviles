@@ -6,27 +6,23 @@ export const createReservation = async (req, res) => {
   try {
     const { carId, startDate, endDate } = req.body;
 
-    if (!startDate || !endDate || new Date(endDate) <= new Date(startDate)) {
+    if (!startDate || !endDate || new Date(endDate) < new Date(startDate)) {
       return res
         .status(400)
         .json({ message: "Invalid start date or end date" });
     }
 
     const car = await Cars.findById(carId);
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
+    if (!car) return res.status(404).json({ message: "Car not found" });
 
     const clientId = req.userId;
     const client = await Clients.findById(clientId);
-    if (!client) {
-      return res.status(404).json({ message: "Client not found" });
-    }
+    if (!client) return res.status(404).json({ message: "Client not found" });
 
-    // Contar reservas activas del cliente (sin contar las "completed")
-    const previousReservations = await Reservation.countDocuments({
+    // Contar reservas completadas y pendientes del cliente
+    const activeReservations = await Reservation.countDocuments({
       clientId,
-      status: { $ne: "completed" },
+      status: { $in: ["completed", "pending"] },
     });
 
     // Verificar si el coche ya está reservado en las fechas seleccionadas
@@ -44,12 +40,9 @@ export const createReservation = async (req, res) => {
 
     // Calcular el costo total y aplicar descuento si es elegible
     let totalCost = calculateTotalCost(car.pricePerDay, startDate, endDate);
-    let discountApplied = false;
+    const discountApplied = activeReservations >= 3;
 
-    if (previousReservations >= 3) {
-      totalCost *= 0.8; // Aplicar 20% de descuento
-      discountApplied = true;
-    }
+    if (discountApplied) totalCost *= 0.8;
 
     // Crear la reserva
     const reservation = new Reservation({
@@ -78,12 +71,15 @@ export const createReservation = async (req, res) => {
   }
 };
 
-// Función para calcular el costo total basado en las fechas
+// Función optimizada para calcular el costo total
 const calculateTotalCost = (pricePerDay, startDate, endDate) => {
   const msPerDay = 1000 * 60 * 60 * 24;
-  let days = Math.ceil((new Date(endDate) - new Date(startDate)) / msPerDay);
+  const start = new Date(startDate).setHours(0, 0, 0, 0);
+  const end = new Date(endDate).setHours(0, 0, 0, 0);
+  const days = Math.round((end - start) / msPerDay) || 1; // Asegura al menos 1 día
   return days * pricePerDay;
 };
+
 export const updateReservationStatus = async (req, res) => {
   try {
     const { reservationId } = req.params;
