@@ -6,63 +6,84 @@ export const createReservation = async (req, res) => {
   try {
     const { carId, startDate, endDate } = req.body;
 
-    const car = await Cars.findById(carId);
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
-
     if (!startDate || !endDate || new Date(endDate) <= new Date(startDate)) {
       return res
         .status(400)
         .json({ message: "Invalid start date or end date" });
     }
 
-    const clientId = req.userId;
+    const car = await Cars.findById(carId);
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
 
+    const clientId = req.userId;
     const client = await Clients.findById(clientId);
     if (!client) {
       return res.status(404).json({ message: "Client not found" });
     }
 
-    const existingReservation = await Reservation.findOne({
-      carId: carId,
-      clientId: clientId,
+    // Contar reservas activas del cliente (sin contar las "completed")
+    const previousReservations = await Reservation.countDocuments({
+      clientId,
       status: { $ne: "completed" },
     });
 
-    if (existingReservation) {
+    // Verificar si el coche ya está reservado en las fechas seleccionadas
+    const overlappingReservation = await Reservation.findOne({
+      carId,
+      status: { $ne: "completed" },
+      $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
+    });
+
+    if (overlappingReservation) {
       return res.status(400).json({
-        message: "You already have an active reservation for this car.",
+        message: "This car is already reserved for the selected dates.",
       });
     }
 
+    // Calcular el costo total y aplicar descuento si es elegible
+    let totalCost = calculateTotalCost(car.pricePerDay, startDate, endDate);
+    let discountApplied = false;
+
+    if (previousReservations >= 3) {
+      totalCost *= 0.8; // Aplicar 20% de descuento
+      discountApplied = true;
+    }
+
+    // Crear la reserva
     const reservation = new Reservation({
-      carId: carId,
-      clientId: clientId,
+      carId,
+      clientId,
       startDate,
       endDate,
       carBrand: car.brand,
       carModel: car.model,
       clientName: client.name,
-      totalCost: calculateTotalCost(car.pricePerDay, startDate, endDate),
+      totalCost,
+      discountApplied,
     });
 
     await reservation.save();
 
-    return res.status(201).json(reservation);
+    return res.status(201).json({
+      reservation,
+      message: discountApplied
+        ? "Reservation created with a 20% discount!"
+        : "Reservation created successfully.",
+    });
   } catch (error) {
-    console.error("Error al crear la reserva:", error);
-    return res.status(500).json({ message: "Error interno del servidor" });
+    console.error("Error creating the reservation:", error);
+    return res.status(500).json({ message: "Internal server error." });
   }
 };
 
 // Función para calcular el costo total basado en las fechas
 const calculateTotalCost = (pricePerDay, startDate, endDate) => {
-  const days =
-    (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24);
+  const msPerDay = 1000 * 60 * 60 * 24;
+  let days = Math.ceil((new Date(endDate) - new Date(startDate)) / msPerDay);
   return days * pricePerDay;
 };
-
 export const updateReservationStatus = async (req, res) => {
   try {
     const { reservationId } = req.params;
@@ -218,11 +239,9 @@ export const listAllReservations = async (req, res) => {
   }
 };
 
-
 export default {
   createReservation,
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
-
 };
