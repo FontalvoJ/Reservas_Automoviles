@@ -4,7 +4,14 @@ import Clients from "../models/Client";
 
 export const createReservation = async (req, res) => {
   try {
-    const { carId, startDate, endDate } = req.body;
+    const {
+      carId,
+      startDate,
+      endDate,
+      totalCost,
+      discountApplied,
+      discountPercentage,
+    } = req.body;
 
     if (!startDate || !endDate || new Date(endDate) < new Date(startDate)) {
       return res
@@ -31,8 +38,6 @@ export const createReservation = async (req, res) => {
       });
     }
 
-    const totalCost = calculateTotalCost(car.pricePerDay, startDate, endDate);
-
     const reservation = new Reservation({
       carId,
       clientId,
@@ -42,44 +47,22 @@ export const createReservation = async (req, res) => {
       carModel: car.model,
       clientName: client.name,
       totalCost,
-      discountApplied: totalCost.discountPercentage > 0,
-      discountPercentage: totalCost.discountPercentage,
+      discountApplied,
+      discountPercentage,
     });
 
     await reservation.save();
 
     return res.status(201).json({
       reservation,
-      message:
-        totalCost.discountPercentage > 0
-          ? `Reservation created with a ${totalCost.discountPercentage}% discount!`
-          : "Reservation created successfully.",
+      message: discountApplied
+        ? `Reservation created with a ${discountPercentage}% discount!`
+        : "Reservation created successfully.",
     });
   } catch (error) {
     console.error("Error creating the reservation:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
-};
-
-const calculateTotalCost = (pricePerDay, startDate, endDate) => {
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const days =
-    Math.ceil((new Date(endDate) - new Date(startDate)) / msPerDay) || 1;
-
-  let discountPercentage = 0;
-
-  if (days > 20) {
-    discountPercentage = 15;
-  } else if (days >= 12) {
-    discountPercentage = 10;
-  }
-
-  let totalCost = pricePerDay * days;
-  if (discountPercentage > 0) {
-    totalCost *= 1 - discountPercentage / 100;
-  }
-
-  return { totalCost, discountPercentage };
 };
 
 export const updateReservationStatus = async (req, res) => {
