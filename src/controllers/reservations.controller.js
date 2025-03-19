@@ -57,9 +57,8 @@ export const createReservation = async (req, res) => {
       carModel: car.model,
       clientName: client.name,
       totalDays,
-      finalCost,
-      discountApplied,
-      discountPercentage,
+      totalCost,
+      totalPrice,
       status: "pending",
     });
 
@@ -215,10 +214,10 @@ export const listAllReservations = async (req, res) => {
         model: reservation.carId.model,
         startDate: reservation.startDate,
         endDate: reservation.endDate,
-        totalDays: reservation.totalDays,
-        finalCost: reservation.finalCost,
-        discountApplied: reservation.discountApplied,
-        discountPercentage: reservation.discountPercentage,
+        totalDays: days,
+        finalCost: reservation.finalCost ?? reservation.totalCost, // Si no existe finalCost, usa totalCost
+        discountApplied: reservation.discountApplied ?? false,
+        discountPercentage: reservation.discountPercentage ?? 0,
         totalCost: reservation.totalCost,
         status: reservation.status,
         idClient: reservation.clientId._id,
@@ -242,5 +241,4 @@ export default {
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
-  listAllReservations,
 };
