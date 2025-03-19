@@ -36,15 +36,16 @@ export const createReservation = async (req, res) => {
       (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
     );
 
-    let discount = 0;
-    if (totalDays > 20) discount = 0.2;
-    else if (totalDays > 12) discount = 0.1;
+    let discountPercentage = 0;
+    if (totalDays > 20) discountPercentage = 20;
+    else if (totalDays > 12) discountPercentage = 10;
 
     const totalCost = totalDays * car.pricePerDay;
-    const totalPrice = totalCost - totalCost * discount;
+    const discountApplied = discountPercentage > 0;
+    const finalCost = totalCost - (totalCost * discountPercentage) / 100;
 
     // Verificar si hay inconsistencias con el cálculo del frontend
-    if (clientTotalCost && clientTotalCost !== totalPrice) {
+    if (clientTotalCost && clientTotalCost !== finalCost) {
       console.warn("Client total cost does not match backend calculation!");
     }
 
@@ -58,7 +59,9 @@ export const createReservation = async (req, res) => {
       clientName: client.name,
       totalDays,
       totalCost,
-      totalPrice,
+      finalCost,
+      discountApplied,
+      discountPercentage,
       status: "pending",
     });
 
@@ -66,10 +69,9 @@ export const createReservation = async (req, res) => {
 
     return res.status(201).json({
       reservation,
-      message:
-        discount > 0
-          ? `Reservation created with a ${discount * 100}% discount!`
-          : "Reservation created successfully.",
+      message: discountApplied
+        ? `Reservation created with a ${discountPercentage}% discount!`
+        : "Reservation created successfully.",
     });
   } catch (error) {
     console.error("Error creating the reservation:", error);
@@ -215,10 +217,9 @@ export const listAllReservations = async (req, res) => {
         startDate: reservation.startDate,
         endDate: reservation.endDate,
         totalDays: days,
-        finalCost: reservation.finalCost ?? reservation.totalCost, // Si no existe finalCost, usa totalCost
-        discountApplied: reservation.discountApplied ?? false,
-        discountPercentage: reservation.discountPercentage ?? 0,
-        totalCost: reservation.totalCost,
+        finalCost,
+        discountApplied,
+        discountPercentage,
         status: reservation.status,
         idClient: reservation.clientId._id,
         clientName: reservation.clientId.name,

@@ -20,9 +20,25 @@ const reservationSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    totalPrice: {
+    totalDays: {
       type: Number,
       required: true,
+    },
+    totalCost: {
+      type: Number,
+      required: true,
+    },
+    finalCost: {
+      type: Number,
+      required: true,
+    },
+    discountApplied: {
+      type: Boolean,
+      default: false,
+    },
+    discountPercentage: {
+      type: Number,
+      default: 0,
     },
     status: {
       type: String,
