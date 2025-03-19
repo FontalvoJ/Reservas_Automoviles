@@ -171,6 +171,9 @@ export const getUserActiveReservations = async (req, res) => {
         startDate: reservation.startDate,
         endDate: reservation.endDate,
         totalDays: days,
+        finalCost: reservation.finalCost,
+        discountApplied: reservation.discountApplied,
+        discountPercentage: reservation.discountPercentage,
         totalCost: reservation.totalCost,
         status: reservation.status,
       };
