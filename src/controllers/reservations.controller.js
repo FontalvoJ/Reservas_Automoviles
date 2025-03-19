@@ -57,8 +57,9 @@ export const createReservation = async (req, res) => {
       carModel: car.model,
       clientName: client.name,
       totalDays,
-      totalCost,
-      totalPrice,
+      finalCost,
+      discountApplied,
+      discountPercentage,
       status: "pending",
     });
 
@@ -186,12 +187,12 @@ export const getUserActiveReservations = async (req, res) => {
 
 export const listAllReservations = async (req, res) => {
   try {
-    
+    // Verificar que el usuario tenga el rol de 'admin'
     if (req.role !== "admin") {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
-    
+    // Obtener todas las reservas
     const reservations = await Reservation.find()
       .populate("carId", "brand model")
       .populate("clientId", "name")
@@ -201,16 +202,11 @@ export const listAllReservations = async (req, res) => {
       return res.status(404).json({ message: "No reservations found." });
     }
 
-
+    // Formatear las reservas para incluir los detalles requeridos
     const formattedReservations = reservations.map((reservation) => {
       const days =
         (new Date(reservation.endDate) - new Date(reservation.startDate)) /
         (1000 * 60 * 60 * 24);
-
-      
-      const finalCost = reservation.discountApplied
-        ? reservation.totalCost * (1 - reservation.discountPercentage / 100)
-        : reservation.totalCost;
 
       return {
         idReservation: reservation._id,
@@ -219,11 +215,11 @@ export const listAllReservations = async (req, res) => {
         model: reservation.carId.model,
         startDate: reservation.startDate,
         endDate: reservation.endDate,
-        totalDays: days,
-        finalCost, 
+        totalDays: reservation.totalDays,
+        finalCost: reservation.finalCost,
         discountApplied: reservation.discountApplied,
         discountPercentage: reservation.discountPercentage,
-        totalCost: reservation.totalCost, 
+        totalCost: reservation.totalCost,
         status: reservation.status,
         idClient: reservation.clientId._id,
         clientName: reservation.clientId.name,
@@ -246,4 +242,5 @@ export default {
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
+  listAllReservations,
 };
