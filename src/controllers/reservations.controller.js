@@ -19,13 +19,6 @@ export const createReservation = async (req, res) => {
     const client = await Clients.findById(clientId);
     if (!client) return res.status(404).json({ message: "Client not found" });
 
-    // Contar reservas completadas y pendientes del cliente
-    const activeReservations = await Reservation.countDocuments({
-      clientId,
-      status: { $in: ["completed", "pending"] },
-    });
-
-    // Verificar si el coche ya está reservado en las fechas seleccionadas
     const overlappingReservation = await Reservation.findOne({
       carId,
       status: { $ne: "completed" },
@@ -38,13 +31,25 @@ export const createReservation = async (req, res) => {
       });
     }
 
-    // Calcular el costo total y aplicar descuento si es elegible
+    // Calcular días de reserva
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const days =
+      Math.round((new Date(endDate) - new Date(startDate)) / msPerDay) || 1;
+
+    // Aplicar descuentos por duración de la reserva
+    let discountPercentage = 0;
+
+    if (days > 20) {
+      discountPercentage = 15;
+    } else if (days >= 12) {
+      discountPercentage = 10;
+    }
+
     let totalCost = calculateTotalCost(car.pricePerDay, startDate, endDate);
-    const discountApplied = activeReservations >= 3;
+    if (discountPercentage > 0) {
+      totalCost *= 1 - discountPercentage / 100;
+    }
 
-    if (discountApplied) totalCost *= 0.8;
-
-    // Crear la reserva
     const reservation = new Reservation({
       carId,
       clientId,
@@ -54,16 +59,18 @@ export const createReservation = async (req, res) => {
       carModel: car.model,
       clientName: client.name,
       totalCost,
-      discountApplied,
+      discountApplied: discountPercentage > 0,
+      discountPercentage,
     });
 
     await reservation.save();
 
     return res.status(201).json({
       reservation,
-      message: discountApplied
-        ? "Reservation created with a 20% discount!"
-        : "Reservation created successfully.",
+      message:
+        discountPercentage > 0
+          ? `Reservation created with a ${discountPercentage}% discount!`
+          : "Reservation created successfully.",
     });
   } catch (error) {
     console.error("Error creating the reservation:", error);
@@ -71,12 +78,12 @@ export const createReservation = async (req, res) => {
   }
 };
 
-// Función optimizada para calcular el costo total
 const calculateTotalCost = (pricePerDay, startDate, endDate) => {
   const msPerDay = 1000 * 60 * 60 * 24;
   const start = new Date(startDate).setHours(0, 0, 0, 0);
   const end = new Date(endDate).setHours(0, 0, 0, 0);
-  const days = Math.round((end - start) / msPerDay) || 1; // Asegura al menos 1 día
+  const days = Math.round((end - start) / msPerDay) || 1;
+
   return days * pricePerDay;
 };
 
