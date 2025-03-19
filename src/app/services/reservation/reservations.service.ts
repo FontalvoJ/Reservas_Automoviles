@@ -21,12 +21,24 @@ export class ReservationsService {
   /**
   * Creates a new reservation for a car.
   */
-  createReservation(carId: string, startDate: Date, endDate: Date): Observable<any> {
-    const reservationData = {
-      carId: carId,
+  createReservation(
+    carId: string,
+    startDate: Date,
+    endDate: Date,
+    discountApplied?: boolean,
+    discountPercentage?: number
+  ): Observable<any> {
+    const reservationData: any = {
+      carId,
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
     };
+
+
+    if (discountApplied !== undefined) {
+      reservationData.discountApplied = discountApplied;
+      reservationData.discountPercentage = discountPercentage ?? 0;
+    }
 
     console.log('Sending reservation data:', reservationData);
 
@@ -39,6 +51,7 @@ export class ReservationsService {
       })
     );
   }
+
 
 
   /**

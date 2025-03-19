@@ -49,7 +49,13 @@
                         {{ reservation.endDate | date: 'yyyy-MM-dd' }}
                     </td>
                     <td class="px-4 py-4 text-sm details whitespace-nowrap">
-                        {{ reservation.totalCost | currency }}
+                        <span *ngIf="reservation.discountApplied">
+                            {{ reservation.finalCost | currency }}
+                            <span class="text-green-600">(-{{ reservation.discountPercentage }}%)</span>
+                        </span>
+                        <span *ngIf="!reservation.discountApplied">
+                            {{ reservation.finalCost | currency }}
+                        </span>
                     </td>
                     <td class="px-4 py-4 text-sm font-medium text-center whitespace-nowrap">
                         <span class="inline-block mx-auto px-2.5 py-0.5 rounded-full text-xs font-medium" [ngClass]="{
@@ -159,7 +165,7 @@
                 <option value="cancelled">Cancelled</option>
             </select>
 
-                        <div *ngIf="showError" class="mt-2 text-red-600 details">Please select a status before updating.</div>
+            <div *ngIf="showError" class="mt-2 text-red-600 details">Please select a status before updating.</div>
 
         </div>
 
