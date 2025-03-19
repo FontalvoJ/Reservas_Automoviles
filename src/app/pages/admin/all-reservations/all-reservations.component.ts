@@ -31,10 +31,10 @@ export class AllReservationsComponent implements OnInit {
       status: ['']
     });
   }
-
   loadAllReservations(): void {
     this.reservationsService.getAllReservations().subscribe({
       next: (data) => {
+        //console.log('Reservations data received:', data);
         this.reservations = data;
       },
       error: (error) => {
@@ -45,6 +45,7 @@ export class AllReservationsComponent implements OnInit {
       complete: () => { }
     });
   }
+
 
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages()) return;
@@ -91,7 +92,7 @@ export class AllReservationsComponent implements OnInit {
         }
       );
     } else {
-      this.showError = true; 
+      this.showError = true;
     }
   }
 }
