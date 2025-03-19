@@ -80,11 +80,23 @@ export const createReservation = async (req, res) => {
 
 const calculateTotalCost = (pricePerDay, startDate, endDate) => {
   const msPerDay = 1000 * 60 * 60 * 24;
-  const start = new Date(startDate).setHours(0, 0, 0, 0);
-  const end = new Date(endDate).setHours(0, 0, 0, 0);
-  const days = Math.round((end - start) / msPerDay) || 1;
+  const days =
+    Math.round((new Date(endDate) - new Date(startDate)) / msPerDay) || 1;
 
-  return days * pricePerDay;
+  let discountPercentage = 0;
+
+  if (days > 20) {
+    discountPercentage = 15;
+  } else if (days >= 12) {
+    discountPercentage = 10;
+  }
+
+  let totalCost = pricePerDay * days;
+  if (discountPercentage > 0) {
+    totalCost *= 1 - discountPercentage / 100;
+  }
+
+  return totalCost;
 };
 
 export const updateReservationStatus = async (req, res) => {
