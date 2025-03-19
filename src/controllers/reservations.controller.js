@@ -4,14 +4,7 @@ import Clients from "../models/Client";
 
 export const createReservation = async (req, res) => {
   try {
-    const {
-      carId,
-      startDate,
-      endDate,
-      totalCost,
-      discountApplied,
-      discountPercentage,
-    } = req.body;
+    const { carId, startDate, endDate, totalCost: clientTotalCost } = req.body;
 
     if (!startDate || !endDate || new Date(endDate) < new Date(startDate)) {
       return res
@@ -38,6 +31,23 @@ export const createReservation = async (req, res) => {
       });
     }
 
+    // Cálculo del precio en el backend
+    const totalDays = Math.ceil(
+      (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)
+    );
+
+    let discount = 0;
+    if (totalDays > 20) discount = 0.2;
+    else if (totalDays > 12) discount = 0.1;
+
+    const totalCost = totalDays * car.pricePerDay;
+    const totalPrice = totalCost - totalCost * discount;
+
+    // Verificar si hay inconsistencias con el cálculo del frontend
+    if (clientTotalCost && clientTotalCost !== totalPrice) {
+      console.warn("Client total cost does not match backend calculation!");
+    }
+
     const reservation = new Reservation({
       carId,
       clientId,
@@ -46,18 +56,20 @@ export const createReservation = async (req, res) => {
       carBrand: car.brand,
       carModel: car.model,
       clientName: client.name,
+      totalDays,
       totalCost,
-      discountApplied,
-      discountPercentage,
+      totalPrice,
+      status: "pending",
     });
 
     await reservation.save();
 
     return res.status(201).json({
       reservation,
-      message: discountApplied
-        ? `Reservation created with a ${discountPercentage}% discount!`
-        : "Reservation created successfully.",
+      message:
+        discount > 0
+          ? `Reservation created with a ${discount * 100}% discount!`
+          : "Reservation created successfully.",
     });
   } catch (error) {
     console.error("Error creating the reservation:", error);
