@@ -10,8 +10,8 @@ export class ClientReservationsComponent implements OnInit {
   Math = Math;
   activeReservations: any[] = [];
   errorMessage: string | null = null;
-  currentPage: number = 1; 
-  itemsPerPage: number = 5; 
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
 
   constructor(private reservationsService: ReservationsService) { }
 
@@ -22,13 +22,22 @@ export class ClientReservationsComponent implements OnInit {
   getActiveReservations(): void {
     this.reservationsService.getUserActiveReservations().subscribe({
       next: (reservations) => {
+        //console.log('Datos recibidos del backend:', reservations); // Verifica los datos en consola
+
+        if (!reservations || reservations.length === 0) {
+          console.warn('No active reservations found.');
+          this.activeReservations = [];
+          this.errorMessage = 'No active reservations found.';
+          return;
+        }
+
         const start = (this.currentPage - 1) * this.itemsPerPage;
         const end = start + this.itemsPerPage;
-        this.activeReservations = reservations.slice(start, end).map(reservation => ({
-          ...reservation,
-          totalDays: this.calculateTotalDays(reservation.startDate, reservation.endDate),
-        }));
+
+        this.activeReservations = reservations.slice(start, end);
         this.errorMessage = null;
+
+        //console.log('Reservas activas paginadas:', this.activeReservations); 
       },
       error: (error) => {
         console.error('Error fetching active reservations:', error);
@@ -37,11 +46,6 @@ export class ClientReservationsComponent implements OnInit {
     });
   }
 
-  private calculateTotalDays(startDate: string, endDate: string): number {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-  }
 
   changePage(page: number): void {
     if (page < 1 || page > this.totalPages()) return;

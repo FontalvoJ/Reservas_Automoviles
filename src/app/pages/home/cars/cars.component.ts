@@ -17,7 +17,6 @@ export class CarsComponent implements OnInit {
     this.loadCars();  
   }
 
-  // Función para cargar los coches
   loadCars(): void {
     this.carService.getAllCarsForEveryone().subscribe(
       (response) => {

@@ -70,7 +70,7 @@ export class ListCarsReservationsComponent implements OnInit {
 
       this.carService.createCar(formValue).subscribe(
         response => {
-          console.log('Car created successfully!', response);
+          //console.log('Car created successfully!', response);
           this.isSubmitting = false;
           this.showSuccessCarAlert = true;
           setTimeout(() => {
@@ -79,13 +79,13 @@ export class ListCarsReservationsComponent implements OnInit {
           this.closeModal();
         },
         error => {
-          console.error('Error creating car:', error);
+          //console.error('Error creating car:', error);
           this.isSubmitting = false;
           this.errorMessage = 'Failed to create car. Please try again later.';
         }
       );
     } else {
-      console.log('Form is invalid');
+      //console.log('Form is invalid');
       this.showErrorCreateCar = true;
       this.errorMessage = 'The form is invalid. Please correct the errors.';
     }

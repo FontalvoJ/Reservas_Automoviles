@@ -25,14 +25,14 @@ export class SignUpUserComponent {
     private authService: AuthService,
     private router: Router
   ) {
-  
+
     this.formRegisterAdmin = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
 
-    
+
     this.formRegisterClient = this.formBuilder.group({
       name: ['', Validators.required],
       identification: ['', Validators.required],
@@ -40,7 +40,7 @@ export class SignUpUserComponent {
       address: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-     
+
     });
   }
 
@@ -64,7 +64,7 @@ export class SignUpUserComponent {
     this.showErrorClient = false;
   }
 
-  // Método para registrar administrador
+
   registerAdmin() {
     if (this.formRegisterAdmin.valid) {
       const adminData = this.formRegisterAdmin.value;
@@ -74,7 +74,7 @@ export class SignUpUserComponent {
           this.closeAdminModal();
           this.router.navigate(['/sign-up-user']);
 
-          // Ocultar el mensaje de éxito después de 3 segundos
+
           setTimeout(() => {
             this.showSuccessAdminAlert = false;
           }, 3000);
@@ -85,11 +85,11 @@ export class SignUpUserComponent {
       });
     } else {
       console.warn('Admin form is invalid');
-      this.showErrorAdmin = true; 
+      this.showErrorAdmin = true;
     }
   }
 
-  // Método para registrar cliente
+
   registerClient() {
     if (this.formRegisterClient.valid) {
       const clientData = this.formRegisterClient.value;
@@ -109,7 +109,7 @@ export class SignUpUserComponent {
       });
     } else {
       console.warn('Client form is invalid');
-      this.showErrorClient = true; 
+      this.showErrorClient = true;
     }
   }
 }

@@ -232,11 +232,10 @@
             </h2>
 
 
-            <!-- Botones para elegir la opción de actualización -->
+           
             <div class="flex mb-4 space-x-2">
                 <button (click)="updateOption = 'availability'"
                     class="flex items-center justify-center w-full px-6 py-2 text-white bg-black rounded-md sm:w-auto titles">
-                    <!-- Icono SVG -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="mr-2">
                         <path fill="#ffffff"
                             d="M8.5 3.5a5 5 0 0 0-.229 9.995a7.5 7.5 0 0 0-.253 1.487a6.5 6.5 0 1 1 6.964-6.964a7.5 7.5 0 0 0-1.487.253A5 5 0 0 0 8.5 3.5m5.778 9.734a.75.75 0 1 0-1.056 1.066l1.215 1.203l-1.217 1.217a.75.75 0 1 0 1.06 1.06l1.22-1.219l1.215 1.219a.75.75 0 0 0 1.062-1.06l-1.215-1.217l1.212-1.204a.75.75 0 0 0-1.057-1.064L15.5 14.444zM15.5 9a6.5 6.5 0 1 0 0 13a6.5 6.5 0 0 0 0-13m-5 6.5a5 5 0 1 1 10 0a5 5 0 0 1-10 0m.78-8.78a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 0 1-1.06 0l-1.5-1.502a.75.75 0 0 1 1.061-1.06l.97.971l2.469-2.47a.75.75 0 0 1 1.06 0" />
@@ -246,7 +245,6 @@
 
                 <button (click)="updateOption = 'info'"
                     class="flex items-center justify-center w-full px-6 py-2 bg-gray-200 rounded-md titles sm:w-auto">
-                    <!-- Icono SVG para Update Car Info -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" class="mr-2">
                         <path fill="#000"
                             d="m24.6 24.4l2.6 2.6l-2.6 2.6L26 31l4-4l-4-4zm-2.2 0L19.8 27l2.6 2.6L21 31l-4-4l4-4z" />
@@ -269,7 +267,6 @@
                 </div>
 
 
-                <!-- Lista desplegable para cambiar availability -->
                 <label for="availability" class="block mb-2 text-gray-700 details">Change Availability</label>
                 <select [(ngModel)]="selectedCar.availability" id="availability"
                     class="w-full p-3 mb-6 bg-[#D9D9D9] rounded-md focus:outline-none placeholder-black details">
@@ -352,7 +349,6 @@
                     
                     <button (click)="updateCarInfo()"
                         class="flex items-center justify-center w-full px-6 py-3 text-white bg-black rounded-md titles">
-                        <!-- Icono SVG -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="mr-2">
                             <path fill="#ffffff"
                                 d="M18 10a1 1 0 0 0-1-1H5.41l2.3-2.29a1 1 0 0 0-1.42-1.42l-4 4a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 11h14a1 1 0 0 0 1-1m3.92 3.62A1 1 0 0 0 21 13H7a1 1 0 0 0 0 2h11.59l-2.3 2.29a1 1 0 0 0 0 1.42a1 1 0 0 0 1.42 0l4-4a1 1 0 0 0 .21-1.09" />
@@ -363,7 +359,6 @@
             </div>
 
 
-            <!-- Botón para cancelar -->
             <div class="flex justify-end mt-6 space-x-4">
                 <button (click)="cancelUpdate()"
                     class="flex items-center px-3 py-1.5 text-sm font-medium transition-colors bg-gray-200 rounded-md hover:bg-gray-300 titles">

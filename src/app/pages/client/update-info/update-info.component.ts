@@ -84,7 +84,7 @@ export class UpdateInfoComponent implements OnInit {
     this.isModalOpenDeleteAccount = false;
   }
 
-  // Método para eliminar la cuenta del cliente
+  
   deleteAccount() {
     this.clientService.deleteClientAccount().subscribe(
       (response) => {
