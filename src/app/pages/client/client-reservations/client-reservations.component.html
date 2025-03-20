@@ -5,9 +5,9 @@
 <!-- Table Client Reservations -->
 <div class="w-full max-w-6xl p-4 mx-auto">
     <div class="overflow-hidden bg-white rounded-lg shadow-md">
-        <!-- Table -->
+
         <table class="w-full table-auto">
-            <!-- Table Header -->
+
             <thead class="bg-gray-100">
                 <tr>
                     <th class="px-4 py-3 tracking-wider text-left text-ls titles">Car</th>
@@ -19,7 +19,7 @@
                 </tr>
             </thead>
 
-            <!-- Table Body -->
+
             <tbody class="divide-y divide-gray-200">
                 <tr *ngFor="let reservation of activeReservations" class="hover:bg-gray-50">
                     <td class="px-4 py-4 text-sm details whitespace-nowrap">
@@ -35,7 +35,13 @@
                         {{ reservation.totalDays }}
                     </td>
                     <td class="px-4 py-4 text-sm details whitespace-nowrap">
-                        {{ reservation.totalCost | currency }}
+                        <span *ngIf="reservation.discountApplied">
+                            {{ reservation.finalCost | currency }}
+                            <span class="text-green-600">(-{{ reservation.discountPercentage }}%)</span>
+                        </span>
+                        <span *ngIf="!reservation.discountApplied">
+                            {{ reservation.finalCost | currency }}
+                        </span>
                     </td>
                     <td class="px-4 py-4 text-sm font-medium text-center whitespace-nowrap">
                         <span class="inline-block mx-auto px-2.5 py-0.5 rounded-full text-xs font-medium 
@@ -51,7 +57,7 @@
         </table>
     </div>
 
-    <!-- Pagination -->
+
     <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200">
         <div class="flex justify-between flex-1 sm:hidden">
             <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"

@@ -5,7 +5,6 @@
         space-y-4 sm:space-y-0 sm:flex-row sm:justify-between">
 
         <div class="flex items-center gap-x-2">
-            <!-- Icono SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
                 <path fill="#000"
                     d="M16.9 5c-.2-.6-.8-1-1.4-1h-11c-.7 0-1.2.4-1.4 1L1 11v8c0 .5.5 1 1 1h1c.5 0 1-.5 1-1v-1h4.3c-.2-.6-.3-1.3-.3-2c0-2.4 1.1-4.5 2.7-6H3l1.5-4.5h11l.8 2.5c.6 0 1.2.1 1.7.3zM4.5 12c.8 0 1.5.7 1.5 1.5S5.3 15 4.5 15S3 14.3 3 13.5S3.7 12 4.5 12M23 17h-2v2h-2v-2h-2v-2h2v-2h2v2h2zm-8.5-1c.8 0 1.5-1.2 1.5-2c0-1.1-.9-2-2-2h-3v2h3v1h-2v2h2v1h-3v2h3c1.1 0 2-.9 2-2c0-.8-.7-2-1.5-2" />
@@ -15,7 +14,6 @@
         </div>
 
         <div class="relative">
-            <!-- Botón de Settings -->
             <button type="button" class="flex items-center px-4 py-2 space-x-2 text-white bg-black rounded details"
                 (click)="toggleDropdown()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -29,7 +27,7 @@
                 <span>Settings</span>
             </button>
 
-            <!-- Menú desplegable -->
+            
             <div *ngIf="dropdownOpen" class="absolute right-0 w-48 py-2 mt-2 bg-white rounded-lg shadow-lg">
                 <ul>
                     <li class="px-4 py-2 cursor-pointer details hover:bg-gray-200" (click)="openModalEdit()">Edit
@@ -191,7 +189,6 @@
 <div *ngIf="isModalOpenDeleteAccount"
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
     <div class="w-full max-w-md p-6 overflow-hidden transition-all transform bg-white shadow-xl rounded-2xl">
-        <!-- Icono de advertencia -->
         <div class="flex justify-center mb-6">
             <div class="p-4 bg-red-100 rounded-full">
                 <div class="flex items-center justify-center w-16 h-16 bg-red-600 rounded-full">
@@ -208,7 +205,6 @@
             </div>
         </div>
 
-        <!-- Contenido del modal -->
         <div class="text-center">
             <h3 class="mb-4 text-2xl font-semibold text-gray-900 titles">
                 Confirm Deletion
@@ -220,7 +216,6 @@
             </div>
         </div>
 
-        <!-- Botones -->
         <div class="flex justify-center gap-3 mt-8">
             <button
                 class="inline-flex justify-center rounded-lg border border-transparent bg-red-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 transition-colors duration-200 titles"

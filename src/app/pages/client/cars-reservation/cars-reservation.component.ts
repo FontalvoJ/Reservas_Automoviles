@@ -108,8 +108,7 @@ export class CarsReservationComponent implements OnInit {
       discountApplied = true;
     }
 
-    const totalCost = totalDays * this.selectedCar.pricePerDay;
-    const finalPrice = totalCost - (totalCost * discountPercentage / 100);
+
 
     this.reservationsService.createReservation(
       this.selectedCar._id,

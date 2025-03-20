@@ -7,7 +7,6 @@
         ml-4 mr-4">
 
         <div class="flex items-center gap-x-2">
-            <!-- Icono SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="text-black">
                 <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
                     <path
@@ -21,7 +20,6 @@
             <h2 class="text-xl titles">Customer Bookings</h2>
         </div>
 
-        <!-- Ajustar el margen del botón para centrarlo -->
         <button (click)="openModal()" type="button"
             class="flex items-center px-4 py-2 text-white bg-black rounded details min-w-[150px] ml-4">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" class="mr-2">
@@ -63,7 +61,7 @@
             <div class="mt-4">
 
                 <form [formGroup]="formRegisterVehicle" (ngSubmit)="onSubmit()">
-                    <!-- Row 1: Brand and Model -->
+                    
                     <div class="flex mb-4 space-x-4">
                         <div class="relative flex-1">
                             <input type="text" formControlName="brand" name="brand" placeholder="Brand"
@@ -75,7 +73,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 2: Year and Color -->
+                    
                     <div class="flex mb-4 space-x-4">
                         <div class="relative flex-1">
                             <input type="text" formControlName="year" name="year" placeholder="Year"
@@ -87,7 +85,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 3: Price per Day and Location -->
+                   
                     <div class="flex mb-4 space-x-4">
                         <div class="relative flex-1">
                             <input type="text" formControlName="pricePerDay" name="pricePerDay"
@@ -100,7 +98,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 4: Power and System -->
+                   
                     <div class="flex mb-4 space-x-4">
                         <div class="relative flex-1">
                             <input type="text" formControlName="power" name="power" placeholder="Power"
@@ -113,7 +111,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 5: Accompanists and Availability -->
+                    
                     <div class="flex items-center mb-4 space-x-4">
                         <div class="relative flex-1">
                             <input type="text" formControlName="accompanists" name="accompanists"
@@ -127,7 +125,7 @@
                         </div>
                     </div>
 
-                    <!-- Row 6: Image URL with preview -->
+                   
                     <div class="flex mb-4 space-x-4">
                         <div class="relative flex-1">
                             <label for="imageUrl" class="details">Image URL</label>
