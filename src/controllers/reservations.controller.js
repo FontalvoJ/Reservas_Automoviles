@@ -191,10 +191,6 @@ export const getUserActiveReservations = async (req, res) => {
 
 export const listAllReservations = async (req, res) => {
   try {
-    if (req.role !== "admin") {
-      return res.status(403).json({ message: "Access denied. Admins only." });
-    }
-
     const reservations = await Reservation.find()
       .populate("carId", "brand model")
       .populate("clientId", "name")
@@ -204,26 +200,23 @@ export const listAllReservations = async (req, res) => {
       return res.status(404).json({ message: "No reservations found." });
     }
 
-    // Formatear las reservas para incluir los detalles requeridos
-    const formattedReservations = reservations.map((reservation) => {
-      return {
-        idReservation: reservation._id,
-        idCar: reservation.carId._id,
-        brand: reservation.carId.brand,
-        model: reservation.carId.model,
-        startDate: reservation.startDate,
-        endDate: reservation.endDate,
-        totalDays: reservation.totalDays,
-        finalCost: reservation.finalCost,
-        discountApplied: reservation.discountApplied,
-        discountPercentage: reservation.discountPercentage,
-        totalCost: reservation.totalCost,
-        status: reservation.status,
-        idClient: reservation.clientId._id,
-        clientName: reservation.clientId.name,
-        createdAt: reservation.createdAt,
-      };
-    });
+    const formattedReservations = reservations.map((reservation) => ({
+      idReservation: reservation._id,
+      idCar: reservation.carId._id,
+      brand: reservation.carId.brand,
+      model: reservation.carId.model,
+      startDate: reservation.startDate,
+      endDate: reservation.endDate,
+      totalDays: reservation.totalDays,
+      finalCost: reservation.finalCost,
+      discountApplied: reservation.discountApplied,
+      discountPercentage: reservation.discountPercentage,
+      totalCost: reservation.totalCost,
+      status: reservation.status,
+      idClient: reservation.clientId._id,
+      clientName: reservation.clientId.name,
+      createdAt: reservation.createdAt,
+    }));
 
     return res.status(200).json({
       message: "Reservations retrieved successfully",
