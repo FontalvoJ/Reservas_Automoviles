@@ -4,6 +4,7 @@ import AdminOnly from "../models/adminOnly";
 import Client from "../models/Client";
 
 export const verifyToken = async (req, res, next) => {
+  console.log("Headers recibidos:", req.headers);
   try {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
