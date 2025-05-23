@@ -284,7 +284,7 @@ export const getCarsForAuthenticatedUsers = async (req, res) => {
 };
 
 export default {
-  createCar,
+  createCar, 
   updateCar,
   deleteCar,
   getCarsByAdmin,

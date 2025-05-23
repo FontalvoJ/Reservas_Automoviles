@@ -5,7 +5,8 @@ import Client from "../models/Client";
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers["x-access-token"];
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
       return res.status(403).json({ message: "No token provided" });

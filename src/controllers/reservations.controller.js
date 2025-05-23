@@ -240,4 +240,5 @@ export default {
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
+  listAllReservations,
 };

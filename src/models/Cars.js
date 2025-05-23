@@ -43,7 +43,7 @@ const carSchema = new Schema(
       required: true,
       validate: {
         validator: function (v) {
-          // Validación básica de URL
+         
           try {
             new URL(v);
             return true;
