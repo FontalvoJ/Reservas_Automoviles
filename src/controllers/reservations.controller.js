@@ -21,7 +21,7 @@ export const createReservation = async (req, res) => {
 
     const overlappingReservation = await Reservation.findOne({
       carId,
-      status: { $ne: "completed" },
+      status: { $ne: "Completed" },
       $or: [{ startDate: { $lte: endDate }, endDate: { $gte: startDate } }],
     });
 
@@ -96,7 +96,7 @@ export const updateReservationStatus = async (req, res) => {
     }
 
     // Validate the provided status
-    const validStatuses = ["pending", "active", "completed", "cancelled"];
+    const validStatuses = ["Pending", "Active", "Completed", "Cancelled"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid reservation status" });
     }
