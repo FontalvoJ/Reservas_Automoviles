@@ -189,22 +189,23 @@ export const getUserActiveReservations = async (req, res) => {
   }
 };
 
-export const listAllReservations = async (req, res) => {
+export const viewAdminAllReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find()
       .populate("carId", "brand model")
       .populate("clientId", "name")
+      .lean()
       .exec();
 
-    if (!reservations || reservations.length === 0) {
+    if (reservations.length === 0) {
       return res.status(404).json({ message: "No reservations found." });
     }
 
     const formattedReservations = reservations.map((reservation) => ({
       idReservation: reservation._id,
-      idCar: reservation.carId._id,
-      brand: reservation.carId.brand,
-      model: reservation.carId.model,
+      idCar: reservation.carId?._id || null,
+      brand: reservation.carId?.brand || "N/A",
+      model: reservation.carId?.model || "N/A",
       startDate: reservation.startDate,
       endDate: reservation.endDate,
       totalDays: reservation.totalDays,
@@ -213,8 +214,8 @@ export const listAllReservations = async (req, res) => {
       discountPercentage: reservation.discountPercentage,
       totalCost: reservation.totalCost,
       status: reservation.status,
-      idClient: reservation.clientId._id,
-      clientName: reservation.clientId.name,
+      idClient: reservation.clientId?._id || null,
+      clientName: reservation.clientId?.name || "N/A",
       createdAt: reservation.createdAt,
     }));
 
@@ -233,5 +234,5 @@ export default {
   updateReservationStatus,
   deleteReservation,
   getUserActiveReservations,
-  listAllReservations,
+  viewAdminAllReservations,
 };

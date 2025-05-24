@@ -29,9 +29,9 @@ router.get(
 );
 
 router.get(
-  "/listAllReservations",
+  "/viewAdminAllReservations",
   [authJwt.verifyToken, validateRoles("admin")],
-  reservationCtrl.listAllReservations
+  reservationCtrl.viewAdminAllReservations"
 );
 
 export default router;
