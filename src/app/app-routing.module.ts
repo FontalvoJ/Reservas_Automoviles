@@ -13,6 +13,8 @@ import { ClientReservationsComponent } from './pages/client/client-reservations/
 import { AllReservationsComponent } from './pages/admin/all-reservations/all-reservations.component';
 import { ListCarsReservationsComponent } from './pages/admin/list-cars-reservations/list-cars-reservations.component';
 
+import { SignUpUsersComponent } from './pages/auth/sign-up-users/sign-up-users.component';
+
 const routes: Routes = [
   // Public routes
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'cars-home', component: CarsComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up-user', component: SignUpUserComponent },
+  { path: 'sign-up-users', component: SignUpUsersComponent },
+
 
   // Admin routes 
   { path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard] },

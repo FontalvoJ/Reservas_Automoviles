@@ -24,6 +24,7 @@ import { UpdateInfoComponent } from './pages/client/update-info/update-info.comp
 import { CarsReservationComponent } from './pages/client/cars-reservation/cars-reservation.component';
 import { ClientReservationsComponent } from './pages/client/client-reservations/client-reservations.component';
 import { AllReservationsComponent } from './pages/admin/all-reservations/all-reservations.component';
+import { SignUpUsersComponent } from './pages/auth/sign-up-users/sign-up-users.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AllReservationsComponent } from './pages/admin/all-reservations/all-res
     UpdateInfoComponent,
     CarsReservationComponent,
     ClientReservationsComponent,
-    AllReservationsComponent
+    AllReservationsComponent,
+    SignUpUsersComponent
   ],
   imports: [
     BrowserModule,

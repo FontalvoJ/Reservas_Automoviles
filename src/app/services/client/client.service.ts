@@ -16,7 +16,7 @@ export class ClientService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
-    return new HttpHeaders().set('x-access-token', token);
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getClientInfo(): Observable<any> {

@@ -26,7 +26,7 @@ export class CarService {
 */
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
-    return new HttpHeaders().set('x-access-token', token);
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   /**
@@ -136,7 +136,7 @@ export class CarService {
     }
 
     const headers = this.getAuthHeaders();
-    const url = `${this.API_URL}updateCar/${carId}`; 
+    const url = `${this.API_URL}updateCar/${carId}`;
 
     return this.http.put<any>(url, carData, { headers })
       .pipe(

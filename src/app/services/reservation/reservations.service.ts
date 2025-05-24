@@ -14,7 +14,7 @@ export class ReservationsService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
-    return new HttpHeaders().set('x-access-token', token);
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
 
@@ -58,7 +58,7 @@ export class ReservationsService {
  * Fetches active reservations for the logged-in user.
  */
   getUserActiveReservations(): Observable<any[]> {
-    return this.http.get(`${this.RESERVATION_API_URL}/userReservations`, {
+    return this.http.get(`${this.RESERVATION_API_URL}/getClientReservations`, {
       headers: this.getAuthHeaders(),
     }).pipe(
       map((response: any) => {
@@ -81,7 +81,7 @@ export class ReservationsService {
  * Fetches all reservations (admin access).
  */
   getAllReservations(): Observable<any[]> {
-    return this.http.get(`${this.RESERVATION_API_URL}/listAllReservations`, {
+    return this.http.get(`${this.RESERVATION_API_URL}/viewAdminAllReservations`, {
       headers: this.getAuthHeaders(),
     }).pipe(
       map((response: any) => {
