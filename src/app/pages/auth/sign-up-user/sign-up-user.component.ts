@@ -20,6 +20,8 @@ export class SignUpUserComponent {
   showErrorAdmin: boolean = false;
   showErrorClient: boolean = false;
 
+
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -112,4 +114,5 @@ export class SignUpUserComponent {
       this.showErrorClient = true;
     }
   }
+
 }

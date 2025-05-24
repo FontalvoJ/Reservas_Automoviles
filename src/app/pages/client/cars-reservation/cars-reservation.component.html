@@ -16,16 +16,16 @@
 <!-- Car  Information-->
 <section class="container p-4 mx-auto">
     <div *ngIf="cars && cars.length > 0; else noCarsTemplate"
-        class="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-        <div *ngFor="let car of cars" class="flex flex-col border border-[#D9D9D9] rounded-lg p-4 space-y-4">
-            
-            <div class="px-4 pt-2"> 
+        class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div *ngFor="let car of cars" class="flex flex-col border rounded-lg shadow-sm border-neutral-200">
+            <div class="px-4 pt-2">
                 <span class="titles inline-flex items-center justify-center w-full px-2.5 py-1.5 text-sm font-medium 
-                        {{ car.availability ? 'text-green-700 bg-green-50 ring-green-600/20' : 'text-red-700 bg-red-50 ring-red-600/20' }}
-                        rounded-md ring-1 ring-inset truncate">
+                    {{ car.availability ? 'text-green-700 bg-green-50 ring-green-600/20' : 'text-red-700 bg-red-50 ring-red-600/20' }}
+                    rounded-md ring-1 ring-inset truncate">
                     {{ car.availability ? 'Available' : 'Not Available' }}
                 </span>
             </div>
+
 
             <div class="relative w-full h-[200px] mb-0 pt-2 pb-2">
                 <img [src]="car.imageUrl" [alt]="car.brand + ' ' + car.model"
@@ -33,20 +33,20 @@
                     [ngStyle]="{'image-rendering': 'crisp-edges'}">
             </div>
 
-           
-            <div class="flex-grow space-y-4">
-
+            <!-- Información del coche -->
+            <div class="flex flex-col flex-grow px-4 pb-4 space-y-4">
+                <!-- Título y precio -->
                 <div class="space-y-2">
                     <div class="flex flex-wrap items-center gap-3">
                         <h2 class="text-lg break-words titles">{{ car.brand }}</h2>
                         <h3 class="text-lg break-words titles">{{ car.model }}</h3>
                     </div>
                     <p class="text-lg font-bold break-words">
-                        ${{ car.pricePerDay !== undefined ? car.pricePerDay : 'N/A' }} / día
+                        ${{ car.pricePerDay !== undefined ? car.pricePerDay : 'N/A' }} / Day
                     </p>
                 </div>
 
-                
+
                 <div class="pt-2 space-y-3 border-t border-neutral-300">
                     <div class="flex items-center justify-between">
                         <span class="flex items-center min-w-0 gap-2">
@@ -79,7 +79,7 @@
                                     stroke-width="1.6"
                                     d="M21 19.75c0-2.09-1.67-5.068-4-5.727m-2 5.727c0-2.651-2.686-6-6-6s-6 3.349-6 6m9-12.5a3 3 0 1 1-6 0a3 3 0 0 1 6 0m3 3a3 3 0 1 0 0-6" />
                             </svg>
-                            <span class="truncate details">{{ car.accompanists }}</span>
+                            <span class="truncate details">{{ car.accompanists }} people</span>
                         </span>
                         <span class="flex items-center min-w-0 gap-2">
                             <svg class="flex-shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -117,8 +117,9 @@
                     </div>
                 </div>
 
+                <!-- Botón de reserva -->
                 <div class="mt-4">
-                    <button (click)="generateReservation(car)" [disabled]="!car.availability" class="flex items-center justify-center w-full gap-2 px-4 py-2 text-white  bg-black rounded-md titles  
+                    <button (click)="generateReservation(car)" [disabled]="!car.availability" class="flex items-center justify-center w-full gap-2 px-4 py-2 text-white bg-black rounded-md titles  
                             {{ !car.availability ? 'opacity-50 cursor-not-allowed' : '' }}">
                         Book Now!
                     </button>
@@ -127,6 +128,7 @@
         </div>
     </div>
 
+    <!-- Template para cuando no hay coches disponibles -->
     <ng-template #noCarsTemplate>
         <div class="flex flex-col items-center justify-center p-8 text-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 text-gray-400" viewBox="0 0 24 24">
@@ -140,7 +142,6 @@
         </div>
     </ng-template>
 </section>
-
 
 <!-- Modal Reservation Car -->
 <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
@@ -189,7 +190,7 @@
                 <span class="details">${{ priceTotal }}</span>
             </div>
 
-            
+
             <div *ngIf="discountApplied" class="flex justify-between font-bold text-green-600">
                 <span class="titles">Discount Applied:</span>
                 <span class="details">{{ discountPercentage }}% OFF</span>
