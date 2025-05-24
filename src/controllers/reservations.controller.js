@@ -234,6 +234,6 @@ export default {
   createReservation,
   updateReservationStatus,
   deleteReservation,
-  getUserActiveReservations,
+  getClientReservations,
   viewAdminAllReservations,
 };
