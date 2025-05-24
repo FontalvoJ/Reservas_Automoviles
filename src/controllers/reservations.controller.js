@@ -62,7 +62,7 @@ export const createReservation = async (req, res) => {
       finalCost,
       discountApplied,
       discountPercentage,
-      status: "pending",
+      status: "Pending",
     });
 
     await reservation.save();
