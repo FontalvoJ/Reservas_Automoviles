@@ -139,35 +139,35 @@ export const deleteReservation = async (req, res) => {
   }
 };
 
-export const getUserActiveReservations = async (req, res) => {
+export const getClientReservations = async (req, res) => {
   try {
-    // Verificar que el usuario tenga el rol de 'client'
     if (req.role !== "client") {
       return res.status(403).json({ message: "Access denied. Clients only." });
     }
 
     const clientId = req.userId;
 
-    // Obtener las reservas del cliente
     const reservations = await Reservation.find({ clientId })
-      .populate("carId", "brand model") // Popula solo las referencias que necesitamos
+      .populate("carId", "brand model")
+      .lean()
       .exec();
 
-    if (!reservations || reservations.length === 0) {
+    if (reservations.length === 0) {
       return res
         .status(404)
         .json({ message: "No reservations found for this client" });
     }
 
-    // Formatear las reservas para incluir solo los datos necesarios
     const formattedReservations = reservations.map((reservation) => {
-      const days =
+      const days = Math.ceil(
         (new Date(reservation.endDate) - new Date(reservation.startDate)) /
-        (1000 * 60 * 60 * 24);
+          (1000 * 60 * 60 * 24)
+      );
+
       return {
-        idCar: reservation.carId._id,
-        brand: reservation.carId.brand,
-        model: reservation.carId.model,
+        idCar: reservation.carId?._id || null,
+        brand: reservation.carId?.brand || "N/A",
+        model: reservation.carId?.model || "N/A",
         startDate: reservation.startDate,
         endDate: reservation.endDate,
         totalDays: days,
@@ -184,10 +184,11 @@ export const getUserActiveReservations = async (req, res) => {
       reservations: formattedReservations,
     });
   } catch (error) {
-    console.error("Error retrieving user reservations:", error);
+    console.error("Error retrieving client reservations:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const viewAdminAllReservations = async (req, res) => {
   try {

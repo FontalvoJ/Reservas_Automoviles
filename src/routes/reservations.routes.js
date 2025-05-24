@@ -23,9 +23,9 @@ router.delete(
 );
 
 router.get(
-  "/userReservations",
+  "/getClientReservations",
   [authJwt.verifyToken, validateRoles("client")],
-  reservationCtrl.getUserActiveReservations
+  reservationCtrl.getClientReservations
 );
 
 router.get(
