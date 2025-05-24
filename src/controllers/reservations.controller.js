@@ -189,7 +189,6 @@ export const getClientReservations = async (req, res) => {
   }
 };
 
-
 export const viewAdminAllReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find()
