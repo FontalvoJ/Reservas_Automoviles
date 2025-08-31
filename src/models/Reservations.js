@@ -23,33 +23,38 @@ const reservationSchema = new mongoose.Schema(
     totalDays: {
       type: Number,
       required: true,
+      min: 1,
     },
     totalCost: {
-      type: Number,
+      type: mongoose.Schema.Types.Decimal128,
       required: true,
+      get: (v) => parseFloat(v.toString()),
     },
     finalCost: {
-      type: Number,
+      type: mongoose.Schema.Types.Decimal128,
       required: true,
+      get: (v) => parseFloat(v.toString()),
     },
     discountApplied: {
       type: Boolean,
       default: false,
     },
     discountPercentage: {
-      type: Number,
-      default: 0,
+      type: mongoose.Schema.Types.Decimal128,
+      default: 0.0,
+      get: (v) => parseFloat(v.toString()),
     },
-    status: {
-      type: String,
-      enum: ["pending", "active", "completed", "cancelled"],
-      default: "pending",
+    resStateId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ResState",
+      required: true,
     },
   },
   {
     timestamps: true,
     versionKey: false,
     collection: "Reservations",
+    toJSON: { getters: true },
   }
 );
 

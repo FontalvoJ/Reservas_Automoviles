@@ -12,5 +12,4 @@ router.post("/signUpAdmin", authCtrl.signUpAdmin);
 // Route to sign up Users
 router.post("/signInUsers", authCtrl.signInUsers);
 
-
 export default router;

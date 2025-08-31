@@ -1,21 +1,19 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
-const adminSchema = new Schema(
+const userSchema = new Schema(
   {
-    adminId: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      default: () => new Types.ObjectId(),
-    },
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -25,26 +23,27 @@ const adminSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Role",
+        required: true,
       },
     ],
   },
   {
     timestamps: true,
     versionKey: false,
-    collection: "Admins",
+    collection: "User",
   }
 );
 
-adminSchema.statics.encryptPassword = async function (password) {
+userSchema.statics.encryptPassword = async function (password) {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-adminSchema.statics.comparePassword = async function (
+userSchema.statics.comparePassword = async function (
   password,
   receivedPassword
 ) {
   return await bcrypt.compare(password, receivedPassword);
 };
 
-export default model("Admins", adminSchema);
+export default model("User", userSchema);

@@ -1,16 +1,12 @@
-import { Schema, model, Types } from "mongoose";
-import bcrypt from "bcryptjs";
+import { Schema, model } from "mongoose";
 
 const clientSchema = new Schema(
   {
-    clientId: {
+    userId: {
       type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
-      default: () => new Types.ObjectId(),
-    },
-    name: {
-      type: String,
-      required: true,
+      unique: true,
     },
     identification: {
       type: String,
@@ -24,21 +20,6 @@ const clientSchema = new Schema(
       type: String,
       required: true,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    roles: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Role",
-      },
-    ],
   },
   {
     timestamps: true,
@@ -46,17 +27,5 @@ const clientSchema = new Schema(
     collection: "Client",
   }
 );
-
-clientSchema.statics.encryptPassword = async function (password) {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-};
-
-clientSchema.statics.comparePassword = async function (
-  password,
-  receivedPassword
-) {
-  return await bcrypt.compare(password, receivedPassword);
-};
 
 export default model("Client", clientSchema);

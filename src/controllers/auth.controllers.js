@@ -1,124 +1,44 @@
-import jwt from "jsonwebtoken";
-import config from "../config";
-import bcrypt from "bcryptjs";
-import Role from "../models/Role";
-import Client from "../models/Client";
-import Admin from "../models/adminOnly";
+import { AuthService } from "../services/auth.service.js";
 
-const signUpUser = async (req, res, UserModel, defaultRoleName, roleModel) => {
+export const signUpClient = async (req, res) => {
   try {
-    const { name, identification, address, contact, email, password } =
-      req.body;
+    const user = await AuthService.registerUser(req.body, "client");
 
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        error: `${defaultRoleName} name, email, and password are required.`,
-      });
-    }
-
-    // Encripta la contraseña
-    const encryptedPassword = await UserModel.encryptPassword(password);
-
-    // Crea una nueva instancia del modelo de usuario
-    const newUser = new UserModel({
-      name,
-      identification,
-      address,
-      contact,
-      email,
-      password: encryptedPassword,
+    const { token, role, name } = await AuthService.login({
+      email: user.email,
+      password: req.body.password,
     });
 
-    // Asigna el rol por defecto según el tipo de usuario
-    const role = await roleModel.findOne({ name: defaultRoleName });
-
-    if (!role) {
-      return res
-        .status(404)
-        .json({ error: `Role '${defaultRoleName}' not found` });
-    }
-
-    newUser.roles = [role._id]; // Asignamos solo el rol por defecto
-
-    // Guarda el nuevo usuario
-    await newUser.save();
-
-    res.status(201).json({
-      message: `Create ${defaultRoleName} Success`,
-    });
+    res.status(201).json({ token, role, name });
   } catch (error) {
-    console.error(`Error in ${defaultRoleName} registration:`, error.message);
-    res.status(500).json({
-      error: `Error in ${defaultRoleName} registration`,
-    });
+    res.status(400).json({ error: error.message });
   }
 };
 
-// Exporta los controladores
-export const signUpClient = (req, res) =>
-  signUpUser(req, res, Client, "client", Role);
+export const signUpAdmin = async (req, res) => {
+  try {
+    const user = await AuthService.registerUser(req.body, "admin");
 
-export const signUpAdmin = (req, res) =>
-  signUpUser(req, res, Admin, "admin", Role);
+    const { token, role, name } = await AuthService.login({
+      email: user.email,
+      password: req.body.password,
+    });
+
+    res.status(201).json({ token, role, name });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 export const signInUsers = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        message: "Email and password are required",
-      });
-    }
-
-    let user =
-      (await Client.findOne({ email }).populate("roles")) ||
-      (await Admin.findOne({ email }).populate("roles"));
-
-    if (!user) {
-      return res.status(400).json({
-        message: "User not found",
-      });
-    }
-
-    const matchPassword = await bcrypt.compare(password, user.password);
-
-    if (!matchPassword) {
-      return res.status(401).json({
-        token: null,
-        message: "Invalid password",
-      });
-    }
-
-    if (!user.roles || user.roles.length === 0) {
-      return res.status(400).json({
-        message: "User roles not found",
-      });
-    }
-
-    const role = user instanceof Admin ? "admin" : "client";
-
-    const token = jwt.sign(
-      {
-        id: user._id.toString(),
-        role: role,
-      },
-      config.SECRET,
-      {
-        expiresIn: "24h",
-      }
-    );
-
-    res.json({
-      token,
-      role,
-      name: user.name,
-    });
+    const result = await AuthService.login(req.body);
+    res.status(200).json(result);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Internal server error",
-    });
+    const status = error.status || 400;
+    res
+      .status(status)
+      .json({ error: error.message || "Error de autenticación." });
   }
 };
 

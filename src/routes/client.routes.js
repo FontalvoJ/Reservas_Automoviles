@@ -1,28 +1,28 @@
 import { Router } from "express";
-import * as clientsCtrl from "../controllers/clients.controllers";
+import * as clientCtrl from "../controllers/client.controllers";
 import { authJwt, validateRoles } from "../middlewares/authJwt";
 
 const router = Router();
 
-// Ruta para eliminar la cuenta de un cliente
-router.delete(
-  "/clientDelete",
+// Ruta para obtener la información del cliente autenticado
+router.get(
+  "/clientGetData",
   [authJwt.verifyToken, validateRoles("client")],
-  clientsCtrl.deleteClientAccount
+  clientCtrl.getClientInfo
 );
 
 // Ruta para actualizar la cuenta de un cliente
 router.put(
   "/clientUpdate",
   [authJwt.verifyToken, validateRoles("client")],
-  clientsCtrl.updateClientAccount
+  clientCtrl.updateClientAccount
 );
 
-// Ruta para obtener la información del cliente autenticado
-router.get(
-  "/clientGetData",
+// Ruta para eliminar la cuenta de un cliente
+router.delete(
+  "/clientDelete",
   [authJwt.verifyToken, validateRoles("client")],
-  clientsCtrl.getClientInfo
+  clientCtrl.deleteClientAccount
 );
 
 export default router;

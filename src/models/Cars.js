@@ -2,18 +2,15 @@ import mongoose, { Schema, Types } from "mongoose";
 
 const carSchema = new Schema(
   {
-    carId: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      default: () => new Types.ObjectId(),
-    },
     brand: {
       type: String,
       required: true,
+      trim: true,
     },
     model: {
       type: String,
       required: true,
+      trim: true,
     },
     year: {
       type: Number,
@@ -24,63 +21,65 @@ const carSchema = new Schema(
     color: {
       type: String,
       required: true,
+      trim: true,
     },
-    availability: {
+    isAvailable: {
       type: Boolean,
       default: true,
     },
     pricePerDay: {
-      type: Number,
+      type: mongoose.Schema.Types.Decimal128,
       required: true,
-      min: [0, "Price per day must be positive"],
+      min: 0,
+      get: (v) => parseFloat(v.toString()),
     },
     location: {
       type: String,
       required: true,
+      trim: true,
     },
     imageUrl: {
       type: String,
       required: true,
       validate: {
         validator: function (v) {
-         
           try {
             new URL(v);
             return true;
-          } catch (error) {
+          } catch {
             return false;
           }
         },
-        message: (props) => `${props.value} no es una URL válida`,
+        message: (props) => `${props.value} is not a valid URL.`,
       },
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Admins",
+      ref: "Users",
       required: true,
     },
     power: {
       type: Number,
       required: true,
-      min: [0, "Power must be a positive number"],
+      min: 0,
     },
-    system: {
-      type: String,
+
+    systemId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Systems",
       required: true,
-      enum: ["Gasolina", "Diesel", "Electrónico", "Híbrido"],
-      message: "System must be one of: Gasolina, Diesel, Electrónico, Híbrido",
     },
-    accompanists: {
-      type: Number,
+    companionTypeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Companions",
       required: true,
-      enum: [2, 4, 5, 7],
-      message: "Accompanists must be one of: 2, 4, 5, 7",
     },
   },
   {
     timestamps: true,
     versionKey: false,
     collection: "Cars",
+    toJSON: { getters: true },
   }
 );
 
